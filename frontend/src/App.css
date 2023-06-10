@@ -1,0 +1,96 @@
+main {
+  margin-top: 5rem;
+  width: 80vw;
+  margin: auto;
+}
+
+h2 {
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Type table style */
+.type-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.type-table th,
+.type-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.type-table thead {
+  background-color: #212529;
+}
+
+.client-table thead th {
+  color: white;
+  font-weight: bold;
+}
+
+.type-table th {
+  color: white;
+  font-weight: bold;
+}
+
+.type-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.type-table tr:hover {
+  background-color: #ddd;
+}
+
+/* Actions modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 60%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
