@@ -1,6 +1,6 @@
 import {SyntheticEvent, useState} from 'react';
 import { Spinner } from 'react-bootstrap';
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 const Login = (props:any) => {
     const [username, setUsername] = useState('');
