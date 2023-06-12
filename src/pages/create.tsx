@@ -67,7 +67,7 @@ export default function Create(props:any) {
         <h1>Create New Token</h1>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="creatorAddress">Creator Address :</label>
-            <input className={styles.input} name="creatorAddress" type="text" value={"0xF2320835E6edA0c87783063B8215E2A624624CdE"} readOnly></input>
+            <span className={styles.text}>{props.loggedUser.address}</span>
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="name">Name :</label>
