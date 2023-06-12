@@ -1,0 +1,49 @@
+/* Reset default margin and padding */
+body, ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar {
+    background-color: #191414;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .logo span {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+  }
+
+  .logo img {
+    width: 40px; /* Adjust the width as needed */
+    height: 30px; /* Adjust the height as needed */
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    margin-left: 0px;
+  }
+  
+  .nav-links li {
+    margin-right: 0px;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #1DB954;
+  }
