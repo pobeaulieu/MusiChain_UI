@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import './App.css';
+import './App.module.css';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Create from './pages/create';
+import MetaMaskIntegration from './Wallet'; // Update the path if needed
+import CreateNewToken from './pages/createNewToken';
+
 
 function App() {
-    const [loggedUser, setLoggedUser] = useState({address: "0xF2320835E6edA0c87783063B8215E2A624624CdE"});
+    const [loggedUser, setLoggedUser] = useState({address: ""});
     const [message, setMessage] = useState("");
     const [redirect, setRedirect] = useState(false);
 
@@ -31,12 +34,17 @@ function App() {
         setMessage(content);
       };
 
+    const onWalletConnect = (address: string) => {
+        setLoggedUser({address: address})
+    }
+
     return (
         <div className="App">
             <BrowserRouter>
-                <Nav />
+                <Nav loggedUser={loggedUser} onWalletConnect={onWalletConnect}/>
                 <main>
                     <Route path="/create" exact component={() => <Create createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
+                    <Route path="/createNewToken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
                 </main>
             </BrowserRouter>
         </div>

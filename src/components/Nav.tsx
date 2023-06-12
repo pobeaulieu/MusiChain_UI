@@ -1,29 +1,36 @@
-import {Link} from "react-router-dom";
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
 import './Nav.css';
 import logo from './logo.png';
-import { Button } from "react-bootstrap";
+
+import MetaMaskIntegration from '../Wallet';
 
 const Nav = (props: any) => {
+  const { address } = props.loggedUser;
 
+  const history = useHistory();
 
- 
-    return (
-         <nav className="navbar" > 
-         <div className="logo">
-            <img src={logo} alt="Musichain Logo"
-            ></img>
-             <span>MusiChain</span>
-        </div>
-         
-            <div className="nav-links">
-                <Link to="/market" className="navbar-brand">Market</Link>
-                <Link to="/wallet" className="navbar-brand">My Tokens</Link>
-                <Link to="/create" className="navbar-brand">Creator</Link> 
-            </div>
+  if (!address) {
+    history.push("/");
+  }
 
-            <div className="btn"><Button>Connect Wallet</Button></div>
-        </nav>
-    );
+  return (
+    <nav className="navbar">
+      <div className="logo">
+        <img src={logo} alt="Musichain Logo" />
+        <span>MusiChain</span>
+      </div>
+
+      <div className="nav-links">
+        <Link to="/market" className="navbar-brand">Market</Link>
+        {address && <Link to="/wallet" className="navbar-brand">My Tokens</Link>}
+        {address && <Link to="/create" className="navbar-brand">Creator</Link>}
+      </div>
+      {address &&  <span className="address">{address}</span>}
+     
+      <MetaMaskIntegration loggedUser={props.loggedUser} onWalletConnect={props.onWalletConnect} />
+    </nav>
+  );
 };
 
 export default Nav;

@@ -5,13 +5,13 @@ body, ul, li {
   }
   
   .navbar {
-    background-color: #191414;
+    background-color: #181419;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding:3px;
   }
-  
+
   .logo span {
     font-size: 40px;
     font-weight: bold;
@@ -28,6 +28,7 @@ body, ul, li {
   }
   
   .nav-links {
+    color: white;
     display: flex;
     list-style: none;
     margin-left: 0px;
@@ -47,5 +48,9 @@ body, ul, li {
   }
   
   .nav-links a:hover {
-    color: #1DB954;
+    color: #9912d8;
+  }
+
+  .address {
+    color: white;
   }

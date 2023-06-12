@@ -94,3 +94,23 @@ h2 {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
+
+.button {
+  background-color: rgb(132, 9, 176);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: rgba(132, 9, 176, 1.2);
+  box-shadow: 0 0 5px rgba(132, 9, 176, 0.8);
+}
+
