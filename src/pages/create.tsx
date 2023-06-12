@@ -7,9 +7,7 @@ export default function Create(props:any) {
 
     const [imageURL, setImageURL] = useState("");
     const [musicURL, setMusicURL] = useState("");
-
     const [name, setName] = useState("");
-    const [artist, setArtist] = useState("");
     const [nbShare, setNbShare] = useState(0);
     const [initPrice, setInitPrice] = useState(0);
     const [div, setDiv] = useState(0);
@@ -38,9 +36,8 @@ export default function Create(props:any) {
             let imageInput:any = form.elements.namedItem("tokenImg")!;
             
             let tokenBody:TokenBody = {
-                Creator: props.loggedUser.username,
+                CreatorAddress: props.loggedUser.address,
                 Name: name,
-                Artist: artist,
                 NumShares: nbShare,
                 Price: initPrice,
                 Div: div,
@@ -69,17 +66,14 @@ export default function Create(props:any) {
       <form onSubmit={submit} name="musicCreator">
         <h1>Create New Token</h1>
         <div className={styles.inputContainer}>
-            <label className={styles.label} htmlFor="creator">Creator :</label>
-            <input className={styles.input} name="creator" type="text" value={props.loggedUser.username||"No user logged"} readOnly></input>
+            <label className={styles.label} htmlFor="creatorAddress">Creator Address :</label>
+            <input className={styles.input} name="creatorAddress" type="text" value={"0xF2320835E6edA0c87783063B8215E2A624624CdE"} readOnly></input>
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="name">Name :</label>
             <input className={styles.input} name="name" type="text" onChange={e => setName(e.target.value)} required></input>
         </div>
-        <div className={styles.inputContainer}>
-            <label className={styles.label} htmlFor="artist">Artist :</label>
-            <input className={styles.input} name="artist" type="text" onChange={e => setArtist(e.target.value)} required></input>
-        </div>
+        
         <h3>Initial Share Offering</h3>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="nbShare">Number of Shares :</label>
@@ -109,6 +103,8 @@ export default function Create(props:any) {
         </div>
         <div className={styles.submitWrapper}>
           <button type="submit" className={styles.submit}>Submit</button>
+        </div>
+        <div className={styles.message}>
           <p>{props.message}</p>
         </div>
         {loading && <Spinner/>}
@@ -119,9 +115,8 @@ export default function Create(props:any) {
 }
 
 interface TokenBody{
-    Creator:string,
+    CreatorAddress:string,
     Name:string,
-    Artist:string,
     NumShares:number,
     Price:number,
     Div:number,
