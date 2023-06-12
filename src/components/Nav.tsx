@@ -12,7 +12,7 @@ const Nav = (props: any) => {
          <div className="logo">
             <img src={logo} alt="Musichain Logo"
             ></img>
-             <span>Musichain</span>
+             <span>MusiChain</span>
         </div>
          
             <div className="nav-links">
