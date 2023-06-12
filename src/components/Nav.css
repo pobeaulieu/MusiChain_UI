@@ -9,11 +9,11 @@ body, ul, li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding:3px;
   }
   
   .logo span {
-    font-size: 24px;
+    font-size: 40px;
     font-weight: bold;
     color: white;
     text-decoration: none;
@@ -21,8 +21,10 @@ body, ul, li {
   }
 
   .logo img {
-    width: 40px; /* Adjust the width as needed */
-    height: 30px; /* Adjust the height as needed */
+    width: 50px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    margin-bottom:15px;
+    margin-left: 10px;
   }
   
   .nav-links {

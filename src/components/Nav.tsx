@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import './Nav.css';
 import logo from './logo.png';
+import { Button } from "react-bootstrap";
 
 const Nav = (props: any) => {
 
@@ -19,6 +20,8 @@ const Nav = (props: any) => {
                 <Link to="/wallet" className="navbar-brand">My Tokens</Link>
                 <Link to="/create" className="navbar-brand">Creator</Link> 
             </div>
+
+            <div className="btn"><Button>Connect Wallet</Button></div>
         </nav>
     );
 };

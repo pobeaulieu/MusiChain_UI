@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Nav from './components/Nav';
-import Home from './pages/Home';
-import Login from './pages/Login';
 import Create from './pages/create';
 
 function App() {
