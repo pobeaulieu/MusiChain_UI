@@ -25,8 +25,8 @@ const Nav = (props: any) => {
 
         <div className="nav-links">
           <Link to="/market" className="navbar-brand">Market</Link>
-          {address && <Link to="/wallet" className="navbar-brand">My Tokens</Link>}
-          {address && <Link to="/create" className="navbar-brand">Creator</Link>}
+          {address && <Link to="/mytokens" className="navbar-brand">My Tokens</Link>}
+          {address && <Link to="/creator" className="navbar-brand">Creator</Link>}
         </div>
       </div>
 

@@ -58,7 +58,7 @@ export default function CreateNewToken(props:any) {
   return (
     <div className={styles.page}>
       <div className={styles.top}>
-      <Link to="/create" className={mainstyles.link}>{"< Back to your creations"}</Link>
+      <Link to="/creator" className={mainstyles.link}>{"< Back to your creations"}</Link>
       </div>
       <div className={styles.left}>
         <img className={styles.img} src={imageURL} alt="preview token"></img>

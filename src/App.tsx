@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.module.css';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Nav from './components/Nav';
-import Create from './pages/create';
-import MetaMaskIntegration from './Wallet'; // Update the path if needed
+import Creator from './pages/creator';
 import CreateNewToken from './pages/createNewToken';
 
 
@@ -43,8 +42,8 @@ function App() {
             <BrowserRouter>
                 <Nav loggedUser={loggedUser} onWalletConnect={onWalletConnect}/>
                 <main>
-                    <Route path="/create" exact component={() => <Create createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
-                    <Route path="/createNewToken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
+                    <Route path="/creator" exact component={() => <Creator createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
+                    <Route path="/createnewtoken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
                 </main>
             </BrowserRouter>
         </div>

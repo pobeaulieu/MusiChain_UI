@@ -57,7 +57,7 @@ function MetaMaskIntegration(props: any) {
   return (
     <div>
       {props.loggedUser.address === "" && (
-        <Button className={mainstyles.button} onClick={connectMetaMask}>Connect MetaMask</Button>
+        <Button className={mainstyles.button} onClick={connectMetaMask}>Connect Wallet</Button>
       )}
     </div>
   );
