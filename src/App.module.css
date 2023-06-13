@@ -8,8 +8,20 @@ h2 {
   margin-bottom: 1rem;
   font-weight: bold;
 }
+.link {
+  color: rgb(132, 9, 176);;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 22px;
+}
 
-.form-signin {
+.link:hover {
+  text-decoration: underline;
+  color: rgb(132, 9, 176);;
+}
+
+
+rm-signin {
   width: 100%;
   max-width: 330px;
   padding: 15px;

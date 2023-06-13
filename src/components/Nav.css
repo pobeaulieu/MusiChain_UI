@@ -4,13 +4,7 @@ body, ul, li {
     padding: 0;
   }
   
-  .navbar {
-    background-color: #181419;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding:3px;
-  }
+
 
   .logo span {
     font-size: 40px;
@@ -18,6 +12,7 @@ body, ul, li {
     color: white;
     text-decoration: none;
     margin-left: 10px;
+    margin-right: 50px;
   }
 
   .logo img {
@@ -27,16 +22,8 @@ body, ul, li {
     margin-left: 10px;
   }
   
-  .nav-links {
-    color: white;
-    display: flex;
-    list-style: none;
-    margin-left: 0px;
-  }
+
   
-  .nav-links li {
-    margin-right: 0px;
-  }
   
   .nav-links a {
     color: white;
@@ -45,6 +32,8 @@ body, ul, li {
     font-weight: bold;
     padding: 10px;
     transition: color 0.3s ease;
+
+    padding:3px;
   }
   
   .nav-links a:hover {
@@ -53,4 +42,25 @@ body, ul, li {
 
   .address {
     color: white;
+  }
+
+  .navbar {
+    background-color: #181419;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+  
+  .navbar-left {
+
+    display: flex;
+    align-items: center;
+
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+   margin-right: 2%;
   }

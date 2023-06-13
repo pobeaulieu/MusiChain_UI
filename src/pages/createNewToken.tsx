@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './createNewToken.module.css';
 import mainstyles from '../App.module.css';
 import { Button, Spinner } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 export default function CreateNewToken(props:any) {
 
@@ -58,7 +58,7 @@ export default function CreateNewToken(props:any) {
   return (
     <div className={styles.page}>
       <div className={styles.top}>
-      <Button className={mainstyles.button} onClick={()=>history.push("/create")}>{"< Back to your creations"}</Button>
+      <Link to="/create" className={mainstyles.link}>{"< Back to your creations"}</Link>
       </div>
       <div className={styles.left}>
         <img className={styles.img} src={imageURL} alt="preview token"></img>
