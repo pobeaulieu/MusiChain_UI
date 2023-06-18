@@ -4,12 +4,20 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Creator from './pages/creator';
 import CreateNewToken from './pages/createNewToken';
+import MyTokens from './pages/myTokens';
 
 
 function App() {
     const [loggedUser, setLoggedUser] = useState({address: ""});
     const [message, setMessage] = useState("");
     const [redirect, setRedirect] = useState(false);
+
+    const getTokens = async (tokens:TokenBody[]) => {
+        const params = new URLSearchParams({adresse: loggedUser.address});
+        const response : Response = await fetch('https://localhost:8000/api/getcreatedtokens?' + params);
+        const body = await response.json();
+        return body;
+    }
 
     const createToken = async (tokenBody: TokenBody) => {
         const formData = new FormData();
@@ -29,7 +37,6 @@ function App() {
         });
       
         const content: string = await tokenResponse.text();
-      
         setMessage(content);
       };
 
@@ -44,6 +51,7 @@ function App() {
                 <main>
                     <Route path="/creator" exact component={() => <Creator createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
+                    <Route path="/mytokens" exact component={()=> <MyTokens getTokens={getTokens} loggedUser={loggedUser}/>}/>
                 </main>
             </BrowserRouter>
         </div>
