@@ -13,8 +13,12 @@ function App() {
     const [redirect, setRedirect] = useState(false);
 
     const getTokens = async (tokens:TokenBody[]) => {
-        const params = new URLSearchParams({adresse: loggedUser.address});
-        const response : Response = await fetch('https://localhost:8000/api/getcreatedtokens?' + params);
+        let content:object = {creatorAddress:loggedUser.address};
+        const response : Response = await fetch('https://localhost:8000/api/getcreatedtokens', {
+            method:'GET',
+            body:JSON.stringify(content)
+        });
+
         const body = await response.json();
         return body;
     }
@@ -30,7 +34,7 @@ function App() {
         formData.append('mp3', tokenBody.Mp3);
         formData.append('img', tokenBody.Img);
       
-        console.log(formData)
+        console.log(formData);
         const tokenResponse: Response = await fetch('https://localhost:8000/api/createTokens', {
           method: 'POST',
           body: formData,
@@ -49,9 +53,9 @@ function App() {
             <BrowserRouter>
                 <Nav loggedUser={loggedUser} onWalletConnect={onWalletConnect}/>
                 <main>
-                    <Route path="/creator" exact component={() => <Creator createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
+                    <Route path="/creator" exact component={() => <Creator getTokens={getTokens} loggedUser={loggedUser} message={message}/>}/>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
-                    <Route path="/mytokens" exact component={()=> <MyTokens getTokens={getTokens} loggedUser={loggedUser}/>}/>
+                    <Route path="/mytokens" exact/>
                 </main>
             </BrowserRouter>
         </div>

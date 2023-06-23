@@ -12,8 +12,12 @@ export default function TokenTableRow(props : any){
 
 
     const getMusicMedia = async () => {
-        const params = new URLSearchParams({id: props.data.MusicMediaId});
-        const response:Response = await fetch("https://localhost:8000/api/getmusicmedia?" + params);
+        let content:object = {id:props.data.Id};
+
+        const response:Response = await fetch("https://localhost:8000/api/getmusicmedia",{
+            method:'GET',
+            body:JSON.stringify(content)
+        });
 
         const body = await response.json();
 
