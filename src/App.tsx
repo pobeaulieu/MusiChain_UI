@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Creator from './pages/creator';
 import CreateNewToken from './pages/createNewToken';
+import YourTokens from './pages/yourToken';
 import MyTokens from './pages/myTokens';
 import Market from './pages/market';
 
@@ -58,7 +59,7 @@ function App() {
                     <Route path="/creator" exact component={() => <Creator getTokens={getTokens} loggedUser={loggedUser} message={message}/>}/>
                     <Route path="/market" exact component={() => <Market></Market>}></Route>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
-                    <Route path="/mytokens" exact/>
+                    <Route path="/mytokens" exact component={() => <YourTokens/>}/>
                 </main>
             </BrowserRouter>
         </div>

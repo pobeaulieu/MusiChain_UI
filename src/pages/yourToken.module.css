@@ -1,0 +1,24 @@
+.tokenTable{
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
+}
+
+.wrapper{
+    padding:1rem;
+}
+
+.tokenTable tr th{
+    text-align: start;
+    padding: 0.5rem;
+}
+
+.headPreview{
+    text-align: center !important;
+}
+
+.topContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
