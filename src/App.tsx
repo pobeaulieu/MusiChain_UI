@@ -5,6 +5,8 @@ import Nav from './components/Nav';
 import Creator from './pages/creator';
 import CreateNewToken from './pages/createNewToken';
 import MyTokens from './pages/myTokens';
+import Market from './pages/market';
+
 
 
 function App() {
@@ -54,6 +56,7 @@ function App() {
                 <Nav loggedUser={loggedUser} onWalletConnect={onWalletConnect}/>
                 <main>
                     <Route path="/creator" exact component={() => <Creator getTokens={getTokens} loggedUser={loggedUser} message={message}/>}/>
+                    <Route path="/market" exact component={() => <Market></Market>}></Route>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
                     <Route path="/mytokens" exact/>
                 </main>
