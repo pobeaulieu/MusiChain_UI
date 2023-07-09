@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react';
 import styles from './createNewToken.module.css';
-import mainstyles from '../App.module.css';
-import { Button, Spinner } from 'react-bootstrap';
+import mainstyles from '../../App.module.css';
+import { Spinner } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 export default function CreateNewToken(props:any) {

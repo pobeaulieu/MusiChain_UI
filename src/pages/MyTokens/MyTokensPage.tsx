@@ -1,23 +1,23 @@
-import YourTokenTableRow from "../components/yourTokenTableRow";
-import styles from "./yourToken.module.css";
-import ListingTokenTableRow from "../components/listingTokenTableRow";
+import YourTokenTableRow from "../../components/yourTokenTableRow";
+import styles from "./MyTokensPage.module.css";
+import ListingTokenTableRow from "../../components/listingTokenTableRow";
 import { Button } from "react-bootstrap";
-import mainstyles from '../App.module.css';
+import mainstyles from '../../App.module.css';
 
-export default function YourTokens(){
+export default function MyTokensPage(){
     let yourTokens:Array<JSX.Element> = [];
     let listingTokens:Array<JSX.Element> = [];
 
     let yTokens = [
-        {Name:"test",NbSharesOwned:"test",InitialTktPool:"test", RemainingTktPool:"test", Div:"test"},
+        {Name:"test2222",NbSharesOwned:"test",InitialTktPool:"test", RemainingTktPool:"test", Div:"test"},
         {Name:"test",NbSharesOwned:"test",InitialTktPool:"test", RemainingTktPool:"test", Div:"test"},
         {Name:"test",NbSharesOwned:"test",InitialTktPool:"test", RemainingTktPool:"test", Div:"test"},
         {Name:"test",NbSharesOwned:"test",InitialTktPool:"test", RemainingTktPool:"test", Div:"test"},
         ];
 
     let lTokens = [
-        {Name:"test",pricePerShare:"test",InitialShares:"test", SoldShares:"test"},
-        {Name:"test",pricePerShare:"test",InitialShares:"test", SoldShares:"test"},
+        {Name:"test222222",pricePerShare:"test2",InitialShares:"test", SoldShares:"test"},
+        {Name:"test",pricePerShare:"test343434",InitialShares:"test", SoldShares:"test"},
         {Name:"test",pricePerShare:"test",InitialShares:"test", SoldShares:"test"},
         {Name:"test",pricePerShare:"test",InitialShares:"test", SoldShares:"test"},
         ];    
@@ -41,7 +41,11 @@ export default function YourTokens(){
     listingTokens = setTokens(lTokens,0, lTokens.length,0);
 
     return (<>
-        <h1>Your Tokens</h1>
+     <div className={styles.wrapper}>
+     <div className={styles.topContainer}>
+    <h1>Your Tokens</h1>
+    </div>
+      
         <table className={styles.tokenTable}>
             <thead>
             <tr>
@@ -77,6 +81,6 @@ export default function YourTokens(){
                 {listingTokens}
             </tbody>
         </table>
-        
+     </div>  
     </>);
 }

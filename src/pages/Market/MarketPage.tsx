@@ -1,8 +1,6 @@
-import MarketTokenTableRow from "../components/marketTokenTableRow";
-import styles from "./market.module.css";
-import { Button } from 'react-bootstrap';
+import styles from "./MarketPage.module.css";
 import { useHistory } from 'react-router-dom';
-import mainstyles from '../App.module.css';
+import MarketTokenTableRow from "../../components/marketTokenTableRow";
 
 export default function Market(props:any) {
     const history = useHistory();
@@ -10,9 +8,6 @@ export default function Market(props:any) {
 
     let tokensDisplay:Array<JSX.Element> = [];
 
-    const getTokens = () => {
-        return props.getTokens();
-    };
 
     const setTokens = (indexStart:number, indexEnd:number) => {
         tokensDisplay = [];
@@ -34,7 +29,7 @@ export default function Market(props:any) {
     <>
     <div className={styles.wrapper}>
     <div className={styles.topContainer}>
-        <h1>Your Creations</h1>
+        <h1>Market</h1>
         <div>
         Search : <input className={styles.search} type="text" placeholder="token's name"></input>
         </div>
