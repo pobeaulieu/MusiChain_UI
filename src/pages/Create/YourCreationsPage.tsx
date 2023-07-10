@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import mainstyles from '../../App.module.css';
 import TokenTableRow from "../../components/tokenTableRow";
 import { useEffect, useState } from "react";
+import { MusicMedia, setMusicMediaById } from "../../MusicMediaCache";
 
 export default function Creator(props:any) {
     const history = useHistory();
@@ -11,6 +12,7 @@ export default function Creator(props:any) {
     let tokensDisplay:Array<JSX.Element> = [];
 
     const [tokenList, setTokenList] = useState([]);
+    const [mediaList, setMediaList] = useState<MusicMedia[]>([])
 
     useEffect(() => {
         async function fetchData() {
@@ -28,6 +30,21 @@ export default function Creator(props:any) {
                 const data = await response.json();
                 console.log(data);
                 setTokenList(data.tokenList);
+
+                // Create an array to store the retrieved MusicMedia objects
+                const retrievedMedia: MusicMedia[] = [];
+
+                // Iterate over each token ID and fetch the corresponding MusicMedia object
+                const promises = data.tokenList.map(async (tokenId: number) => {
+                await setMusicMediaById(tokenId);
+                });
+
+                // Wait for all the fetch operations to complete
+                await Promise.all(promises);
+
+                // Store the retrieved MusicMedia objects in the token list
+                setMediaList(retrievedMedia);
+
             } catch (error) {
                 console.error(error);
             }

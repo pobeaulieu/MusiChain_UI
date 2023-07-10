@@ -11,22 +11,22 @@ export default function TokenTableRow(props : any){
     const [name, setName] = useState("");
 
 
-    // const getMusicMedia = async () => {
-    //     let content:object = {id:props.data.Id};
+    const getMusicMedia = async () => {
+        let content:object = {id:props.data.Id};
 
-    //     const response:Response = await fetch("https://localhost:8000/api/getmusicmedia",{
-    //         method:'GET',
-    //         body:JSON.stringify(content)
-    //     });
+        const response:Response = await fetch("https://localhost:8000/api/getmusicmedia",{
+            method:'GET',
+            body:JSON.stringify(content)
+        });
 
-    //     const body = await response.json();
+        const body = await response.json();
 
-    //     setImgUrl(URL.createObjectURL(body.ImgFile));
-    //     setMusicUrl(URL.createObjectURL(body.Mp3File));
-    //     setName(body.Name);
-    // }
+        setImgUrl(URL.createObjectURL(body.ImgFile));
+        setMusicUrl(URL.createObjectURL(body.Mp3File));
+        setName(body.Name);
+    }
 
-    // getMusicMedia();
+    getMusicMedia();
 
     return (
     <>
