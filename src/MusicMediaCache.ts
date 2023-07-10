@@ -11,19 +11,25 @@ interface MusicMedia {
   // Function to fetch MusicMedia from the endpoint
   async function fetchMusicMedia(id: number): Promise<MusicMedia> {
     // Make the API call to fetch the MusicMedia using the given id
-    const response = await fetch(`https://localhost:8000/api/getmusicmedia?id=${id}`);
+    // Create query parameters
+    const queryParams = new URLSearchParams();
+    queryParams.append('id', id.toString());
+
+    // Make the API call to fetch the MusicMedia using the given query parameters
+    const response = await fetch(`https://localhost:8000/api/getmusicmedia?${queryParams}`);
+  
     const data = await response.json();
   
-    // Convert the MP3 file and image file data to ArrayBuffer
-    const mp3FileData = await fetch(data.Mp3File);
-    const mp3FileBuffer = await mp3FileData.arrayBuffer();
-  
-    const imageFileData = await fetch(data.ImgFile);
-    const imageFileBuffer = await imageFileData.arrayBuffer();
-  
+ 
+    // Convert the Base64-encoded MP3 file to ArrayBuffer
+    const mp3FileBuffer = base64ToArrayBuffer(data.Mp3File);
+
+    // Convert the Base64-encoded image file to ArrayBuffer
+    const imageFileBuffer = base64ToArrayBuffer(data.ImgFile);
+    
     // Create a MusicMedia object from the retrieved data
     const musicMedia: MusicMedia = {
-      id: data.id,
+      id: data.Id,
       mp3File: mp3FileBuffer,
       imageFile: imageFileBuffer,
       // Assign other properties here...
@@ -33,7 +39,7 @@ interface MusicMedia {
   }
   
   // Function to set MusicMedia by id, implementing lazy loading
-  export async function setMusicMediaById(id: number): Promise<MusicMedia> {
+  export async function getMusicMediaById(id: number): Promise<MusicMedia> {
     // Check if the MusicMedia is already present in the map
     if (mediaMap.has(id)) {
       // If it exists, return it directly from the map
@@ -47,6 +53,20 @@ interface MusicMedia {
     const musicMedia = await fetchMusicMedia(id);
     mediaMap.set(id, musicMedia);
     return musicMedia;
+  }
+
+  // Function to convert Base64 string to ArrayBuffer
+function base64ToArrayBuffer(base64: string): ArrayBuffer {
+    const binaryString = atob(base64);
+    const length = binaryString.length;
+    const buffer = new ArrayBuffer(length);
+    const view = new Uint8Array(buffer);
+  
+    for (let i = 0; i < length; i++) {
+      view[i] = binaryString.charCodeAt(i);
+    }
+  
+    return buffer;
   }
   
   export type {MusicMedia};
