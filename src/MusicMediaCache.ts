@@ -19,6 +19,8 @@ interface MusicMedia {
     const response = await fetch(`https://localhost:8000/api/getmusicmedia?${queryParams}`);
   
     const data = await response.json();
+
+    console.log(data)
   
  
     // Convert the Base64-encoded MP3 file to ArrayBuffer

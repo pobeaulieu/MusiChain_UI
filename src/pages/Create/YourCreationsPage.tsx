@@ -38,6 +38,7 @@ export default function Creator(props:any) {
                 const promises = data.tokenList.map(async (token: any) => {
                 console.log(token.MusicMediaId)
                 const media = await getMusicMediaById(token.MusicMediaId);
+                console.log(token.MusicMediaId)
                 console.log(media)
                 retrievedMedia.push(media);
                 });
