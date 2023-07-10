@@ -32,7 +32,7 @@ interface MusicMedia {
     return musicMedia;
   }
   
-  // Function to get MusicMedia by id, implementing lazy loading
+  // Function to set MusicMedia by id, implementing lazy loading
   export async function setMusicMediaById(id: number): Promise<MusicMedia> {
     // Check if the MusicMedia is already present in the map
     if (mediaMap.has(id)) {
