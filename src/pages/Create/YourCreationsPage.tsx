@@ -2,7 +2,7 @@ import styles from "./YourCreationsPage.module.css";
 import { Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import mainstyles from '../../App.module.css';
-import TokenTableRow from "../../components/tokenTableRow";
+import TokenTableRow from "./tokenTableRow";
 import { useEffect, useState } from "react";
 import { MusicMedia, getMusicMediaById } from "../../MusicMediaCache";
 
@@ -62,7 +62,8 @@ export default function Creator(props:any) {
         tokensDisplay = [];
 
         for(let i = indexStart; i<indexEnd;i++){
-            tokensDisplay.push(<TokenTableRow data={tokenList[i]}/>);
+            console.log(tokenList[i])
+            tokensDisplay.push(<TokenTableRow tokenData={tokenList[i]} musicMedia={mediaList[i]}/>);
         }
     };
 
