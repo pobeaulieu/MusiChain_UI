@@ -79,6 +79,7 @@ export default function Creator(props:any) {
                 <table className={styles.tokenTable}>
                     <thead>
                         <tr>
+
                             <th>Token</th>
                             <th>Price</th>
                             <th>Number of shares</th>
