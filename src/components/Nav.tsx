@@ -31,7 +31,7 @@ const Nav = (props: any) => {
       </div>
 
       <div className="navbar-right">
-      {address && <span className="address">{"Connected: " + address}</span>}
+      
         <MetaMaskIntegration loggedUser={props.loggedUser} onWalletConnect={props.onWalletConnect} />
       </div>
     </nav>

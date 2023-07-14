@@ -16,8 +16,7 @@ export default function TokenTableRow(props : any){
     <>
         <tr className={styles.row}>
             <td className={styles.cell}>
-            <img className={styles.img} alt={`cover`} src={props.musicMedia.imageFile ? URL.createObjectURL(new Blob([props.musicMedia.imageFile])) : ''} />
-
+            <img className={styles.img} alt={`cover`} src={URL.createObjectURL(new Blob([props.musicMedia?.imageFile]))} />
             </td>
             <td className={styles.cell}>{props.tokenData.Price}</td>
             <td className={styles.cell}>{props.tokenData.NumShares}</td>
@@ -27,9 +26,9 @@ export default function TokenTableRow(props : any){
             <td className={`${styles.cell} ${styles.preview}`}>
                 <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
                     {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
-                    {audioMenu &&
+                    {audioMenu && props.musicMedia.mp3File &&
                     <div className={styles.audioMenu}>
-                        <audio controls src={props.musicMedia && URL.createObjectURL(new Blob([props.musicMedia.mp3File], { type: 'audio/mpeg' }))}></audio>
+                        <audio controls src={URL.createObjectURL(new Blob([props.musicMedia?.mp3File], { type: 'audio/mpeg' }))}></audio>
                     </div>
                     }
                 </button>

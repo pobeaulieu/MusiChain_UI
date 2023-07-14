@@ -13,7 +13,7 @@ export default function Market(props:any) {
         tokensDisplay = [];
 
         for(let i = indexStart; i<indexEnd;i++){
-            tokensDisplay.push(<MarketTokenTableRow data={tokens[i]}/>);
+            tokensDisplay.push(<MarketTokenTableRow loggedUser={props.loggedUser} data={tokens[i]}/>);
         }
     };
 

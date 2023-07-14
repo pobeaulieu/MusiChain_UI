@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react';
 import styles from './marketTokenTableRow.module.css';
-
+import mainstyles from '../App.module.css';
 
 export default function MarketTokenTableRow(props : any){
     const [audioMenu, isAudioMenu] = useState(false);
@@ -49,7 +49,14 @@ export default function MarketTokenTableRow(props : any){
                     }
                 </button>
             </td>
+            {props.loggedUser.address != "" && <td className={`${styles.cell} ${styles.preview}`}>
+                <button className={mainstyles.button} >Buy
+                </button>
+            </td>}
+
+
         </tr>
+
     </>
     );
 }

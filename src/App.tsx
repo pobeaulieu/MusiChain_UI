@@ -56,7 +56,7 @@ function App() {
                     <Route path="/creator" exact component={() => <Creator createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken createToken={createToken} loggedUser={loggedUser} message={message}/>}/>
                     <Route path="/mytokens" exact component={()=> <MyTokensPage />}/>
-                    <Route path="/" exact component={()=> <Market />}/>
+                    <Route path="/" exact component={()=> <Market loggedUser={loggedUser}/>}/>
                 </main>
             </BrowserRouter>
         </div>
