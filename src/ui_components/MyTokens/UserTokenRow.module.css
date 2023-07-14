@@ -1,6 +1,6 @@
 .img{
-    min-width: 2.7rem;
-    min-height: 2.7rem;
+    width: 2.7rem;
+    height: 2.7rem;
     border: lightgray solid 2px;
     font-size: 0;
     border-radius: 5px;
@@ -39,7 +39,7 @@
     color:white;
     background-color: black;
     border-radius:50px;
-
+    border: transparent;
     z-index: 1;
 }
 
@@ -55,3 +55,14 @@
     z-index: -1;
     box-sizing: border-box;
 }
+
+.addListing{
+    padding: 10px 20px;
+    background-color: #2C2263;
+    color: #FFFFFF;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }

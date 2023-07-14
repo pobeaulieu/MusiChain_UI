@@ -4,7 +4,7 @@ import './Nav.css';
 import logo from './logo.png';
 import mainstyles from '../App.module.css';
 
-import MetaMaskIntegration from '../Wallet';
+import MetaMaskIntegration from './Wallet';
 import { Button } from "react-bootstrap";
 
 const Nav = (props: any) => {

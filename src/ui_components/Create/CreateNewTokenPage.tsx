@@ -1,21 +1,21 @@
 'use client'
 import { useState } from 'react';
-import styles from './createNewToken.module.css';
+import styles from './CreateNewTokenPage.module.css';
 import mainstyles from '../../App.module.css';
 import { Spinner } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import { PageProps } from '../../App';
 
-export default function CreateNewToken(props:any) {
 
+export default function CreateNewTokenPage(props:PageProps) {
     const [imageURL, setImageURL] = useState("");
     const [musicURL, setMusicURL] = useState("");
     const [name, setName] = useState("");
-    const [nbShare, setNbShare] = useState(0);
-    const [initPrice, setInitPrice] = useState(0);
-    const [div, setDiv] = useState(0);
-    const [initTicketPool, setInitticketPool] = useState(0);
+    const [nbShare, setNbShare] = useState<number>(0.0);
+    const [initPrice, setInitPrice] = useState<number>(0.0);
+    const [div, setDiv] = useState<number>(0.0);
+    const [initTicketPool, setInitticketPool] = useState<number>(0.0);
     const [loading, setLoading] = useState(false);
-    const history = useHistory();
 
     const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -34,22 +34,12 @@ export default function CreateNewToken(props:any) {
         e.preventDefault();
         let form:HTMLFormElement = e.target;
         if(form){
-            
             let musicInput:any = form.elements.namedItem("musicPreview")!;
             let imageInput:any = form.elements.namedItem("tokenImg")!;
             
-            let tokenBody:TokenBody = {
-                CreatorAddress: props.loggedUser.address,
-                Name: name,
-                NumShares: nbShare,
-                Price: initPrice,
-                Div: div,
-                InitialTktPool: initTicketPool,
-                Mp3: musicInput.files[0],
-                Img: imageInput.files[0]
-            };
-            console.log(tokenBody);
-            await props.createToken(tokenBody);
+            const createdTokens = props.service.createTokens(props.loggedUser.address, name, nbShare, initPrice, div, initTicketPool, musicInput.files[0], imageInput.files[0])
+
+            console.log(createdTokens)
         }
 
         setLoading(false);
@@ -84,12 +74,12 @@ export default function CreateNewToken(props:any) {
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="initPrice">Initial price/shares :</label>
-            <input className={styles.input} name="initPrice" type="number" onChange={e => setInitPrice(e.target.valueAsNumber)} required></input>
+            <input className={styles.input} name="initPrice" type="float" onChange={e => setInitPrice(e.target.valueAsNumber)} required></input>
         </div>
         <h3>Dividend Plan</h3>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="divPerTicketSold">Dividend per tickets sold</label>
-            <input className={styles.input} name="divPerTicketSold" type="number" onChange={e => setDiv(e.target.valueAsNumber)} required></input>
+            <input className={styles.input} name="divPerTicketSold" type="float" onChange={e => setDiv(e.target.valueAsNumber)} required></input>
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="InitTicketPool">Initial tocket pool</label>
@@ -107,9 +97,6 @@ export default function CreateNewToken(props:any) {
         <div className={styles.submitWrapper}>
           <button type="submit" className={mainstyles.button}>Submit</button>
         </div>
-        <div className={styles.message}>
-          <p>{props.message}</p>
-        </div>
         {loading && <Spinner/>}
       </form>
       </div>
@@ -117,13 +104,3 @@ export default function CreateNewToken(props:any) {
   )
 }
 
-interface TokenBody{
-    CreatorAddress:string,
-    Name:string,
-    NumShares:number,
-    Price:number,
-    Div:number,
-    InitialTktPool: number,
-    Mp3:File,
-    Img:File
-}

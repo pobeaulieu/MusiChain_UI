@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import detectEthereumProvider from '@metamask/detect-provider';
 import Web3 from 'web3';
 import { Button } from "react-bootstrap";
-import mainstyles from './App.module.css';
+import mainstyles from '../../App.module.css';
 
-function MetaMaskIntegration(props: any) {
+function Wallet(props: any) {
   const connectMetaMask = async () => {
     try {
       const provider = await detectEthereumProvider();
@@ -62,4 +62,4 @@ function MetaMaskIntegration(props: any) {
     </div>
   );
 }
-export default MetaMaskIntegration;
+export default Wallet;
