@@ -7,9 +7,6 @@
 - Windows-> `npm run start`
 - Unix-> `npm run startu`
 
-### Design Figma
-https://www.figma.com/file/xwsD8L7OKsTMb4zh6rPrgP/Untitled?type=design&node-id=55-101&t=czvP4IdoQUddzZnn-0 
-
 # Connect Metamask with Ganache
 1. Note your seed phrase of your Metamask Wallet somewhere. 
 2. Create a new Ganache Workspace and provide your wallet seed phrase
@@ -29,7 +26,6 @@ https://www.figma.com/file/xwsD8L7OKsTMb4zh6rPrgP/Untitled?type=design&node-id=5
 
 6. This should connect the first account to your wallet. 
 You can then import other accounts by coping the private key without 0x
-
 
 ![img_8.png](./img/img_8.png)
 
