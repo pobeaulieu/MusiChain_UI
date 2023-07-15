@@ -3,8 +3,8 @@
 
 import { MusicMedia } from "../interface";
 
-  // Create a map to store MusicMedia objects
-  const mediaMap: Map<number, MusicMedia> = new Map();
+// Create a map to store MusicMedia objects
+const mediaMap: Map<number, MusicMedia> = new Map();
   
 function fetchMusicMedia(id: number): MusicMedia {
     const musicUrl = require(`./mp3/${id}.mp3`);
