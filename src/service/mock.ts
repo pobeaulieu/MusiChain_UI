@@ -6,8 +6,6 @@ import { getMusicMediaById } from "./MusicMedia/MusicMediaCache";
 export class Mock implements Service {
 
     constructor(){
-
-        
     }
 
     async getConnectedAccount(): Promise<User> {
@@ -36,9 +34,6 @@ export class Mock implements Service {
           }
           return user
         };
-
-     
-
 
     createTokens(creatorAddress: string, name: string, numShares: number, price: number, div: number, initialTktPool: number, mp3: File, img: File): TokenCreation {
         // Implement your mock logic here

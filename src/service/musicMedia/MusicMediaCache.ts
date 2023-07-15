@@ -31,7 +31,7 @@ function fetchMusicMedia(id: number): MusicMedia {
       }
     }
   
-    // If it doesn't exist, fetch it from the endpoint and store it in the map
+    // If it doesn't exist, fetch it 
     const musicMedia = fetchMusicMedia(id);
     mediaMap.set(id, musicMedia);
     return musicMedia;

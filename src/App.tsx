@@ -7,15 +7,13 @@ import Market from './ui_components/Market/MarketPage';
 import CreateNewToken from './ui_components/Create/CreateNewTokenPage';
 import YourCreationsPage from './ui_components/Create/YourCreationsPage';
 import {Service, User } from './service/interface';
-import BuyPage from './ui_components/Market/Buy';
 import AddListingPage from './ui_components/MyTokens/AddListingPage';
 import { Mock } from './service/mock';
 
 function App() {
     const [loggedUser, setLoggedUser] = useState<User>(new User(""));
 
-
-    const service = new Mock()
+    const service = new Mock() // TODO remplacer le Mock ici par le vrai service lorsqu'il implementera toute l'interface
 
     const onWalletConnect = (user: User) => {
         setLoggedUser(user)
@@ -29,7 +27,6 @@ function App() {
                     <Route path="/creator" exact component={() => <YourCreationsPage service={service} loggedUser={loggedUser} />}/>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken service={service} loggedUser={loggedUser} />}/>
                     <Route path="/mytokens" exact component={()=> <MyTokensPage service={service} loggedUser={loggedUser}/>}/>
-                    <Route path="/buy" exact component={()=> <BuyPage  />}/>
                     <Route path="/addlisting" exact component={()=> <AddListingPage  />}/>
                     <Route path="/" exact component={()=> <Market  service={service} loggedUser={loggedUser}/>}/>
                 </main>
@@ -47,10 +44,8 @@ export interface PageProps{
 
 }
 
-
-
 export interface NavProps{
     service: Service,
-    loggedUser: User
+    loggedUser: User,
     onWalletConnect: (user: User)=>void
   }

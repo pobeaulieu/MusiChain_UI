@@ -10,6 +10,7 @@ export default function Market(props:PageProps) {
     const [listingDisplay, setListingDisplay] = useState<Array<JSX.Element>>();
     const [listingList, setListingList] = useState<Listing[]>();
 
+
     useEffect(() => {
         const listings = props.service.getMarketListings()
         const rows = [];

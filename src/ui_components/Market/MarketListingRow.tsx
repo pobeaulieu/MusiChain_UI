@@ -4,6 +4,7 @@ import mainstyles from '../../App.module.css';
 import { Listing, User } from '../../service/interface';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { tokenToString } from 'typescript';
 
 interface MarketListingRowProps {
     listing: Listing;
@@ -13,7 +14,7 @@ interface MarketListingRowProps {
 export default function MarketListingRow(props: MarketListingRowProps) {
     const [audioMenu, isAudioMenu] = useState(false);
     const history = useHistory();
-
+    
     return (
         <tr className={styles.row} key={props.listing.tokenId}>
             <td className={styles.cell}>
@@ -37,9 +38,10 @@ export default function MarketListingRow(props: MarketListingRowProps) {
             </td>
             {props.loggedUser.address !== "" && (
                 <td className={`${styles.cell} ${styles.preview}`}>
-                    <Button className={mainstyles.button} onClick={() => history.push("/buy")}>Buy</Button>
+                    <Button className={mainstyles.button} onClick={() => console.log("TODO... buy " + props.listing.shares + " shares of token " + props.listing.tokenName + " at pric " + props.listing.price)}>Buy</Button>
                 </td>
             )}
         </tr>
+
     );
 }
