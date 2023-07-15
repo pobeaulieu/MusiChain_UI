@@ -45,6 +45,7 @@ export default function YourCreationsPage(props: PageProps) {
                             <th>Initial ticket pool</th>
                             <th>Remaining eligible tickets</th>
                             <th>Div</th>
+                            <th>Tickets to pay dividends </th>
 
                         </tr>
                     </thead>

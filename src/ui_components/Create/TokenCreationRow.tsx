@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { TokenCreation } from '../../service/interface';
 import styles from './TokenCreationRow.module.css';
+import mainstyles from '../../App.module.css';
+import { Button } from 'react-bootstrap';
 
 
 
@@ -11,7 +13,13 @@ interface TokenCreationRowProps {
 
 export default function TokenCreationRow(props : TokenCreationRowProps){
     const [audioMenu, isAudioMenu] = useState(false);
-    console.log(props)
+    const [nbTickets, setNbTickets] = useState<number>(0);
+    
+    const payDividends: any = () => {
+     
+        console.log("TODO... pay dividends")
+
+    }
 
     return (
 
@@ -24,7 +32,14 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
             <td className={styles.cell}>{props.token.initialTicketPool}</td>
             <td className={styles.cell}>{props.token.remainingDividendAvailableTickets}</td>
             <td className={styles.cell}>{props.token.dividendPerShare}</td>
-            <td className={`${styles.cell} ${styles.preview}`}>
+   
+           
+               <td className={`${styles.cell} ${styles.preview}`}>
+                    <input className={`${styles.cell}`} name="nbTickets" type="number" onChange={e => setNbTickets(e.target.valueAsNumber)} required></input>
+                </td><td className={`${styles.cell} ${styles.preview}`}>
+                        <Button className={mainstyles.button} onClick={() =>payDividends()}>Pay dividends</Button>
+                    </td>
+                    <td className={`${styles.cell} ${styles.preview}`}>
             <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
                     {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
                     {audioMenu &&
@@ -33,7 +48,8 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
                     </div>
                     }
                 </button>
-            </td>
+                </td>
+         
         </tr>
   
     );

@@ -57,6 +57,8 @@ export interface Service {
 
     // getCreatedTokens retrieves all the tokens an artist previously created
     getCreatedTokens(creatorAddress: string): TokenCreation[];
+
+    payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[];
      
      // ------------------   My Tokens Page ------------------------
     // getOwnedTokens retrieves all the tokens a user owns

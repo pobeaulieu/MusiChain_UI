@@ -72,6 +72,11 @@ export class Mock implements Service {
         ];
     }
 
+    payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[] {
+        throw new Error("Method not implemented.");
+    }
+
+
     getOwnedTokens(creatorAddress: string): TokenOwnership[] {
         // Implement your mock logic here
         return [
