@@ -2,12 +2,12 @@
 import { Link, useHistory } from "react-router-dom";
 import './Nav.css';
 import logo from './logo.png';
-import mainstyles from '../App.module.css';
+import ConnectWalletButton from './ConnectWalletButton';
+import { NavProps } from "../../App";
 
-import MetaMaskIntegration from './Wallet';
-import { Button } from "react-bootstrap";
 
-const Nav = (props: any) => {
+
+const Nav = (props: NavProps) => {
   const { address } = props.loggedUser;
   const history = useHistory();
 
@@ -31,8 +31,7 @@ const Nav = (props: any) => {
       </div>
 
       <div className="navbar-right">
-      
-        <MetaMaskIntegration loggedUser={props.loggedUser} onWalletConnect={props.onWalletConnect} />
+        <ConnectWalletButton service = {props.service} loggedUser={props.loggedUser} onWalletConnect={props.onWalletConnect} />
       </div>
     </nav>
   );

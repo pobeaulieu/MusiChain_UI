@@ -19,7 +19,7 @@ export default function YourCreationsPage(props: PageProps) {
         const rows = [];
 
         for(let i = 0; i<tokens.length;i++){
-            rows.push(<TokenCreationRow token={tokens[i]}/>);
+            rows.push(<TokenCreationRow  key={tokens[i].tokenId} token={tokens[i]}/>);
         }
 
         setTokenList(tokens)

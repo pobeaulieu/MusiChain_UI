@@ -15,7 +15,7 @@ export default function UserTokenRow(props : UserTokenRowProps){
     <>
         <tr className={styles.row}>
                    <td className={styles.cell}>
-            <img className={styles.img} alt={`cover`} src={props.token.musicMedia.image} />
+            <img className={styles.img} src={props.token.musicMedia.image} />
             </td>
             <td className={styles.cell}>{props.token.name}</td>
             <td className={styles.cell}>{props.token.numberSharesOwned}</td>

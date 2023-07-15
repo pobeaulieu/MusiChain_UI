@@ -1,11 +1,44 @@
-import { Listing, Service, TokenCreation, TokenOwnership } from "./interface";
+import detectEthereumProvider from "@metamask/detect-provider";
+import Web3 from "web3";
+import { Listing, Service, TokenCreation, TokenOwnership, User } from "./interface";
 import { getMusicMediaById } from "./musicMedia/MusicMediaCache";
 
 export class Mock implements Service {
 
     constructor(){
 
+        
     }
+
+    async getConnectedAccount(): Promise<User> {
+        let user = new User("")
+        try {
+            const provider = await detectEthereumProvider();
+            if (provider) {
+          
+              try {
+                await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+          
+                const web3 = new Web3((window as any).ethereum);
+                const accounts = await web3.eth.getAccounts();
+                const currentAddress = accounts[0];
+          
+                user =  new User(currentAddress);
+              } catch (error) {
+                console.error('Error connecting to MetaMask:', error);
+              }
+              
+            } else {
+              console.error('MetaMask extension not detected');
+            }
+          } catch (error) {
+            console.error('Error connecting to MetaMask:', error);
+          }
+          return user
+        };
+
+     
+
 
     createTokens(creatorAddress: string, name: string, numShares: number, price: number, div: number, initialTktPool: number, mp3: File, img: File): TokenCreation {
         // Implement your mock logic here
@@ -80,6 +113,11 @@ export class Mock implements Service {
             remainingTicketPool: 50000
         };
     }
+
+    removeListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing {
+        throw new Error("Method not implemented.");
+    }
+
 
     getUserListings(ownerAddress: string): Listing[] {
         // Implement your mock logic here

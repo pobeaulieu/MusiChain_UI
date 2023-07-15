@@ -25,7 +25,7 @@ export default function MyTokensPage(props: PageProps){
         const rows = [];
 
         for(let i = 0; i<tokens.length;i++){
-            rows.push(<UserTokenRow token={tokens[i]} loggedUser={props.loggedUser}/>);
+            rows.push(<UserTokenRow  key={tokens[i].tokenId} token={tokens[i]} loggedUser={props.loggedUser}/>);
         }
 
         setTokenList(tokens)
@@ -35,7 +35,7 @@ export default function MyTokensPage(props: PageProps){
         const lrows = [];
 
         for(let i = 0; i<listings.length;i++){
-            lrows.push(<UserListingRow listing={listings[i]} loggedUser={props.loggedUser}/>);
+            lrows.push(<UserListingRow  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
         }
 
         setListingList(listings)
@@ -50,7 +50,7 @@ export default function MyTokensPage(props: PageProps){
     return (<>
      <div className={styles.wrapper}>
      <div className={styles.topContainer}>
-    <h1>Add listing</h1>
+    <h1>Your Tokens</h1>
     <Button className={mainstyles.button} onClick={() => history.push("/addlisting")}>Add listing</Button>
     </div>
       

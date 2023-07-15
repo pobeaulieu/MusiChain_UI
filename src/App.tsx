@@ -12,19 +12,19 @@ import AddListingPage from './ui_components/MyTokens/AddListingPage';
 import { Mock } from './service/mock';
 
 function App() {
-    const [loggedUser, setLoggedUser] = useState({address: ""});
+    const [loggedUser, setLoggedUser] = useState<User>(new User(""));
 
 
     const service = new Mock()
 
-    const onWalletConnect = (address: string) => {
-        setLoggedUser({address: address})
+    const onWalletConnect = (user: User) => {
+        setLoggedUser(user)
     }
 
     return (
         <div className="App">
             <BrowserRouter>
-                <Nav loggedUser={loggedUser} onWalletConnect={onWalletConnect}/>
+                <Nav loggedUser={loggedUser} onWalletConnect={onWalletConnect} service={service}/>
                 <main>
                     <Route path="/creator" exact component={() => <YourCreationsPage service={service} loggedUser={loggedUser} />}/>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken service={service} loggedUser={loggedUser} />}/>
@@ -45,4 +45,12 @@ export interface PageProps{
     service: Service,
     loggedUser: User
 
+}
+
+
+
+export interface NavProps{
+    service: Service,
+    loggedUser: User
+    onWalletConnect: (user: User)=>void
   }

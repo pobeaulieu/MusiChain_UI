@@ -1,6 +1,10 @@
 
-export interface User {
-    address: string;
+export class User{
+    address: string; //etherum address of the user
+
+    constructor(address: string){
+        this.address = address
+    }
 }
 
 export interface MusicMedia {
@@ -41,6 +45,9 @@ export interface TokenCreation{
 }
 
 export interface Service {
+    // function to get connected account from metamask and return the user with the account address of the account 
+    getConnectedAccount():Promise<User>
+
     // Create Page - Artist creates a token from the Creation Page. This method also creates a listing
     createTokens(creatorAddress:string, name:string, numShares:number, price:number, div:number, initialTktPool: number, mp3:File, img:File): TokenCreation;
     // Create Page - Artist visualizes the tokens he previously created
@@ -50,6 +57,9 @@ export interface Service {
     getOwnedTokens(creatorAddress: string): TokenOwnership[];
     // My Tokens Page - User adds a listing for a token he owns
     addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing   
+    // My Tokens Page - User removes a listing for a token he previously created
+    removeListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing   
+
     // My Tokens Page - User sees the listings he created 
     getUserListings(ownerAddress: string): Listing[]
 

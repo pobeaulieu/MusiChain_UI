@@ -14,7 +14,7 @@ export default function UserListingRow(props : UserListingRowProps){
     return (
         <tr className={styles.row}>
                    <td className={styles.cell}>
-            <img className={styles.img} alt={`cover`} src={props.listing.musicMedia.image} />
+            <img className={styles.img} src={props.listing.musicMedia.image} />
             </td>
             <td className={styles.cell}>{props.listing.tokenName}</td>
             <td className={styles.cell}>{props.listing.price}</td>

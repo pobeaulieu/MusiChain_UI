@@ -15,7 +15,7 @@ export default function Market(props:PageProps) {
         const rows = [];
 
         for(let i = 0; i<listings.length;i++){
-            rows.push(<MarketListingRow listing={listings[i]} loggedUser={props.loggedUser}/>);
+            rows.push(<MarketListingRow key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
         }
 
         setListingList(listings)
