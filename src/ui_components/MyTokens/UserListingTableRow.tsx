@@ -4,11 +4,13 @@ import styles from './UserListingRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button, CloseButtonProps } from "react-bootstrap";
 import { BsFillTrashFill } from "react-icons/bs";
+import { FaPlay } from "react-icons/fa";
 
 
 interface UserListingRowProps {
     listing: Listing;
     loggedUser: User
+    onPlayClick:(id : number)=> void
 }
 
 
@@ -32,16 +34,7 @@ export default function UserListingRow(props : UserListingRowProps){
             <td className={`${styles.cell} ${styles.preview}`}>
                     <Button className={styles.trashBtn} variant="danger" onClick={() =>removeListing()}><BsFillTrashFill onClick={() =>removeListing()} /> </Button>
                 </td>
-            <td className={`${styles.cell} ${styles.preview}`}>
-                <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
-                    {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
-                    {audioMenu &&
-                        <div className={styles.audioMenu}>
-                            <audio controls src={props.listing.musicMedia.song}></audio>
-                        </div>
-                    }
-                </button>
-            </td>
+                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.tokenId)}><FaPlay></FaPlay></button></td>
 
         </tr> 
     );

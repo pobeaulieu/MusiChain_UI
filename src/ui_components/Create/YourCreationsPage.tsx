@@ -15,11 +15,11 @@ export default function YourCreationsPage(props: PageProps) {
     const [tokenList, setTokenList] = useState<TokenCreation[]>();
 
     useEffect(() => {
-        const tokens = props.service.getCreatedTokens(props.loggedUser.address)
+        const tokens = props.service.getCreatedTokens(props.loggedUser?.address)
         const rows = [];
 
         for(let i = 0; i<tokens.length;i++){
-            rows.push(<TokenCreationRow  key={tokens[i].tokenId} token={tokens[i]}/>);
+            rows.push(<TokenCreationRow  onPlayClick={props.onPlayClick} key={tokens[i].tokenId} token={tokens[i]}/>);
         }
 
         setTokenList(tokens)

@@ -126,3 +126,12 @@ rm-signin {
   box-shadow: 0 0 5px rgba(132, 9, 176, 0.8);
 }
 
+
+/* MusicPlayerBar.css */
+.musicBar {
+  /* Your desired styles for the music player bar */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

@@ -21,7 +21,7 @@ function ConnectWalletButton(props: NavProps) {
 
   return (
     <div>
-      {props.loggedUser.address === "" && (
+      {props.loggedUser?.address === "" && (
         <Button className={mainstyles.button} onClick={connectMetaMask}>Connect Wallet</Button>
       )}
     </div>

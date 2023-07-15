@@ -4,11 +4,13 @@ import { TokenCreation } from '../../service/interface';
 import styles from './TokenCreationRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button } from 'react-bootstrap';
+import { FaPlay } from 'react-icons/fa';
 
 
 
 interface TokenCreationRowProps {
     token: TokenCreation;
+    onPlayClick:(id : number)=> void
 }
 
 export default function TokenCreationRow(props : TokenCreationRowProps){
@@ -42,16 +44,8 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
                 <td className={styles.cell}>{props.token.dividendPerShare * nbTickets + " ETH"}</td><td className={`${styles.cell} ${styles.preview}`}>
                         <Button className={mainstyles.button} onClick={() =>payDividends()}>Pay dividends</Button>
                     </td>
-                    <td className={`${styles.cell} ${styles.preview}`}>
-            <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
-                    {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
-                    {audioMenu &&
-                    <div className={styles.audioMenu}>
-                        <audio controls src={props.token.musicMedia.song}></audio>
-                    </div>
-                    }
-                </button>
-                </td>
+                    <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.tokenId)}><FaPlay></FaPlay></button></td>
+
          
         </tr>
   

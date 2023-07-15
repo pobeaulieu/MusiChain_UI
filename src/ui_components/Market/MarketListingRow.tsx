@@ -5,10 +5,12 @@ import { Listing, User } from '../../service/interface';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { tokenToString } from 'typescript';
+import { FaPlay } from 'react-icons/fa';
 
 interface MarketListingRowProps {
     listing: Listing;
     loggedUser: User
+    onPlayClick:(id : number)=> void
 }
 
 export default function MarketListingRow(props: MarketListingRowProps) {
@@ -36,7 +38,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
             <td className={styles.cell}>{props.listing.remainingTicketPool}</td>
             <td className={styles.cell}>{props.listing.remainingTicketPool * props.listing.div + " ETH"}</td>
 
-            {props.loggedUser.address !== "" && (
+            {props.loggedUser?.address !== "" && (
                 <><td className={`${styles.cell} ${styles.preview}`}>
                     <input className={`${styles.cell}`} name="nbShare" type="number" onChange={e => setNbShare(e.target.valueAsNumber)} required></input>
                 </td>
@@ -47,16 +49,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
                         <Button className={mainstyles.button} onClick={() =>buyShares()}>Buy Shares</Button>
                     </td></>
             )}
-                        <td className={`${styles.cell} ${styles.preview}`}>
-                <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
-                    {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
-                    {audioMenu &&
-                        <div className={styles.audioMenu}>
-                            <audio controls src={props.listing.musicMedia.song}></audio>
-                        </div>
-                    }
-                </button>
-            </td>
+                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.tokenId)}><FaPlay></FaPlay></button></td>
         </tr>
 
     );

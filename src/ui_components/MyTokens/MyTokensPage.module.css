@@ -17,7 +17,7 @@
 }
 
 .listingTable{
-    width: 60%;
+    width: 100%;
     border-collapse: separate; 
     border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
 }

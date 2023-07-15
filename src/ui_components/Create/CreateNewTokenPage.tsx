@@ -37,7 +37,7 @@ export default function CreateNewTokenPage(props:PageProps) {
             let musicInput:any = form.elements.namedItem("musicPreview")!;
             let imageInput:any = form.elements.namedItem("tokenImg")!;
             
-            const createdTokens = props.service.createTokens(props.loggedUser.address, name, nbShare, initPrice, div, initTicketPool, musicInput.files[0], imageInput.files[0])
+            const createdTokens = props.service.createTokens(props.loggedUser?.address, name, nbShare, initPrice, div, initTicketPool, musicInput.files[0], imageInput.files[0])
 
             console.log(createdTokens)
         }
@@ -59,7 +59,7 @@ export default function CreateNewTokenPage(props:PageProps) {
 
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="creatorAddress">Creator Address :</label>
-            <span className={styles.text}>{props.loggedUser.address}</span>
+            <span className={styles.text}>{props.loggedUser?.address}</span>
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="name">Name :</label>

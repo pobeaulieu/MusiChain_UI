@@ -16,7 +16,7 @@ export default function Market(props:PageProps) {
         const rows = [];
 
         for(let i = 0; i<listings.length;i++){
-            rows.push(<MarketListingRow key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
+            rows.push(<MarketListingRow onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
         }
 
         setListingList(listings)
@@ -41,8 +41,8 @@ export default function Market(props:PageProps) {
             <th>Div./share</th>
             <th>Ticket Pool</th>
             <th>Div pot./share</th>
-            {props.loggedUser.address != "" && <th>Shares to buy</th>}
-            {props.loggedUser.address != "" && <th>Total transfer</th>}
+            {props.loggedUser?.address != "" && <th>Shares to buy</th>}
+            {props.loggedUser?.address != "" && <th>Total transfer</th>}
      
   
         </tr>

@@ -4,9 +4,11 @@ import { TokenOwnership, User } from '../../service/interface';
 import styles from './UserTokenRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button } from 'react-bootstrap';
+import { FaPlay } from 'react-icons/fa';
 interface UserTokenRowProps {
     token: TokenOwnership;
     loggedUser: User
+    onPlayClick:(id : number)=> void
 }
 
 
@@ -47,16 +49,8 @@ export default function UserTokenRow(props : UserTokenRowProps){
                 <td className={`${styles.cell} ${styles.preview}`}>
                     <Button className={mainstyles.button} onClick={() =>addListing()}>Add listing</Button>
                 </td></>
-            <td className={`${styles.cell} ${styles.preview}`}>
-                <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
-                    {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
-                    {audioMenu &&
-                    <div className={styles.audioMenu}>
-                        <audio controls src={props.token.musicMedia.song}></audio>
-                    </div>
-                    }
-                </button>
-            </td>
+                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.tokenId)}><FaPlay></FaPlay></button></td>
+
         </tr> 
     </>
     );

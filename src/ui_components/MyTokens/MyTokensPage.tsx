@@ -21,21 +21,21 @@ export default function MyTokensPage(props: PageProps){
     const [listingList, setListingList] = useState<Listing[]>();
 
     useEffect(() => {
-        const tokens = props.service.getOwnedTokens(props.loggedUser.address)
+        const tokens = props.service.getOwnedTokens(props.loggedUser?.address)
         const rows = [];
 
         for(let i = 0; i<tokens.length;i++){
-            rows.push(<UserTokenRow  key={tokens[i].tokenId} token={tokens[i]} loggedUser={props.loggedUser}/>);
+            rows.push(<UserTokenRow  onPlayClick={props.onPlayClick} key={tokens[i].tokenId} token={tokens[i]} loggedUser={props.loggedUser}/>);
         }
 
         setTokenList(tokens)
         setTokenDisplay(rows)
 
-        const listings = props.service.getUserListings(props.loggedUser.address)
+        const listings = props.service.getUserListings(props.loggedUser?.address)
         const lrows = [];
 
         for(let i = 0; i<listings.length;i++){
-            lrows.push(<UserListingRow  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
+            lrows.push(<UserListingRow  onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
         }
 
         setListingList(listings)
