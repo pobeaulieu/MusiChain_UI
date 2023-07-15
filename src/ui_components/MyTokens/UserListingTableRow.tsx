@@ -25,8 +25,9 @@ export default function UserListingRow(props : UserListingRowProps){
             <img className={styles.img} src={props.listing.musicMedia.image} />
             </td>
             <td className={styles.cell}>{props.listing.tokenName}</td>
-            <td className={styles.cell}>{props.listing.price}</td>
             <td className={styles.cell}>{props.listing.shares}</td>
+            <td className={styles.cell}>{props.listing.price + " ETH"}</td>
+     
 
             <td className={`${styles.cell} ${styles.preview}`}>
                     <Button className={styles.trashBtn} variant="danger" onClick={() =>removeListing()}><BsFillTrashFill onClick={() =>removeListing()} /> </Button>

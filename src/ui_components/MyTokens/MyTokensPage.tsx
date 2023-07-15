@@ -59,10 +59,10 @@ export default function MyTokensPage(props: PageProps){
                 <th>Token</th>
                 <th>Name</th>
                 <th>Owned Shares</th>
-                <th>Div</th>
+                <th>Dividend/share</th>
                 <th>Ticket Pool</th>
-                <th>Div Potential</th>
-                <th>Shares</th>
+                <th>Total Dividend Potential</th>
+                <th>Number of Shares</th>
                 <th>Price/share</th>
             </tr>
             </thead>
@@ -82,8 +82,9 @@ export default function MyTokensPage(props: PageProps){
             <tr>
                 <th>Token</th>
                 <th>Name</th>
+                <th>Remaining Shares Listed</th>
                 <th>Price/share</th>
-                <th>Shares</th>
+   
             </tr>
             </thead>
             <tbody>

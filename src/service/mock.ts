@@ -44,7 +44,7 @@ export class Mock implements Service {
             numberSharesCreated: 10,
             initialTicketPool: 100,
             remainingDividendAvailableTickets: 100,
-            dividendPerShare: 0.01
+            dividendPerShare:  0.005
         };
     }
 
@@ -58,7 +58,7 @@ export class Mock implements Service {
                 numberSharesCreated: 10,
                 initialTicketPool: 100,
                 remainingDividendAvailableTickets: 65,
-                dividendPerShare: 0.01
+                dividendPerShare:  0.005
             },
             {
                 tokenId: 2,
@@ -67,7 +67,7 @@ export class Mock implements Service {
                 numberSharesCreated: 20,
                 initialTicketPool: 100,
                 remainingDividendAvailableTickets: 54,
-                dividendPerShare: 0.01
+                dividendPerShare:  0.005
             }
         ];
     }
@@ -109,7 +109,7 @@ export class Mock implements Service {
             musicMedia: getMusicMediaById(1),
             price: 10,
             shares: 100,
-            div:0.1,
+            div: 0.005,
             remainingTicketPool: 50000
         };
     }
@@ -130,7 +130,7 @@ export class Mock implements Service {
                 musicMedia: getMusicMediaById(1),
                 price: 10,
                 shares: 1000,
-                div:0.1,
+                div: 0.005,
                 remainingTicketPool: 50000
             }
         ];
@@ -147,7 +147,7 @@ export class Mock implements Service {
                 musicMedia: getMusicMediaById(1),
                 price: 10,
                 shares: 100,
-                div:0.1,
+                div: 0.005,
                 remainingTicketPool: 50000
             },
             {
@@ -158,7 +158,7 @@ export class Mock implements Service {
                 musicMedia: getMusicMediaById(2),
                 price: 10,
                 shares: 100,
-                div:0.1,
+                div: 0.005,
                 remainingTicketPool: 50000
             }
         ];

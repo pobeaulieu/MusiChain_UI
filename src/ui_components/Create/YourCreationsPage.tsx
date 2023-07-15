@@ -43,9 +43,10 @@ export default function YourCreationsPage(props: PageProps) {
                             <th>Name</th>
                             <th>Shares</th>
                             <th>Initial ticket pool</th>
-                            <th>Remaining eligible tickets</th>
-                            <th>Div</th>
-                            <th>Tickets to pay dividends </th>
+                            <th>Remaining ticket pool</th>
+                            <th>Dividend/share</th>
+                            <th>Tickets to pay div. </th>
+                            <th>Total transfer </th>
 
                         </tr>
                     </thead>

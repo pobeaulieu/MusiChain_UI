@@ -31,9 +31,9 @@ export default function UserTokenRow(props : UserTokenRowProps){
             </td>
             <td className={styles.cell}>{props.token.name}</td>
             <td className={styles.cell}>{props.token.numberSharesOwned}</td>
-            <td className={styles.cell}>{props.token.divPerShare}</td>
+            <td className={styles.cell}>{props.token.divPerShare + " ETH"}</td>
             <td className={styles.cell}>{props.token.remainingDividendEligibleTickets}</td>
-            <td className={styles.cell}>{props.token.remainingDividendEligibleTickets * props.token.divPerShare}</td>
+            <td className={styles.cell}>{props.token.numberSharesOwned * props.token.remainingDividendEligibleTickets * props.token.divPerShare + " ETH"}</td>
             <>
                 <td className={`${styles.cell}`}>
                     <input className={`${styles.cell} ${styles.inputShares}`} name="nbShare" type="number" onChange={e => setNbShare(e.target.valueAsNumber)} required></input>
@@ -41,7 +41,9 @@ export default function UserTokenRow(props : UserTokenRowProps){
                 <td className={`${styles.cell}`}>
                     <input className={`${styles.cell} ${styles.inputPrice}`} name="price" type="number" onChange={e => setPrice(e.target.valueAsNumber)} required></input>
                 </td>
+                <td className={styles.cell}>{" ETH"}</td><td className={`${styles.cell} ${styles.preview}`}>
 
+                </td>
                 <td className={`${styles.cell} ${styles.preview}`}>
                     <Button className={mainstyles.button} onClick={() =>addListing()}>Add listing</Button>
                 </td></>

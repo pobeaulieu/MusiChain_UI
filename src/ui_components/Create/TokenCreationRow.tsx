@@ -31,12 +31,15 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
             <td className={styles.cell}>{props.token.numberSharesCreated}</td>
             <td className={styles.cell}>{props.token.initialTicketPool}</td>
             <td className={styles.cell}>{props.token.remainingDividendAvailableTickets}</td>
-            <td className={styles.cell}>{props.token.dividendPerShare}</td>
+            <td className={styles.cell}>{props.token.dividendPerShare + " ETH"}</td>
+ 
+
    
            
                <td className={`${styles.cell} ${styles.preview}`}>
                     <input className={`${styles.cell}`} name="nbTickets" type="number" onChange={e => setNbTickets(e.target.valueAsNumber)} required></input>
-                </td><td className={`${styles.cell} ${styles.preview}`}>
+                </td>
+                <td className={styles.cell}>{props.token.dividendPerShare * nbTickets + " ETH"}</td><td className={`${styles.cell} ${styles.preview}`}>
                         <Button className={mainstyles.button} onClick={() =>payDividends()}>Pay dividends</Button>
                     </td>
                     <td className={`${styles.cell} ${styles.preview}`}>

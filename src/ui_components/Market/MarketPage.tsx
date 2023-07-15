@@ -36,12 +36,13 @@ export default function Market(props:PageProps) {
         <tr>
             <th>Token</th>
             <th>Name</th>
-            <th>Price</th>
+            <th>Price/share</th>
             <th>Shares</th>
-            <th>Div</th>
-            <th>Remainig Ticket Pool</th>
-            <th>Div Potential</th>
-            {props.loggedUser.address != "" && <th>Number of shares to buy</th>}
+            <th>Div./share</th>
+            <th>Ticket Pool</th>
+            <th>Div pot./share</th>
+            {props.loggedUser.address != "" && <th>Shares to buy</th>}
+            {props.loggedUser.address != "" && <th>Total transfer</th>}
      
   
         </tr>

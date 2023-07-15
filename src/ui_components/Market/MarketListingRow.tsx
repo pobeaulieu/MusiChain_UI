@@ -30,16 +30,20 @@ export default function MarketListingRow(props: MarketListingRowProps) {
                 <img className={styles.img} alt={`cover`} src={props.listing.musicMedia.image} />
             </td>
             <td className={styles.cell}>{props.listing.tokenName}</td>
-            <td className={styles.cell}>{props.listing.price}</td>
+            <td className={styles.cell}>{props.listing.price + " ETH"}</td>
             <td className={styles.cell}>{props.listing.shares}</td>
-            <td className={styles.cell}>{props.listing.div}</td>
+            <td className={styles.cell}>{props.listing.div + " ETH"}</td>
             <td className={styles.cell}>{props.listing.remainingTicketPool}</td>
-            <td className={styles.cell}>{props.listing.remainingTicketPool * props.listing.div}</td>
+            <td className={styles.cell}>{props.listing.remainingTicketPool * props.listing.div + " ETH"}</td>
 
             {props.loggedUser.address !== "" && (
                 <><td className={`${styles.cell} ${styles.preview}`}>
                     <input className={`${styles.cell}`} name="nbShare" type="number" onChange={e => setNbShare(e.target.valueAsNumber)} required></input>
-                </td><td className={`${styles.cell} ${styles.preview}`}>
+                </td>
+
+                <td className={styles.cell}>{props.listing.price * nbShare + " ETH"}</td>
+
+                <td className={`${styles.cell} ${styles.preview}`}>
                         <Button className={mainstyles.button} onClick={() =>buyShares()}>Buy Shares</Button>
                     </td></>
             )}
