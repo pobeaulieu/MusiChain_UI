@@ -41,6 +41,7 @@ export default function Market(props:PageProps) {
             <th>Div</th>
             <th>Remainig Ticket Pool</th>
             <th>Div Potential</th>
+            {props.loggedUser.address != "" && <th>Number of shares to buy</th>}
      
   
         </tr>

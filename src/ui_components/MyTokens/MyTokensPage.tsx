@@ -51,7 +51,6 @@ export default function MyTokensPage(props: PageProps){
      <div className={styles.wrapper}>
      <div className={styles.topContainer}>
     <h1>Your Tokens</h1>
-    <Button className={mainstyles.button} onClick={() => history.push("/addlisting")}>Add listing</Button>
     </div>
       
         <table className={styles.tokenTable}>
@@ -59,28 +58,31 @@ export default function MyTokensPage(props: PageProps){
             <tr>
                 <th>Token</th>
                 <th>Name</th>
-                <th>Shares</th>
+                <th>Owned Shares</th>
                 <th>Div</th>
-                <th>Remainig Ticket Pool</th>
+                <th>Ticket Pool</th>
                 <th>Div Potential</th>
+                <th>Shares</th>
+                <th>Price/share</th>
             </tr>
             </thead>
             <tbody>
                 {tokenDisplay}
             </tbody>
         </table>
-
+        </div>  
+        <div className={styles.wrapper}>
         <div className={styles.topContainer}>
             <h1>Active Listings</h1>
             
         </div>
         
-        <table className={styles.tokenTable}>
+        <table className={styles.listingTable}>
             <thead>
             <tr>
                 <th>Token</th>
                 <th>Name</th>
-                <th>Price per share</th>
+                <th>Price/share</th>
                 <th>Shares</th>
             </tr>
             </thead>

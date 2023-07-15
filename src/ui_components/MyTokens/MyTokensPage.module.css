@@ -2,13 +2,27 @@
     width: 100%;
     border-collapse: separate; 
     border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
+    text-align: start;
+
 }
 
+
 .wrapper{
-    padding:1rem;
+    padding-top:4rem;
 }
 
 .tokenTable tr th{
+    text-align: start;
+    padding: 0.5rem;
+}
+
+.listingTable{
+    width: 60%;
+    border-collapse: separate; 
+    border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
+}
+
+.listingTable tr th{
     text-align: start;
     padding: 0.5rem;
 }

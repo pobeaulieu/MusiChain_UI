@@ -1,6 +1,6 @@
 .img{
-    width: 2.7rem;
-    height: 2.7rem;
+    width: 4.5rem;
+    height: 4.5rem;
     border: lightgray solid 2px;
     font-size: 0;
     border-radius: 5px;
@@ -9,6 +9,8 @@
 .cell {
     border: solid 2px lightgray;
     border-style: solid none;
+
+
     padding: 0.5rem;
 }
 .cell:first-child {
@@ -26,6 +28,8 @@
     border-bottom-right-radius: 10px; 
     border-top-right-radius: 10px; 
     text-align: center;
+    padding-right: 1rem;
+
 }
 
 .closeBtn{
@@ -55,4 +59,34 @@
     position: absolute;
     z-index: -1;
     box-sizing: border-box;
+}
+
+.previewBtn{
+    position:relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    box-sizing: border-box;
+    aspect-ratio: 1;
+    color:white;
+    background-color: black;
+    border-radius:50px;
+    border: transparent;
+    z-index: 1;
+}
+.trashBtn{
+    position:relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    box-sizing: border-box;
+    aspect-ratio: 1;
+    color:white;
+    background-color: red;
+    border-radius:50px;
+    border: transparent;
+    z-index: 1;
+    
 }

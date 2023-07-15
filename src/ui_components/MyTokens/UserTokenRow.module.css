@@ -1,7 +1,7 @@
 .img{
-    width: 2.7rem;
-    height: 2.7rem;
-    border: lightgray solid 2px;
+    width: 4.5rem;
+    height: 4.5rem;
+    border: lightgray solid px;
     font-size: 0;
     border-radius: 5px;
 }
@@ -10,10 +10,18 @@
     border: solid 2px lightgray;
     border-style: solid none;
     padding: 0.5rem;
+
+}
+
+.inputShares {
+    width: 6rem;
+}
+
+.inputPrice {
+    width: 4rem;
 }
 .cell:first-child {
     display: flex;
-    align-items: center;
     gap:0.5rem;
     border-left-style: solid;
     border-top-left-radius: 10px; 
@@ -33,7 +41,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 2rem;
+    height: 3rem;
     box-sizing: border-box;
     aspect-ratio: 1;
     color:white;

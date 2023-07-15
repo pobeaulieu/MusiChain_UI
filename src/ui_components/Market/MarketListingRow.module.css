@@ -1,7 +1,7 @@
 .img{
-    width: 2.7rem;
-    height: 2.7rem;
-    border: lightgray solid 2px;
+    width: 4.5rem;
+    height: 4.5rem;
+    border: lightgray solid 1px;
     font-size: 0;
     border-radius: 5px;
 }
@@ -33,7 +33,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 2rem;
+    height: 3rem;
     box-sizing: border-box;
     aspect-ratio: 1;
     color:white;
@@ -54,4 +54,9 @@
     position: absolute;
     z-index: -1;
     box-sizing: border-box;
+}
+
+.inputShares {
+    width: 6rem;
+    padding-right:0.5rem;
 }

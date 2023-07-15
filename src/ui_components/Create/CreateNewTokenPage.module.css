@@ -3,8 +3,12 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: max-content 1fr max-content;
     gap:1.5rem;
-    padding: 1rem;
+    padding-top:4rem;}
+
+.wrapper{
+    padding-top:4rem;
 }
+
 
 .top{
     grid-column: 1/3;

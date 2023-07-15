@@ -2,11 +2,19 @@ import { useState } from "react";
 import { Listing, User } from "../../service/interface";
 import styles from './UserListingRow.module.css';
 import mainstyles from '../../App.module.css';
-import { CloseButtonProps } from "react-bootstrap";
+import { Button, CloseButtonProps } from "react-bootstrap";
+import { BsFillTrashFill } from "react-icons/bs";
+
 
 interface UserListingRowProps {
     listing: Listing;
     loggedUser: User
+}
+
+
+const removeListing: any = () => {
+  console.log(" TODO remove listing");
+  
 }
 
 export default function UserListingRow(props : UserListingRowProps){
@@ -20,10 +28,20 @@ export default function UserListingRow(props : UserListingRowProps){
             <td className={styles.cell}>{props.listing.price}</td>
             <td className={styles.cell}>{props.listing.shares}</td>
 
-            {props.loggedUser.address != "" && <td className={`${styles.cell} `}>
-                <RemoveButton> 
-                </RemoveButton>
-            </td>}
+            <td className={`${styles.cell} ${styles.preview}`}>
+                    <Button className={styles.trashBtn} variant="danger" onClick={() =>removeListing()}><BsFillTrashFill onClick={() =>removeListing()} /> </Button>
+                </td>
+            <td className={`${styles.cell} ${styles.preview}`}>
+                <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
+                    {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
+                    {audioMenu &&
+                        <div className={styles.audioMenu}>
+                            <audio controls src={props.listing.musicMedia.song}></audio>
+                        </div>
+                    }
+                </button>
+            </td>
+
         </tr> 
     );
 }

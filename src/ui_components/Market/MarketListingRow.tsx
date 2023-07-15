@@ -14,6 +14,15 @@ interface MarketListingRowProps {
 export default function MarketListingRow(props: MarketListingRowProps) {
     const [audioMenu, isAudioMenu] = useState(false);
     const history = useHistory();
+    const [nbShare, setNbShare] = useState<number>(0);
+
+    const buyShares: any = () => {
+        if (nbShare <= props.listing.shares){
+            console.log("TODO... buy " + nbShare + " shares of token " + props.listing.tokenId + " at price " + props.listing.price)
+        }else{
+            console.log("ERROR not enough shares available")
+        }
+    }
     
     return (
         <tr className={styles.row} key={props.listing.tokenId}>
@@ -26,7 +35,15 @@ export default function MarketListingRow(props: MarketListingRowProps) {
             <td className={styles.cell}>{props.listing.div}</td>
             <td className={styles.cell}>{props.listing.remainingTicketPool}</td>
             <td className={styles.cell}>{props.listing.remainingTicketPool * props.listing.div}</td>
-            <td className={`${styles.cell} ${styles.preview}`}>
+
+            {props.loggedUser.address !== "" && (
+                <><td className={`${styles.cell} ${styles.preview}`}>
+                    <input className={`${styles.cell}`} name="nbShare" type="number" onChange={e => setNbShare(e.target.valueAsNumber)} required></input>
+                </td><td className={`${styles.cell} ${styles.preview}`}>
+                        <Button className={mainstyles.button} onClick={() =>buyShares()}>Buy Shares</Button>
+                    </td></>
+            )}
+                        <td className={`${styles.cell} ${styles.preview}`}>
                 <button className={styles.previewBtn} onClick={() => isAudioMenu(!audioMenu)}>
                     {audioMenu ? <span>&#10006;</span> : <span>&#9658;</span>}
                     {audioMenu &&
@@ -36,12 +53,9 @@ export default function MarketListingRow(props: MarketListingRowProps) {
                     }
                 </button>
             </td>
-            {props.loggedUser.address !== "" && (
-                <td className={`${styles.cell} ${styles.preview}`}>
-                    <Button className={mainstyles.button} onClick={() => console.log("TODO... buy " + props.listing.shares + " shares of token " + props.listing.tokenName + " at pric " + props.listing.price)}>Buy</Button>
-                </td>
-            )}
         </tr>
 
     );
+
+
 }
