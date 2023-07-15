@@ -47,17 +47,16 @@ export default function CreateNewTokenPage(props:PageProps) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.top}>
-      <Link to="/creator" className={mainstyles.link}>{"< Back to your creations"}</Link>
-      </div>
-      <div className={styles.left}>
+
+      {imageURL && musicURL && <div className={styles.right}>
         <img className={styles.img} src={imageURL} alt="preview token"></img>
         <audio controls src={musicURL} className={styles.musicPlayer}></audio>
-      </div>
+      </div>}
 
-      <div className={styles.right}>
+      <div className={styles.left}>
       <form onSubmit={submit} name="musicCreator">
         <h1>Create New Token</h1>
+
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="creatorAddress">Creator Address :</label>
             <span className={styles.text}>{props.loggedUser.address}</span>
@@ -66,7 +65,15 @@ export default function CreateNewTokenPage(props:PageProps) {
             <label className={styles.label} htmlFor="name">Name :</label>
             <input className={styles.input} name="name" type="text" onChange={e => setName(e.target.value)} required></input>
         </div>
-        
+        <h3>Upload Media</h3>
+        <div className={styles.inputContainer}>
+            <label className={styles.label} htmlFor="tokenImg">Load token image : </label>
+            <input className={styles.input} onChange={onImageChange} name="tokenImg" type="file" accept="image/png, image/gif, image/jpeg" required></input>
+        </div>
+        <div className={styles.inputContainer}>
+            <label htmlFor="musicPreview">Load music preview :</label>
+            <input  className={styles.input}onChange={onMusicChange} name="musicPreview" type="file" accept="audio/mp3" required></input>
+        </div>
         <h3>Initial Share Offering</h3>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="nbShare">Number of Shares :</label>
@@ -78,23 +85,15 @@ export default function CreateNewTokenPage(props:PageProps) {
         </div>
         <h3>Dividend Plan</h3>
         <div className={styles.inputContainer}>
-            <label className={styles.label} htmlFor="divPerTicketSold">Dividend per tickets sold</label>
+            <label className={styles.label} htmlFor="divPerTicketSold">Dividend to pay per tickets sold :</label>
             <input className={styles.input} name="divPerTicketSold" type="float" onChange={e => setDiv(e.target.valueAsNumber)} required></input>
         </div>
         <div className={styles.inputContainer}>
-            <label className={styles.label} htmlFor="InitTicketPool">Initial tocket pool</label>
+            <label className={styles.label} htmlFor="InitTicketPool">Initial ticket pool :</label>
             <input className={styles.input} name="InitTicketPool" type="number" onChange={e => setInitticketPool(e.target.valueAsNumber)} required></input>
         </div>
-        <h3>Upload Media</h3>
-        <div className={styles.inputContainer}>
-            <label className={styles.label} htmlFor="tokenImg">Load token image</label>
-            <input className={styles.input} onChange={onImageChange} name="tokenImg" type="file" accept="image/png, image/gif, image/jpeg" required></input>
-        </div>
-        <div className={styles.inputContainer}>
-            <label className={styles.label} htmlFor="musicPreview">Load music preview</label>
-            <input className={styles.input} onChange={onMusicChange} name="musicPreview" type="file" accept="audio/mp3" required></input>
-        </div>
-        <div className={styles.submitWrapper}>
+
+        <div className={styles.inputContainer} >
           <button type="submit" className={mainstyles.button}>Submit</button>
         </div>
         {loading && <Spinner/>}
