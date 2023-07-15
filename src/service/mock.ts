@@ -128,7 +128,7 @@ export class Mock implements Service {
                 creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
                 owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
                 musicMedia: getMusicMediaById(1),
-                price: 10,
+                price: 0.04,
                 shares: 1000,
                 div: 0.005,
                 remainingTicketPool: 50000
@@ -145,7 +145,7 @@ export class Mock implements Service {
                 creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
                 owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
                 musicMedia: getMusicMediaById(1),
-                price: 10,
+                price: 0.04,
                 shares: 100,
                 div: 0.005,
                 remainingTicketPool: 50000
@@ -156,10 +156,10 @@ export class Mock implements Service {
                 creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
                 owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
                 musicMedia: getMusicMediaById(2),
-                price: 10,
-                shares: 100,
-                div: 0.005,
-                remainingTicketPool: 50000
+                price: 0.023,
+                shares: 200,
+                div: 0.0015,
+                remainingTicketPool: 20000
             }
         ];
     }
