@@ -19,7 +19,8 @@ body, ul, li {
     width: 50px; /* Adjust the width as needed */
     height: 40px; /* Adjust the height as needed */
     margin-bottom:15px;
-    margin-left: 10px;
+    margin-left: 50px;
+    margin-right: 2px;
   }
   
 
