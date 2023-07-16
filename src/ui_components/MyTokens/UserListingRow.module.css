@@ -7,10 +7,8 @@
 }
 
 .cell {
-    border: solid 2px lightgray;
+    border: solid 1px rgba(251, 249, 252, 0.311);
     border-style: solid none;
-
-
     padding: 0.5rem;
 }
 .cell:first-child {

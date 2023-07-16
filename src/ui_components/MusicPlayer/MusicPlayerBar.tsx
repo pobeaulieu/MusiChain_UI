@@ -14,20 +14,24 @@ const MusicPlayerBar = (props: any) => {
 
   useEffect(() => {
     setMusicMedia(getMusicMediaById(props.songId));
+    if (audioRef.current) {
+    audioRef.current.src = getMusicMediaById(props.songId)?.song;
+    audioRef.current.play();
+    }
+
     setIsPlaying(false); // Pause the current song when it changes
   }, [props.songId]);
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.src = getMusicMediaById(props.songId)?.song;
-
       if (!isPlaying) {
         audioRef.current.play();
       } else {
         audioRef.current.pause();
+        setCurrentTime(currentTime)
       }
     }
-  }, [props.songId, isPlaying]);
+  }, [isPlaying]);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -52,9 +56,7 @@ const MusicPlayerBar = (props: any) => {
       audioRef.current.play();
       audioRef.current.currentTime = Number(event.target.value);
       setCurrentTime(audioRef.current.currentTime);
-      if (isPlaying) {
-        audioRef.current.play();
-      }
+
     }
   };
 

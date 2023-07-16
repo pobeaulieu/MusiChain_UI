@@ -29,12 +29,17 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
+            <div className={styles.musichainNavBar}>
                 <Nav loggedUser={loggedUser} onWalletConnect={onWalletConnect} service={service}/>
+                </div>
+                
                 <main>
+                <div>
                     <Route path="/creator" exact component={() => <YourCreationsPage onPlayClick={onPlayClick} service={service} loggedUser={loggedUser} />}/>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken onPlayClick={onPlayClick} service={service} loggedUser={loggedUser} />}/>
                     <Route path="/mytokens" exact component={()=> <MyTokensPage onPlayClick={onPlayClick}service={service} loggedUser={loggedUser}/>}/>
                     <Route path="/" exact component={()=> <Market  onPlayClick={onPlayClick} service={service} loggedUser={loggedUser}/>}/>
+                    </div>
                 </main>
                 {songIdPlaying != -1 &&            <div className={styles.musicBar}>
                 <MusicPlayerBar songId={songIdPlaying}/>

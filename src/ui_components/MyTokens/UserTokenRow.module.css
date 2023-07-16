@@ -1,16 +1,14 @@
 .img{
     width: 4.5rem;
     height: 4.5rem;
-    border: lightgray solid px;
     font-size: 0;
     border-radius: 5px;
 }
 
 .cell {
-    border: solid 2px lightgray;
+    border: solid 1px rgba(251, 249, 252, 0.311);
     border-style: solid none;
     padding: 0.5rem;
-
 }
 
 .inputShares {

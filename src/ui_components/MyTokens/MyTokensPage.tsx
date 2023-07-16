@@ -48,7 +48,7 @@ export default function MyTokensPage(props: PageProps){
 
 
     return (<>
-     <div className={styles.wrapper}>
+     <div className={styles.wrapper2}>
      <div className={styles.topContainer}>
     <h1>Your Tokens</h1>
     </div>

@@ -49,7 +49,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
                         <Button className={mainstyles.button} onClick={() =>buyShares()}>Buy Shares</Button>
                     </td></>
             )}
-                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.tokenId)}><FaPlay></FaPlay></button></td>
+                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.tokenId)}><FaPlay onClick={() => props.onPlayClick(props.listing.tokenId)}></FaPlay></button></td>
         </tr>
 
     );

@@ -7,8 +7,15 @@
 }
 
 .wrapper{
-    padding-top:4rem;
+    padding-top:8rem;
+    color: white;
 }
+
+.wrapper span{
+
+    color: white;
+}
+
 
 
 .tokenTable tr th{
@@ -31,3 +38,7 @@
     border-radius: 10px;
     border: solid 2px lightgray;
 }
+
+span {
+    color: white;
+  }

@@ -1,13 +1,12 @@
 .img{
     width: 4.5rem;
     height: 4.5rem;
-    border: lightgray solid 1px;
     font-size: 0;
     border-radius: 5px;
 }
 
 .cell {
-    border: solid 2px lightgray;
+    border: solid 1px rgba(251, 249, 252, 0.311);
     border-style: solid none;
     padding: 0.5rem;
 }
@@ -29,7 +28,7 @@
 }
 
 .previewBtn{
-
+    position:relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -39,10 +38,9 @@
     color:white;
     background-color: black;
     border-radius:50px;
-
+    border: transparent;
     z-index: 1;
 }
-
 .audioMenu{
     width: fit-content;
     height: fit-content;
