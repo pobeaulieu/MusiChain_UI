@@ -16,6 +16,7 @@ h2 {
   font-weight: bold;
   font-size: 22px;
 }
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400&display=swap');
 
 body {
   background-color: #1e1c1c;;
@@ -26,6 +27,8 @@ body input {
   background-color: #1e1c1c;
   color: #ffffff;
   border-color: #ffffff;
+  border: solid 1px rgba(251, 249, 252, 0.311);
+
 }
 
 .link:hover {

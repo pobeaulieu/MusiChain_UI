@@ -68,6 +68,96 @@ export class Mock implements Service {
                 initialTicketPool: 100,
                 remainingDividendAvailableTickets: 54,
                 dividendPerShare:  0.005
+            },
+            {
+                tokenId: 1,
+                musicMedia: getMusicMediaById(1),
+                name: 'Token Name',
+                numberSharesCreated: 10,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 65,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 2,
+                musicMedia: getMusicMediaById(2),
+                name: 'Token Name',
+                numberSharesCreated: 20,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 54,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 1,
+                musicMedia: getMusicMediaById(1),
+                name: 'Token Name',
+                numberSharesCreated: 10,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 65,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 2,
+                musicMedia: getMusicMediaById(2),
+                name: 'Token Name',
+                numberSharesCreated: 20,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 54,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 1,
+                musicMedia: getMusicMediaById(1),
+                name: 'Token Name',
+                numberSharesCreated: 10,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 65,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 2,
+                musicMedia: getMusicMediaById(2),
+                name: 'Token Name',
+                numberSharesCreated: 20,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 54,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 1,
+                musicMedia: getMusicMediaById(1),
+                name: 'Token Name',
+                numberSharesCreated: 10,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 65,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 2,
+                musicMedia: getMusicMediaById(2),
+                name: 'Token Name',
+                numberSharesCreated: 20,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 54,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 1,
+                musicMedia: getMusicMediaById(1),
+                name: 'Token Name',
+                numberSharesCreated: 10,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 65,
+                dividendPerShare:  0.005
+            },
+            {
+                tokenId: 2,
+                musicMedia: getMusicMediaById(2),
+                name: 'Token Name',
+                numberSharesCreated: 20,
+                initialTicketPool: 100,
+                remainingDividendAvailableTickets: 54,
+                dividendPerShare:  0.005
             }
         ];
     }
@@ -95,7 +185,39 @@ export class Mock implements Service {
                 numberSharesOwned: 5,
                 remainingDividendEligibleTickets: 5,
                 divPerShare: 0.005
-            }
+            },
+            {
+                tokenId: 1,
+                musicMedia: getMusicMediaById(1),
+                name: 'Token Name',
+                numberSharesOwned: 5,
+                remainingDividendEligibleTickets: 5,
+                divPerShare: 0.005
+            },
+            {
+                tokenId: 2,
+                musicMedia: getMusicMediaById(2),
+                name: 'Token Name',
+                numberSharesOwned: 5,
+                remainingDividendEligibleTickets: 5,
+                divPerShare: 0.005
+            },
+            {
+                tokenId: 1,
+                musicMedia: getMusicMediaById(1),
+                name: 'Token Name',
+                numberSharesOwned: 5,
+                remainingDividendEligibleTickets: 5,
+                divPerShare: 0.005
+            },
+            {
+                tokenId: 2,
+                musicMedia: getMusicMediaById(2),
+                name: 'Token Name',
+                numberSharesOwned: 5,
+                remainingDividendEligibleTickets: 5,
+                divPerShare: 0.005
+            },
         ];
     }
 
@@ -122,6 +244,94 @@ export class Mock implements Service {
     getUserListings(ownerAddress: string): Listing[] {
         // Implement your mock logic here
         return [
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
+            {
+                tokenId: 1,
+                tokenName: "This is a name",
+                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
+                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+                musicMedia: getMusicMediaById(1),
+                price: 0.04,
+                shares: 1000,
+                div: 0.005,
+                remainingTicketPool: 50000
+            },
             {
                 tokenId: 1,
                 tokenName: "This is a name",

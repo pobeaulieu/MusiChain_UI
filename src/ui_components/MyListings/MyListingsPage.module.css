@@ -1,31 +1,35 @@
 .tokenTable{
     width: 100%;
-    text-align: start;
-
     border-collapse: separate; 
     border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
+    text-align: start;
     padding-bottom: 200px;
+
 }
 
-.titles{
-    width: 100%;
-    text-align: start;
-    border-collapse: separate; 
-    border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
-}
 
 .wrapper{
     padding-top:8rem;
-
+    padding-bottom: 200px;
 }
+
 
 
 .tokenTable tr th{
-
+    text-align: start;
     padding: 0.5rem;
 }
 
+.listingTable{
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
+}
 
+.listingTable tr th{
+    text-align: start;
+    padding: 0.5rem;
+}
 
 .headPreview{
     text-align: center !important;
@@ -36,4 +40,3 @@
     justify-content: space-between;
     align-items: center;
 }
-

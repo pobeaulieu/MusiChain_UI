@@ -1,13 +1,10 @@
-import YourTokenTableRow from "./UserTokenRow";
+
 import styles from "./MyTokensPage.module.css";
-import ListingTokenTableRow from "./UserListingTableRow";
-import { Button } from "react-bootstrap";
-import mainstyles from '../../App.module.css';
 import { PageProps } from "../../App";
 import { useEffect, useState } from "react";
-import { Listing, TokenOwnership } from "../../service/interface";
+import { TokenOwnership } from "../../service/interface";
 import UserTokenRow from "./UserTokenRow";
-import UserListingRow from "./UserListingTableRow";
+
 import { useHistory } from "react-router-dom";
 
 export default function MyTokensPage(props: PageProps){
@@ -17,8 +14,7 @@ export default function MyTokensPage(props: PageProps){
     const [tokenDisplay, setTokenDisplay] = useState<Array<JSX.Element>>();
     const [tokenList, setTokenList] = useState<TokenOwnership[]>();
 
-    const [listingDisplay, setListingDisplay] = useState<Array<JSX.Element>>();
-    const [listingList, setListingList] = useState<Listing[]>();
+
 
     useEffect(() => {
         const tokens = props.service.getOwnedTokens(props.loggedUser?.address)
@@ -31,15 +27,7 @@ export default function MyTokensPage(props: PageProps){
         setTokenList(tokens)
         setTokenDisplay(rows)
 
-        const listings = props.service.getUserListings(props.loggedUser?.address)
-        const lrows = [];
-
-        for(let i = 0; i<listings.length;i++){
-            lrows.push(<UserListingRow  onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
-        }
-
-        setListingList(listings)
-        setListingDisplay(lrows)
+    
 
 
 
@@ -48,7 +36,7 @@ export default function MyTokensPage(props: PageProps){
 
 
     return (<>
-     <div className={styles.wrapper2}>
+     <div className={styles.wrapper}>
      <div className={styles.topContainer}>
     <h1>Your Tokens</h1>
     </div>
@@ -71,26 +59,6 @@ export default function MyTokensPage(props: PageProps){
             </tbody>
         </table>
         </div>  
-        <div className={styles.wrapper}>
-        <div className={styles.topContainer}>
-            <h1>Active Listings</h1>
-            
-        </div>
-        
-        <table className={styles.listingTable}>
-            <thead>
-            <tr>
-                <th>Token</th>
-                <th>Name</th>
-                <th>Remaining Shares Listed</th>
-                <th>Price/share</th>
-   
-            </tr>
-            </thead>
-            <tbody>
-                {listingDisplay}
-            </tbody>
-        </table>
-     </div>  
+
     </>);
 }

@@ -60,7 +60,7 @@
 }
 
 .previewBtn{
-    position:relative;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -74,7 +74,6 @@
     z-index: 1;
 }
 .trashBtn{
-    position:relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -88,3 +87,5 @@
     z-index: 1;
     
 }
+
+

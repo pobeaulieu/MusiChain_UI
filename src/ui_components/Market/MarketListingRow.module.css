@@ -27,7 +27,6 @@
     text-align: center;
 }
 .previewBtn{
-    position:relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -40,6 +39,7 @@
     border: transparent;
     z-index: 1;
 }
+
 
 .audioMenu{
     width: fit-content;

@@ -3,13 +3,15 @@
     border-collapse: separate; 
     border-spacing: 0 10px;  /* correct offset on first border spacing if desired */
     text-align: start;
+    padding-bottom: 200px;
 
 }
 
 .wrapper{
     padding-top:8rem;
     color: white;
-}
+    padding-bottom: 20px;
+}    
 
 .wrapper span{
 

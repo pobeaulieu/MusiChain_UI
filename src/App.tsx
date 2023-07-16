@@ -7,9 +7,9 @@ import Market from './ui_components/Market/MarketPage';
 import CreateNewToken from './ui_components/Create/CreateNewTokenPage';
 import YourCreationsPage from './ui_components/Create/YourCreationsPage';
 import {Service, User } from './service/interface';
-import AddListingPage from './ui_components/MyTokens/AddListingPage';
 import { Mock } from './service/mock';
 import MusicPlayerBar from './ui_components/MusicPlayer/MusicPlayerBar';
+import MyListingsPage from './ui_components/MyListings/MyListingsPage';
 
 function App() {
     const [songIdPlaying, setSongIdPlaying] = useState(-1);
@@ -38,6 +38,8 @@ function App() {
                     <Route path="/creator" exact component={() => <YourCreationsPage onPlayClick={onPlayClick} service={service} loggedUser={loggedUser} />}/>
                     <Route path="/createnewtoken" exact component={() => <CreateNewToken onPlayClick={onPlayClick} service={service} loggedUser={loggedUser} />}/>
                     <Route path="/mytokens" exact component={()=> <MyTokensPage onPlayClick={onPlayClick}service={service} loggedUser={loggedUser}/>}/>
+
+                    <Route path="/mylistings" exact component={()=> <MyListingsPage onPlayClick={onPlayClick}service={service} loggedUser={loggedUser}/>}/>
                     <Route path="/" exact component={()=> <Market  onPlayClick={onPlayClick} service={service} loggedUser={loggedUser}/>}/>
                     </div>
                 </main>
