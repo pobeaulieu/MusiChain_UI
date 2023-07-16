@@ -12,11 +12,11 @@
 }
 
 .inputShares {
-    width: 6rem;
+    width: 10rem;
 }
 
 .inputPrice {
-    width: 4rem;
+    width: 8rem;
 }
 .cell:first-child {
     display: flex;
