@@ -63,7 +63,7 @@ export default function CreateNewTokenPage(props:PageProps) {
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="name">Name :</label>
-            <input className={styles.input} name="name" type="text" onChange={e => setName(e.target.value)} required></input>
+            <input className={styles.input} name="name" onChange={e => setName(e.target.value)} required></input>
         </div>
         <h3>Upload Media</h3>
         <div className={styles.inputContainer}>
@@ -81,12 +81,12 @@ export default function CreateNewTokenPage(props:PageProps) {
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="initPrice">Initial price/shares :</label>
-            <input className={styles.input} name="initPrice" type="float" onChange={e => setInitPrice(e.target.valueAsNumber)} required></input>
+            <input className={styles.input} name="initPrice" type="number" onChange={e => setInitPrice(e.target.valueAsNumber)} required></input>
         </div>
         <h3>Dividend Plan</h3>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="divPerTicketSold">Dividend to pay per tickets sold :</label>
-            <input className={styles.input} name="divPerTicketSold" type="float" onChange={e => setDiv(e.target.valueAsNumber)} required></input>
+            <input className={styles.input} name="divPerTicketSold" type="number" onChange={e => setDiv(e.target.valueAsNumber)} required></input>
         </div>
         <div className={styles.inputContainer}>
             <label className={styles.label} htmlFor="InitTicketPool">Initial ticket pool :</label>

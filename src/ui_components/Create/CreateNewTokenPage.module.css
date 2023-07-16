@@ -9,7 +9,6 @@
     padding-top:1rem;
 }
 
-
 .top{
     grid-column: 1/3;
     grid-row: 1/2;
@@ -65,7 +64,6 @@
 .input{
     display: block;
     border-radius: 5px;
-    border: 1px solid black;
     padding: 0.2rem;
     width: 14rem;;
 }
