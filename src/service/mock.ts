@@ -1,7 +1,8 @@
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 import { Listing, Service, TokenCreation, TokenOwnership, User } from "./interface";
-import { getMusicMediaById } from "./MusicMedia/MusicMediaCache";
+import { getMusicMediaById } from "./musicMedia/MusicMediaCache";
+
 
 export class Mock implements Service {
 

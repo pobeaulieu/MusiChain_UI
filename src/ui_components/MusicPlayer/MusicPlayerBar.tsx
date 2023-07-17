@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getMusicMediaById, MusicMedia } from "../../service/MusicMedia/MusicMediaCache";
+import { getMusicMediaById, MusicMedia } from "../../service/musicMedia/MusicMediaCache";
 import "./MusicPlayerBar.css";
 import logo from "./logo.png";
 import { Link, useHistory } from "react-router-dom";
