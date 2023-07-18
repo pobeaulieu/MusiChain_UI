@@ -53,7 +53,7 @@ export interface Service {
     // createTokens creates a token with the user address set as creator address. 
     // This method mints tokens to the creator address. 
     // This method also creates a listing with the seller address set as creator address. 
-    createTokens(creatorAddress:string, name:string, numShares:number, price:number, div:number, initialTktPool: number, mp3:File, img:File): TokenCreation;
+    createTokens(creatorAddress:string, name:string, numShares:number, price:number, div:number, initialTktPool: number, mp3:File, img:File): Promise<TokenCreation>;
 
     // getCreatedTokens retrieves all the tokens an artist previously created
     getCreatedTokens(creatorAddress: string): TokenCreation[];

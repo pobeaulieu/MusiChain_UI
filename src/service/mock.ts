@@ -2,6 +2,15 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 import { Listing, Service, TokenCreation, TokenOwnership, User } from "./interface";
 import { getMusicMediaById } from "./musicMedia/MusicMediaCache";
+import contractBaseAbi from './contracts/Base.json';
+import contractSaleAbi from './contracts/Sale.json';
+
+const web3 = new Web3((window as any).ethereum);
+const contractBaseAddress = "0x5bF3ec51A4aef9CBA7e3C1a2363e4679C82A421F";
+const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
+
+const contractSaleAddress = "0xcf87D49A4F27E3C315fEb28f05AedE7b69041731" ;
+const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
 export class Mock implements Service {
@@ -36,8 +45,21 @@ export class Mock implements Service {
           return user
         };
 
-    createTokens(creatorAddress: string, name: string, numShares: number, price: number, div: number, initialTktPool: number, mp3: File, img: File): TokenCreation {
+    async createTokens(creatorAddress: string, name: string, numShares: number, price: number, div: number, initialTktPool: number, mp3: File, img: File): Promise<TokenCreation> {
         // Implement your mock logic here
+
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const currentAddress = accounts[0];
+            const data = web3.utils.asciiToHex('some data');
+            const tokenID = 1
+            const result = await (contractBaseInstance.methods.mint as any)(tokenID, numShares, data).send({ from: currentAddress });
+
+            console.log('Transaction was successful', result);
+        } catch (error) {
+            console.error('An error occurred', error);
+        }
+
         return {
             tokenId: 1,
             musicMedia: getMusicMediaById(1),
