@@ -65,7 +65,7 @@ export interface Service {
     getOwnedTokens(creatorAddress: string): TokenOwnership[];
    
     // addListing adds a listing for a token a user owns
-    addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing   
+    addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing>
    
     // removeListing removes a listing for a token a user previously created
     removeListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing   

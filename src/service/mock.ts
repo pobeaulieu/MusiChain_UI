@@ -244,8 +244,19 @@ export class Mock implements Service {
         ];
     }
 
-    addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing {
+    async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {
         // Implement your mock logic here
+
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const currentAddress = accounts[0];
+            const tokenID = 1
+            const result = await (contractSaleInstance.methods.listToken as any)(tokenID, price, amount).send({ from: currentAddress });
+
+            console.log('Transaction was successful', result);
+        } catch (error) {
+            console.error('An error occurred', error);
+        }
         return {
             tokenId: 1,
             tokenName: "This is a name",

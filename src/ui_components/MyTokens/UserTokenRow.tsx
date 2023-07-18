@@ -1,13 +1,14 @@
 "use client"
 import { useState } from 'react';
-import { TokenOwnership, User } from '../../service/interface';
+import {Service, TokenOwnership, User} from '../../service/interface';
 import styles from './UserTokenRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
 interface UserTokenRowProps {
-    token: TokenOwnership;
-    loggedUser: User
+    service: Service,
+    token: TokenOwnership,
+    loggedUser: User,
     onPlayClick:(id : number)=> void
 }
 
@@ -20,6 +21,7 @@ export default function UserTokenRow(props : UserTokenRowProps){
 
     const addListing: any = () => {
         if (nbShare <= props.token.numberSharesOwned){
+            const tokens = props.service.addListing(props.loggedUser?.address, 1, price, nbShare)
             console.log("TODO... add listing " + nbShare + " shares of token " + props.token.tokenId + " at price " + price)
         }else{
             console.log("ERROR not enough shares owned")

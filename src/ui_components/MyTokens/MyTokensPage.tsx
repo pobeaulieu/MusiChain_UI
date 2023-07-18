@@ -21,7 +21,8 @@ export default function MyTokensPage(props: PageProps){
         const rows = [];
 
         for(let i = 0; i<tokens.length;i++){
-            rows.push(<UserTokenRow  onPlayClick={props.onPlayClick} key={tokens[i].tokenId} token={tokens[i]} loggedUser={props.loggedUser}/>);
+            rows.push(<UserTokenRow onPlayClick={props.onPlayClick} key={tokens[i].tokenId} token={tokens[i]}
+                                    loggedUser={props.loggedUser} service={props.service}/>);
         }
 
         setTokenList(tokens)
