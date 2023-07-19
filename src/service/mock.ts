@@ -6,9 +6,9 @@ import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x5bF3ec51A4aef9CBA7e3C1a2363e4679C82A421F";
+const contractBaseAddress = "0x38d2aCA3d05Eb715381142Ed91E8D55EA9CCcabF";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
-
+const creatorAddress = "74c58A723c45c6269fC7A8afaDb6C46EfB25944d" ;
 const contractSaleAddress = "0xcf87D49A4F27E3C315fEb28f05AedE7b69041731" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
@@ -190,59 +190,51 @@ export class Mock implements Service {
     }
 
 
-    getOwnedTokens(creatorAddress: string): TokenOwnership[] {
-        // Implement your mock logic here
-        return [
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-        ];
-    }
+    async  getOwnedTokens(creatorAddress: string): Promise<TokenOwnership[]> {
+        try {
+       
+          const accounts = await web3.eth.getAccounts();
+      
+          
+          const tokenOwnershipData = [];
+      
+          // Example token ownership data
+          tokenOwnershipData.push({
+            tokenId: 1,
+            musicMedia: getMusicMediaById(1),
+            name: 'Token Name',
+            numberSharesOwned: 5,
+            remainingDividendEligibleTickets: 5,
+            divPerShare: 0.005,
+          });
+          tokenOwnershipData.push({
+            tokenId: 2,
+            musicMedia: getMusicMediaById(2),
+            name: 'Token Name',
+            numberSharesOwned: 5,
+            remainingDividendEligibleTickets: 5,
+            divPerShare: 0.005,
+          });
+      
+          console.log('Token ownership data:', tokenOwnershipData);
+      
+          // Retrieve only the token IDs owned by the creatorAddress
+          const tokenIdsOwnedByCreator = tokenOwnershipData
+            .filter(token => token.musicMedia.creatorAddress === creatorAddress)
+            .map(token => token.tokenId);
+      
+          console.log('Token IDs owned by the creator:', tokenIdsOwnedByCreator);
+      
+          return tokenOwnershipData;
+        } catch (error) {
+          console.error('An error occurred', error);
+          throw error;
+        }
+      }
+      
+      
+      
+      
 
     async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {
         // Implement your mock logic here
