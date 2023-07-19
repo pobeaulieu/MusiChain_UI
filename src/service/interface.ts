@@ -78,7 +78,7 @@ export interface Service {
     getMarketListings(): Promise<Listing[]>
 
     // buy to buy from a listing created by another user
-    buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): TokenOwnership
+    buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): Promise<TokenOwnership>
 
 }
 

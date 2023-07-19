@@ -6,10 +6,10 @@ import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x5bF3ec51A4aef9CBA7e3C1a2363e4679C82A421F";
+const contractBaseAddress = "0xF03A961c8b5bcf22A15D1D081DEC65A8FBD5a014";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0xcf87D49A4F27E3C315fEb28f05AedE7b69041731" ;
+const contractSaleAddress = "0x9A29fe798a477e75BDC346B4be3FB5CA4c388607" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -52,8 +52,8 @@ export class Mock implements Service {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
-            const tokenID = 1
-            const result = await (contractBaseInstance.methods.mint as any)(tokenID, numShares, data).send({ from: currentAddress });
+            const tokenID = 2
+            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, data).send({ from: currentAddress });
 
             console.log('Transaction was successful', result);
         } catch (error) {
@@ -61,11 +61,11 @@ export class Mock implements Service {
         }
 
         return {
-            tokenId: 1,
+            tokenId: 2,
             musicMedia: getMusicMediaById(1),
             name: 'Token Name',
-            numberSharesCreated: 10,
-            initialTicketPool: 100,
+            numberSharesCreated: numShares,
+            initialTicketPool: initialTktPool,
             remainingDividendAvailableTickets: 100,
             dividendPerShare:  0.005
         };
@@ -416,8 +416,18 @@ export class Mock implements Service {
         }
     }
 
-    buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): TokenOwnership {
+    async buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): Promise<TokenOwnership> {
         // Implement your mock logic here
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const currentAddress = accounts[0];
+            const result = await (contractSaleInstance.methods.buyToken as any)(0).send({ from: currentAddress });
+
+            console.log('Transaction was successful', result);
+        } catch (error) {
+            console.error('An error occurred', error);
+        }
+
         return {
             tokenId: 1,
             musicMedia: getMusicMediaById(1),

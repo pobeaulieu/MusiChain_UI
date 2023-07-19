@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './MarketListingRow.module.css';
 import mainstyles from '../../App.module.css';
-import { Listing, User } from '../../service/interface';
+import {Listing, Service, User} from '../../service/interface';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { tokenToString } from 'typescript';
@@ -11,6 +11,7 @@ interface MarketListingRowProps {
     listing: Listing;
     loggedUser: User
     onPlayClick:(id : number)=> void
+    service : Service
 }
 
 export default function MarketListingRow(props: MarketListingRowProps) {
@@ -20,6 +21,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
 
     const buyShares: any = () => {
         if (nbShare <= props.listing.shares){
+            const transaction = props.service.buy(props.listing.tokenId, props.loggedUser?.address,props.listing.owner, props.listing.shares ,props.listing.price)
             console.log("TODO... buy " + nbShare + " shares of token " + props.listing.tokenId + " at price " + props.listing.price)
         }else{
             console.log("ERROR not enough shares available")
