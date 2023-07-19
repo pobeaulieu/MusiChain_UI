@@ -380,120 +380,40 @@ export class Mock implements Service {
         ];
     }
 
-    getMarketListings(): Listing[] {
-        // Implement your mock logic here
-        return [
-            {
-                tokenId: 1,
-                tokenName: "Name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 100,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 2,
-                tokenName: "Time",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(2),
-                price: 0.023,
-                shares: 200,
-                div: 0.0015,
-                remainingTicketPool: 20000
-            },
-            {
-                tokenId: 1,
-                tokenName: "Name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 100,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 2,
-                tokenName: "Time",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(2),
-                price: 0.023,
-                shares: 200,
-                div: 0.0015,
-                remainingTicketPool: 20000
-            },
-            {
-                tokenId: 1,
-                tokenName: "Name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 100,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 2,
-                tokenName: "Time",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(2),
-                price: 0.023,
-                shares: 200,
-                div: 0.0015,
-                remainingTicketPool: 20000
-            },
-            {
-                tokenId: 1,
-                tokenName: "Name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 100,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 2,
-                tokenName: "Time",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(2),
-                price: 0.023,
-                shares: 200,
-                div: 0.0015,
-                remainingTicketPool: 20000
-            },
-            {
-                tokenId: 1,
-                tokenName: "Name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 100,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 2,
-                tokenName: "Time",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(2),
-                price: 0.023,
-                shares: 200,
-                div: 0.0015,
-                remainingTicketPool: 20000
-            }
-        ];
+    async getMarketListings(): Promise<Listing[]> {
+        try {
+            const result = await (contractSaleInstance.methods.getListings as any)().call();
+            console.log('Transaction was successful', result);
+
+            // const listings = result.map((listing: any) => ({
+            //     tokenId: Number(listing.tokenId),
+            //     tokenName: listing.tokenName,
+            //     creator: listing.creator,
+            //     owner: listing.owner,
+            //     musicMedia: getMusicMediaById(Number(listing.musicMedia)),
+            //     price: Number(listing.price),
+            //     shares: Number(listing.amount),
+            //     div: Number(listing.div),
+            //     remainingTicketPool: Number(listing.remainingTicketPool)
+            // }));
+            const listings = result.map((listing: any) => ({
+                tokenId: Number(listing.tokenId),
+                tokenName: "Exemple",
+                creator: "0x0000",
+                owner: "0x111111",
+                musicMedia: 1,
+                price: Number(listing.price),
+                shares: Number(listing.amount),
+                div: 10,
+                remainingTicketPool: 50
+            }));
+
+
+            return listings;
+        } catch (error) {
+            console.error('An error occurred', error);
+            return [];
+        }
     }
 
     buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): TokenOwnership {

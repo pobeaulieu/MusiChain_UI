@@ -10,19 +10,20 @@ export default function Market(props:PageProps) {
     const [listingDisplay, setListingDisplay] = useState<Array<JSX.Element>>();
     const [listingList, setListingList] = useState<Listing[]>();
 
-
     useEffect(() => {
-        const listings = props.service.getMarketListings()
-        const rows = [];
+        async function fetchListings() {
+            const listings = await props.service.getMarketListings();
+            setListingList(listings);
 
-        for(let i = 0; i<listings.length;i++){
-            rows.push(<MarketListingRow onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
+            const rows = [];
+            for(let i = 0; i<listings.length;i++){
+                rows.push(<MarketListingRow onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
+            }
+            setListingDisplay(rows);
         }
 
-        setListingList(listings)
-        setListingDisplay(rows)
-
-    }, []); 
+        fetchListings(); // don't forget to call the function
+    }, [props]);
     return (
     <>
     <div className={styles.wrapper}>

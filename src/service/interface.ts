@@ -75,7 +75,7 @@ export interface Service {
 
     //------------------   Market Page  --------------------------
     // getMarketListings retrieves all the active listing created by other users
-    getMarketListings(): Listing[]
+    getMarketListings(): Promise<Listing[]>
 
     // buy to buy from a listing created by another user
     buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): TokenOwnership
