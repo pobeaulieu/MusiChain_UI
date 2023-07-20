@@ -190,7 +190,7 @@ export class Mock implements Service {
     }
 
 
-    getOwnedTokenmock(creatorAddress: string): TokenOwnership[] {
+    getOwnedTokens(creatorAddress: string): TokenOwnership[] {
         // Implement your mock logic here
         return [
             {
@@ -437,7 +437,7 @@ export class Mock implements Service {
             divPerShare: 0.005
         };
     }
-    async getOwnedTokens(contractAddress: string, ownerAddress: string): Promise<string[]> {
+    async getOwnedTokenstest(contractAddress: string, ownerAddress: string): Promise<string[]> {
         try {
             const result = await (contractSaleInstance.methods.getOwnedTokens as any)(contractAddress, ownerAddress).call();
             console.log('Transaction was successful', result);
