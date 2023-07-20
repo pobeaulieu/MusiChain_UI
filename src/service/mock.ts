@@ -441,4 +441,21 @@ export class Mock implements Service {
             divPerShare: 0.005
         };
     }
+    async getOwnedTokenstest(contractAddress: string, ownerAddress: string): Promise<string[]> {
+        try {
+            const result = await (contractSaleInstance.methods.getOwnedTokens as any)(contractAddress, ownerAddress).call();
+            console.log('Transaction was successful', result);
+    
+            // Convert the BigNumber token IDs to strings
+            const tokenIds = result.map((tokenId: any) => tokenId.toString());
+    
+            return tokenIds;
+        } catch (error) {
+            console.error('An error occurred', error);
+            return [];
+        }
+    }
+      
+   
+    
 }
