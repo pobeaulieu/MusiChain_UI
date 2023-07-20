@@ -21,7 +21,7 @@ export default function UserTokenRow(props : UserTokenRowProps){
 
     const addListing: any = () => {
         if (nbShare <= props.token.numberSharesOwned){
-            const tokens = props.service.addListing(props.loggedUser?.address, 1, price, nbShare)
+            const tokens = props.service.addListing(props.loggedUser?.address, props.token.tokenId, price, nbShare)
             console.log("TODO... add listing " + nbShare + " shares of token " + props.token.tokenId + " at price " + price)
         }else{
             console.log("ERROR not enough shares owned")

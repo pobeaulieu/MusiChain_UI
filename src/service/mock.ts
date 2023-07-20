@@ -58,7 +58,10 @@ export class Mock implements Service {
             let tokenId = web3.utils.hexToNumberString('0x' + tokenIdHex);
             let tokenIdNumber  = Number(tokenId)
             console.log("Token ID:", tokenId);
-            console.log('Transaction was successful', result);
+            console.log('Creation was successful', result);
+
+            const result2 = await this.addListing(currentAddress, tokenIdNumber, price, numShares)
+            console.log('Listing was successful', result2);
 
             return {
                 tokenId: tokenIdNumber,
@@ -254,21 +257,21 @@ export class Mock implements Service {
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
-            const tokenID = 1
-            const result = await (contractSaleInstance.methods.listToken as any)(tokenID, price, amount).send({ from: currentAddress });
+            const result = await (contractSaleInstance.methods.listToken as any)(tokenId, price, amount).send({ from: currentAddress });
 
             console.log('Transaction was successful', result);
         } catch (error) {
             console.error('An error occurred', error);
         }
+        const tokenName = await (contractBaseInstance.methods.getTokenName as any)(tokenId).call();
         return {
-            tokenId: 1,
-            tokenName: "This is a name",
+            tokenId: tokenId,
+            tokenName: tokenName,
             creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
             owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
             musicMedia: getMusicMediaById(1),
-            price: 10,
-            shares: 100,
+            price: price,
+            shares: amount,
             div: 0.005,
             remainingTicketPool: 50000
         };
