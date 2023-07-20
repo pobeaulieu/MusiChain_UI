@@ -6,10 +6,10 @@ import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0xF03A961c8b5bcf22A15D1D081DEC65A8FBD5a014";
+const contractBaseAddress = "0x74bDBcB22C4a05529B20B2EA56D2EB801D990E2e";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x9A29fe798a477e75BDC346B4be3FB5CA4c388607" ;
+const contractSaleAddress = "0xf19ebaBd620Ee3AcB2f96142dD612734FE4D14D2" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -52,23 +52,27 @@ export class Mock implements Service {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
-            const tokenID = 2
             const result = await (contractBaseInstance.methods.mint as any)(name, numShares, data).send({ from: currentAddress });
-
+            let mintLog = result.logs.find((log: { topics: string[]; }) => log.topics[0] === "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885");
+            let tokenIdHex = mintLog.data.slice(-64);
+            let tokenId = web3.utils.hexToNumberString('0x' + tokenIdHex);
+            let tokenIdNumber  = Number(tokenId)
+            console.log("Token ID:", tokenId);
             console.log('Transaction was successful', result);
+
+            return {
+                tokenId: tokenIdNumber,
+                musicMedia: getMusicMediaById(1),
+                name: name,
+                numberSharesCreated: numShares,
+                initialTicketPool: initialTktPool,
+                remainingDividendAvailableTickets: 100,
+                dividendPerShare:  0.005
+                };
         } catch (error) {
             console.error('An error occurred', error);
+            throw error;
         }
-
-        return {
-            tokenId: 2,
-            musicMedia: getMusicMediaById(1),
-            name: 'Token Name',
-            numberSharesCreated: numShares,
-            initialTicketPool: initialTktPool,
-            remainingDividendAvailableTickets: 100,
-            dividendPerShare:  0.005
-        };
     }
 
     getCreatedTokens(creatorAddress: string): TokenCreation[] {
