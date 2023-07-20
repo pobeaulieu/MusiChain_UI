@@ -6,10 +6,10 @@ import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0xF03A961c8b5bcf22A15D1D081DEC65A8FBD5a014";
+const contractBaseAddress = "0x38d2aCA3d05Eb715381142Ed91E8D55EA9CCcabF";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x9A29fe798a477e75BDC346B4be3FB5CA4c388607" ;
+const contractSaleAddress = "0x9A1F0BFd6C409dd9f20d5bdE5C9BE88F8654fcCc" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -190,58 +190,29 @@ export class Mock implements Service {
     }
 
 
-    getOwnedTokens(creatorAddress: string): TokenOwnership[] {
-        // Implement your mock logic here
-        return [
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
+    async  getOwnedTokens(contractAddress: string, ownerAddress: string): Promise<TokenOwnership[]> {
+        try {
+            const result = await (contractSaleInstance.methods.getOwnedTokens as any)(contractAddress, ownerAddress).call();
+            console.log('Transaction was successful', result);
+    
+            // Convert the BigNumber token IDs to strings
+            const tokenIds: string[] = result.map((tokenId: any) => tokenId.toString());
+    
+            // Create a mock TokenOwnership list with the provided properties
+            const tokenOwnershipList: TokenOwnership[] = tokenIds.map((tokenId: string) => ({
+                tokenId: Number(tokenId),
+                musicMedia: getMusicMediaById(Number(tokenId)),
                 name: 'Token Name',
                 numberSharesOwned: 5,
                 remainingDividendEligibleTickets: 5,
                 divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-        ];
+            }));
+    
+            return tokenOwnershipList;
+        } catch (error) {
+            console.error('An error occurred', error);
+            return [];
+        }
     }
 
     async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {

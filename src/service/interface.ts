@@ -62,7 +62,7 @@ export interface Service {
      
      // ------------------   My Tokens Page ------------------------
     // getOwnedTokens retrieves all the tokens a user owns
-    getOwnedTokens(creatorAddress: string): TokenOwnership[] ;
+    getOwnedTokens(contractAddress: string, ownerAddress: string): Promise<TokenOwnership[]> ;
     getOwnedTokenstest(contractAddress: string, ownerAddress: string): Promise<string[]>;
    
     // addListing adds a listing for a token a user owns
