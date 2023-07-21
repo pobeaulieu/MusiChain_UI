@@ -5,11 +5,13 @@ import styles from './UserTokenRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
+
 interface UserTokenRowProps {
     service: Service,
     token: TokenOwnership,
-    loggedUser: User,
+    loggedUser: User,    
     onPlayClick:(id : number)=> void
+    
 }
 
 
