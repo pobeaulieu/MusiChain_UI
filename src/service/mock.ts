@@ -6,10 +6,10 @@ import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x74bDBcB22C4a05529B20B2EA56D2EB801D990E2e";
+const contractBaseAddress = "0x7E5e038d11F0280D7f37adEBc10a95Fb4e92a0fD";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0xf19ebaBd620Ee3AcB2f96142dD612734FE4D14D2" ;
+const contractSaleAddress = "0xb95E3597b6F172Ba2f8aa0673e3794465DA3D82A" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -263,12 +263,15 @@ export class Mock implements Service {
         } catch (error) {
             console.error('An error occurred', error);
         }
-        const tokenName = await (contractBaseInstance.methods.getTokenName as any)(tokenId).call();
+        const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+        const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
+        const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+
         return {
             tokenId: tokenId,
             tokenName: tokenName,
-            creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-            owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
+            creator:creator,
+            owner: owner,
             musicMedia: getMusicMediaById(1),
             price: price,
             shares: amount,
@@ -390,32 +393,30 @@ export class Mock implements Service {
     async getMarketListings(): Promise<Listing[]> {
         try {
             const result = await (contractSaleInstance.methods.getListings as any)().call();
-            console.log('Transaction was successful', result);
 
-            // const listings = result.map((listing: any) => ({
-            //     tokenId: Number(listing.tokenId),
-            //     tokenName: listing.tokenName,
-            //     creator: listing.creator,
-            //     owner: listing.owner,
-            //     musicMedia: getMusicMediaById(Number(listing.musicMedia)),
-            //     price: Number(listing.price),
-            //     shares: Number(listing.amount),
-            //     div: Number(listing.div),
-            //     remainingTicketPool: Number(listing.remainingTicketPool)
-            // }));
-            const listings = result.map((listing: any) => ({
-                tokenId: Number(listing.tokenId),
-                tokenName: "Exemple",
-                creator: "0x0000",
-                owner: "0x111111",
-                musicMedia: 1,
-                price: Number(listing.price),
-                shares: Number(listing.amount),
-                div: 10,
-                remainingTicketPool: 50
-            }));
+            const listings: Listing[] = [];
+            for (let listing of result) {
+                const tokenId = Number(listing.tokenId);
 
+                const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+                const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
+                const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+                const musicMedia = getMusicMediaById(1);
 
+                listings.push({
+                    tokenId: tokenId,
+                    tokenName: tokenName,
+                    creator: creator,
+                    owner: owner,
+                    musicMedia: musicMedia,
+                    price: Number(listing.price),
+                    shares: Number(listing.amount),
+                    div: 10,
+                    remainingTicketPool: 50
+                });
+            }
+
+            console.log('Transaction was successful', listings);
             return listings;
         } catch (error) {
             console.error('An error occurred', error);
