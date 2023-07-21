@@ -195,61 +195,54 @@ export class Mock implements Service {
     payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[] {
         throw new Error("Method not implemented.");
     }
-
-
-    getOwnedTokens(creatorAddress: string): TokenOwnership[] {
-        // Implement your mock logic here
-        return [
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesOwned: 5,
-                remainingDividendEligibleTickets: 5,
-                divPerShare: 0.005
-            },
-        ];
-    }
+    
+   
+    
+    async  getOwnedTokens(): Promise<TokenOwnership[]> {
+        try {
+          const accounts = await web3.eth.getAccounts();
+          const currentAddress = accounts[0];
+      
+          const tokenIds: number[] = await contractBaseInstance.methods.getOwnedTokens().call({ from: currentAddress });
+      
+          const tokenOwnershipList: TokenOwnership[] = await Promise.all(
+            tokenIds.map(async (tokenId: number) => {
+              try {
+                const name = await (contractBaseInstance.methods.getTokenName as any)(tokenId).call();
+                const remainingDividendEligibleTickets = 0; // Replace with the actual value from the contract
+                const divPerShare = 0; // Replace with the actual value from the contract
+                const musicMedia = await getMusicMediaById(tokenId); // Use await here to get the resolved value
+      
+                return {
+                  tokenId: tokenId,
+                  musicMedia: musicMedia,
+                  name: name,
+                  numberSharesOwned: 0, // Replace with the actual value from the contract or other relevant data source
+                  remainingDividendEligibleTickets: remainingDividendEligibleTickets,
+                  divPerShare: divPerShare,
+                };
+              } catch (error) {
+                console.error(`An error occurred while processing token ID ${tokenId}:`, error);
+                throw error;
+              }
+            })
+          );
+      
+          return tokenOwnershipList;
+        } catch (error) {
+          console.error('An error occurred while fetching owned tokens:', error);
+          throw error;
+        }
+      }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {
         // Implement your mock logic here
@@ -427,6 +420,7 @@ export class Mock implements Service {
     async buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): Promise<TokenOwnership> {
         // Implement your mock logic here
         try {
+            
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             const result = await (contractSaleInstance.methods.buyToken as any)(0).send({ from: currentAddress });
