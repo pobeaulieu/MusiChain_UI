@@ -4,6 +4,7 @@ import { Listing, Service, TokenCreation, TokenOwnership, User } from "./interfa
 import { getMusicMediaById } from "./musicMedia/MusicMediaCache";
 import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
+import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
 const contractBaseAddress = "0x7E5e038d11F0280D7f37adEBc10a95Fb4e92a0fD";
@@ -49,6 +50,10 @@ export class Mock implements Service {
         // Implement your mock logic here
 
         try {
+
+            const ipfsPaths = await uploadToIpfs(mp3, img)
+            console.log(ipfsPaths)
+
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
