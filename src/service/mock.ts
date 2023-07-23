@@ -7,10 +7,10 @@ import contractSaleAbi from './contracts/Sale.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x7E5e038d11F0280D7f37adEBc10a95Fb4e92a0fD";
+const contractBaseAddress = "0xF54cd9c3324F560A42C4E053Ac24E47d75DaBAa3";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0xb95E3597b6F172Ba2f8aa0673e3794465DA3D82A" ;
+const contractSaleAddress = "0xAf4F11aDb1C5e7742D5bc0Bdc9Ad8707183a5aa5" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -57,7 +57,8 @@ export class Mock implements Service {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
-            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, data).send({ from: currentAddress });
+            let ipfs = String(ipfsPaths)
+            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, data).send({ from: currentAddress });
             let mintLog = result.logs.find((log: { topics: string[]; }) => log.topics[0] === "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885");
             let tokenIdHex = mintLog.data.slice(-64);
             let tokenId = web3.utils.hexToNumberString('0x' + tokenIdHex);
