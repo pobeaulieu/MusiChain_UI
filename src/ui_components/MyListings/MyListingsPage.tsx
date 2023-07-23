@@ -6,6 +6,8 @@ import { Listing, TokenOwnership } from "../../service/interface";
 
 import UserListingRow from "./UserListingTableRow";
 import { useHistory } from "react-router-dom";
+import UserTokenRow from "../MyTokens/UserTokenRow";
+import MarketListingRow from "../Market/MarketListingRow";
 
 export default function MyListingsPage(props: PageProps){
     const history = useHistory();
@@ -18,20 +20,19 @@ export default function MyListingsPage(props: PageProps){
     const [listingList, setListingList] = useState<Listing[]>();
 
     useEffect(() => {
-        const listings = props.service.getUserListings(props.loggedUser?.address)
-        const lrows = [];
+        async function fetchListings() {
+            const listings = await props.service.getUserListings();
+            setListingList(listings);
 
-        for(let i = 0; i<listings.length;i++){
-            lrows.push(<UserListingRow  onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser}/>);
+            const rows = [];
+            for(let i = 0; i<listings.length;i++){
+                rows.push(<UserListingRow onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser} service={props.service}/>);
+            }
+            setListingDisplay(rows);
         }
 
-        setListingList(listings)
-        setListingDisplay(lrows)
-
-
-
-
-    }, []); 
+        fetchListings(); // don't forget to call the function
+    }, [props]);
 
 
     return (<>

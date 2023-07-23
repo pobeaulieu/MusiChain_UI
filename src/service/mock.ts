@@ -7,10 +7,10 @@ import contractSaleAbi from './contracts/Sale.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x9490a534E10358E30d722c9CB7A92f8Cdb280608";
+const contractBaseAddress = "0x24e542954DEEAf07715B138d3C26C39b97Aeaa58";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x412D6fa069f26fA811412666F81f8FdA3E273dF7" ;
+const contractSaleAddress = "0xeE2237565Ac037F0AdeB76DC4d4517810AA68E37" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -273,109 +273,41 @@ export class Mock implements Service {
     }
 
 
-    getUserListings(ownerAddress: string): Listing[] {
-        // Implement your mock logic here
-        return [
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
-            },
-            {
-                tokenId: 1,
-                tokenName: "This is a name",
-                creator:"0xEBe80D3bCfD63698a3A332D9Aad920b44Db70323",
-                owner: "0x23A9d1498E445f66C98D771eBb8Bf9FA3478FF20",
-                musicMedia: getMusicMediaById(1),
-                price: 0.04,
-                shares: 1000,
-                div: 0.005,
-                remainingTicketPool: 50000
+    async getUserListings(): Promise<Listing[]> {
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const currentAddress = accounts[0];
+            const result = await (contractSaleInstance.methods.getListingsByUser as any)(currentAddress).call({ from: currentAddress });
+
+            const listings: Listing[] = [];
+            for (let listing of result) {
+                const tokenId = Number(listing.tokenId);
+
+                const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+                const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
+                const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+                const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const musicMedia = getMusicMediaById(1);
+
+                listings.push({
+                    tokenId: tokenId,
+                    tokenName: tokenName,
+                    creator: creator,
+                    owner: owner,
+                    musicMedia: musicMedia,
+                    price: Number(listing.price),
+                    shares: Number(listing.amount),
+                    div: 10,
+                    remainingTicketPool: 50
+                });
             }
-        ];
+
+            console.log('Transaction was successful', listings);
+            return listings;
+        } catch (error) {
+            console.error('An error occurred', error);
+            return [];
+        }
     }
 
     async buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): Promise<TokenOwnership> {
@@ -436,21 +368,5 @@ export class Mock implements Service {
             return [];
         }
     }
-    async getOwnedTokenstest(contractAddress: string, ownerAddress: string): Promise<string[]> {
-        try {
-            const result = await (contractSaleInstance.methods.getOwnedTokens as any)(contractAddress, ownerAddress).call();
-            console.log('Transaction was successful', result);
-    
-            // Convert the BigNumber token IDs to strings
-            const tokenIds = result.map((tokenId: any) => tokenId.toString());
-    
-            return tokenIds;
-        } catch (error) {
-            console.error('An error occurred', error);
-            return [];
-        }
-    }
-      
-   
-    
+
 }

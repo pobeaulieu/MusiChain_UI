@@ -62,9 +62,8 @@ export interface Service {
      
      // ------------------   My Tokens Page ------------------------
     // getOwnedTokens retrieves all the tokens a user owns
-      getOwnedTokens(): Promise<TokenOwnership[]> ;
-    getOwnedTokenstest(contractAddress: string, ownerAddress: string): Promise<string[]>;
-   
+    getOwnedTokens(): Promise<TokenOwnership[]> ;
+
     // addListing adds a listing for a token a user owns
     addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing>
    
@@ -72,7 +71,7 @@ export interface Service {
     removeListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing   
     
     // getUserListings retrieves all the listing created from the address provided
-    getUserListings(ownerAddress: string): Listing[]
+    getUserListings(): Promise<Listing[]>
 
     //------------------   Market Page  --------------------------
     // getMarketListings retrieves all the active listing created by other users

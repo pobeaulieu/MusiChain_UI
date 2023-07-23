@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Listing, User } from "../../service/interface";
+import {Listing, Service, User} from "../../service/interface";
 import styles from './UserListingRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button, CloseButtonProps } from "react-bootstrap";
@@ -11,6 +11,7 @@ interface UserListingRowProps {
     listing: Listing;
     loggedUser: User
     onPlayClick:(id : number)=> void
+    service: Service
 }
 
 
