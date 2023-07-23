@@ -7,10 +7,10 @@ import contractSaleAbi from './contracts/Sale.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0xF54cd9c3324F560A42C4E053Ac24E47d75DaBAa3";
+const contractBaseAddress = "0x9490a534E10358E30d722c9CB7A92f8Cdb280608";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0xAf4F11aDb1C5e7742D5bc0Bdc9Ad8707183a5aa5" ;
+const contractSaleAddress = "0x412D6fa069f26fA811412666F81f8FdA3E273dF7" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -52,18 +52,15 @@ export class Mock implements Service {
         try {
 
             const ipfsPaths = await uploadToIpfs(mp3, img)
-            console.log(ipfsPaths)
-
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
-            let ipfs = String(ipfsPaths)
+            let ipfs = String(ipfsPaths.mp3Url.replace('/music.mp3', ''))
             const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, data).send({ from: currentAddress });
             let mintLog = result.logs.find((log: { topics: string[]; }) => log.topics[0] === "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885");
             let tokenIdHex = mintLog.data.slice(-64);
             let tokenId = web3.utils.hexToNumberString('0x' + tokenIdHex);
             let tokenIdNumber  = Number(tokenId)
-            console.log("Token ID:", tokenId);
             console.log('Creation was successful', result);
 
             const result2 = await this.addListing(currentAddress, tokenIdNumber, price, numShares)
@@ -201,29 +198,28 @@ export class Mock implements Service {
     payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[] {
         throw new Error("Method not implemented.");
     }
-    
-   
-    
+
     async  getOwnedTokens(): Promise<TokenOwnership[]> {
         try {
           const accounts = await web3.eth.getAccounts();
           const currentAddress = accounts[0];
-      
-          const tokenIds: number[] = await contractBaseInstance.methods.getOwnedTokens().call({ from: currentAddress });
-      
-          const tokenOwnershipList: TokenOwnership[] = await Promise.all(
+
+          const tokenIds: number[] = await (contractBaseInstance.methods.getOwnedTokens as any)(currentAddress).call({ from: currentAddress });
+
+            const tokenOwnershipList: TokenOwnership[] = await Promise.all(
             tokenIds.map(async (tokenId: number) => {
               try {
-                const name = await (contractBaseInstance.methods.getTokenName as any)(tokenId).call();
-                const remainingDividendEligibleTickets = 0; // Replace with the actual value from the contract
-                const divPerShare = 0; // Replace with the actual value from the contract
-                const musicMedia = await getMusicMediaById(tokenId); // Use await here to get the resolved value
-      
+                const name = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+                const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const remainingDividendEligibleTickets = 0;
+                const divPerShare = 0;
+                const musicMedia = getMusicMediaById(1);
+
                 return {
                   tokenId: tokenId,
                   musicMedia: musicMedia,
                   name: name,
-                  numberSharesOwned: 0, // Replace with the actual value from the contract or other relevant data source
+                  numberSharesOwned: 0,
                   remainingDividendEligibleTickets: remainingDividendEligibleTickets,
                   divPerShare: divPerShare,
                 };
@@ -233,22 +229,13 @@ export class Mock implements Service {
               }
             })
           );
-      
+
           return tokenOwnershipList;
         } catch (error) {
           console.error('An error occurred while fetching owned tokens:', error);
           throw error;
         }
       }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {
         // Implement your mock logic here
@@ -265,6 +252,8 @@ export class Mock implements Service {
         const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
         const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
         const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+        const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+
 
         return {
             tokenId: tokenId,
@@ -389,6 +378,30 @@ export class Mock implements Service {
         ];
     }
 
+    async buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): Promise<TokenOwnership> {
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+            const currentAddress = accounts[0];
+            const result = await (contractSaleInstance.methods.buyToken as any)(0).send({ from: currentAddress });
+            const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+
+            console.log('Transaction was successful', result);
+            return {
+                tokenId: tokenId,
+                musicMedia: getMusicMediaById(1),
+                name: tokenName,
+                numberSharesOwned: 5,
+                remainingDividendEligibleTickets: 5,
+                divPerShare: 0.005
+            };
+        } catch (error) {
+            console.error('An error occurred', error);
+            return Promise.reject(error);
+        }
+    }
+
+
     async getMarketListings(): Promise<Listing[]> {
         try {
             const result = await (contractSaleInstance.methods.getListings as any)().call();
@@ -400,6 +413,7 @@ export class Mock implements Service {
                 const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+                const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
                 const musicMedia = getMusicMediaById(1);
 
                 listings.push({
@@ -421,29 +435,6 @@ export class Mock implements Service {
             console.error('An error occurred', error);
             return [];
         }
-    }
-
-    async buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): Promise<TokenOwnership> {
-        // Implement your mock logic here
-        try {
-            
-            const accounts = await web3.eth.getAccounts();
-            const currentAddress = accounts[0];
-            const result = await (contractSaleInstance.methods.buyToken as any)(0).send({ from: currentAddress });
-
-            console.log('Transaction was successful', result);
-        } catch (error) {
-            console.error('An error occurred', error);
-        }
-
-        return {
-            tokenId: 1,
-            musicMedia: getMusicMediaById(1),
-            name: 'Token Name',
-            numberSharesOwned: 5,
-            remainingDividendEligibleTickets: 5,
-            divPerShare: 0.005
-        };
     }
     async getOwnedTokenstest(contractAddress: string, ownerAddress: string): Promise<string[]> {
         try {

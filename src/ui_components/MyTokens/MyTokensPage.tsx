@@ -12,7 +12,7 @@ export default function MyTokensPage(props: PageProps) {
     //const [tokenList, setTokenList] = useState<Listing[]>(); // Update the type
     const [tokenList, setTokenList] = useState<TokenOwnership[]>();
     useEffect(() => {
-        async function fetchListings() {
+        async function fetchTokens() {
             try {
               const tokenlistings = await props.service.getOwnedTokens();
               setTokenList(tokenlistings);
@@ -34,8 +34,8 @@ export default function MyTokensPage(props: PageProps) {
               console.error("An error occurred while fetching owned tokens:", error);
             }
           }
-          
-          fetchListings(); 
+
+        fetchTokens();
     }, [props]);
     
   
