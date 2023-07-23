@@ -10,13 +10,12 @@ interface UserTokenRowProps {
     service: Service,
     token: TokenOwnership,
     loggedUser: User,    
-    onPlayClick:(id : number)=> void
+    onPlayClick:(url : string)=> void
     
 }
 
 
 export default function UserTokenRow(props : UserTokenRowProps){
-    const [audioMenu, isAudioMenu] = useState(false);
     const [nbShare, setNbShare] = useState<number>(0);
     const [price, setPrice] = useState<number>(0.0);
 
@@ -33,7 +32,7 @@ export default function UserTokenRow(props : UserTokenRowProps){
     <>
         <tr className={styles.row}>
                    <td className={styles.cell}>
-            <img className={styles.img} src={props.token.musicMedia.image} />
+            <img className={styles.img} src={`${props.token.mediaIpfsUrl}/image.png`} />
             </td>
             <td className={styles.cell}>{props.token.name}</td>
             <td className={styles.cell}>{props.token.numberSharesOwned}</td>
@@ -53,7 +52,7 @@ export default function UserTokenRow(props : UserTokenRowProps){
                 <td className={`${styles.cell} ${styles.preview}`}>
                     <Button className={mainstyles.button} onClick={() =>addListing()}>Add listing</Button>
                 </td></>
-                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.tokenId)}><FaPlay></FaPlay></button></td>
+                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.mediaIpfsUrl)}><FaPlay></FaPlay></button></td>
 
         </tr> 
     </>
