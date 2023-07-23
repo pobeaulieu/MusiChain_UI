@@ -7,27 +7,22 @@ export class User{
     }
 }
 
-export interface MusicMedia {
-    id: number;
-    song:  any;
-    image:  any;
-}
 
 export interface Listing{
     tokenId: number
     tokenName: string
     creator: string
     owner: string
-    musicMedia: MusicMedia
+    mediaIpfsUrl: string
     price: number,
     shares: number,
-    div:number,
+    divPerShare:number,
     remainingTicketPool: number
 }
 
 export interface TokenOwnership{
     tokenId: number,
-    musicMedia: MusicMedia
+    mediaIpfsUrl: string
     name: string,
     numberSharesOwned: number,
     remainingDividendEligibleTickets: number, 
@@ -36,7 +31,7 @@ export interface TokenOwnership{
 
 export interface TokenCreation{
     tokenId: number, 
-    musicMedia: MusicMedia
+    mediaIpfsUrl: string
     name: string, 
     numberSharesCreated: number
     initialTicketPool: number,

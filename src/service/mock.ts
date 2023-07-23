@@ -1,16 +1,15 @@
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 import { Listing, Service, TokenCreation, TokenOwnership, User } from "./interface";
-import { getMusicMediaById } from "./musicMedia/MusicMediaCache";
 import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x4Db4aa3A7301e55731fDadB21950d15B4fF8D5fD";
+const contractBaseAddress = "0x2223C966Ca64835289b5aD329fee76473F0c9196";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x43d614917c241a7385f648Df5ea5DD4f2B8f17d9" ;
+const contractSaleAddress = "0x8C7350b70a09Ee913b47ce1b7Fe011CE68F84b5c" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -68,7 +67,7 @@ export class Mock implements Service {
 
             return {
                 tokenId: tokenIdNumber,
-                musicMedia: getMusicMediaById(1),
+                mediaIpfsUrl: ipfs,
                 name: name,
                 numberSharesCreated: numShares,
                 initialTicketPool: initialTktPool,
@@ -92,17 +91,19 @@ export class Mock implements Service {
             const tokenCreatedList: TokenCreation[] = await Promise.all(
                 tokenIds.map(async (tokenId: number) => {
                     try {
+                        console.log("HELLO")
                         const name = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
                         const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                        console.log(ipfs)
                         const remainingDividendEligibleTickets = 0;
                         const divPerShare = 0;
                         const initalPool = 0;
                         const numShares = 0;
-                        const musicMedia = getMusicMediaById(1);
+        
 
                         return {
                             tokenId: tokenId,
-                            musicMedia: musicMedia,
+                            mediaIpfsUrl: ipfs,
                             name: name,
                             numberSharesCreated: numShares,
                             initialTicketPool: initalPool,
@@ -141,11 +142,11 @@ export class Mock implements Service {
                 const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
                 const remainingDividendEligibleTickets = 0;
                 const divPerShare = 0;
-                const musicMedia = getMusicMediaById(1);
+        
 
                 return {
                   tokenId: tokenId,
-                  musicMedia: musicMedia,
+                  mediaIpfsUrl: ipfs,
                   name: name,
                   numberSharesOwned: 0,
                   remainingDividendEligibleTickets: remainingDividendEligibleTickets,
@@ -188,10 +189,10 @@ export class Mock implements Service {
             tokenName: tokenName,
             creator:creator,
             owner: owner,
-            musicMedia: getMusicMediaById(1),
+            mediaIpfsUrl: ipfs,
             price: price,
             shares: amount,
-            div: 0.005,
+            divPerShare: 0.005,
             remainingTicketPool: 50000
         };
     }
@@ -215,17 +216,16 @@ export class Mock implements Service {
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
                 const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
-                const musicMedia = getMusicMediaById(1);
 
                 listings.push({
                     tokenId: tokenId,
                     tokenName: tokenName,
                     creator: creator,
                     owner: owner,
-                    musicMedia: musicMedia,
+                    mediaIpfsUrl: ipfs,
                     price: Number(listing.price),
                     shares: Number(listing.amount),
-                    div: 10,
+                    divPerShare: 10,
                     remainingTicketPool: 50
                 });
             }
@@ -249,7 +249,7 @@ export class Mock implements Service {
             console.log('Transaction was successful', result);
             return {
                 tokenId: tokenId,
-                musicMedia: getMusicMediaById(1),
+                mediaIpfsUrl: ipfs,
                 name: tokenName,
                 numberSharesOwned: 5,
                 remainingDividendEligibleTickets: 5,
@@ -274,17 +274,16 @@ export class Mock implements Service {
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
                 const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
-                const musicMedia = getMusicMediaById(1);
 
                 listings.push({
                     tokenId: tokenId,
                     tokenName: tokenName,
                     creator: creator,
                     owner: owner,
-                    musicMedia: musicMedia,
+                    mediaIpfsUrl: ipfs,
                     price: Number(listing.price),
                     shares: Number(listing.amount),
-                    div: 10,
+                    divPerShare: 10,
                     remainingTicketPool: 50
                 });
             }

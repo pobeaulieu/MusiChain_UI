@@ -10,13 +10,11 @@ import { FaPlay } from 'react-icons/fa';
 interface MarketListingRowProps {
     listing: Listing;
     loggedUser: User
-    onPlayClick:(id : number)=> void
+    onPlayClick:(url : string)=> void
     service : Service
 }
 
 export default function MarketListingRow(props: MarketListingRowProps) {
-    const [audioMenu, isAudioMenu] = useState(false);
-    const history = useHistory();
     const [nbShare, setNbShare] = useState<number>(0);
 
     const buyShares: any = () => {
@@ -31,14 +29,14 @@ export default function MarketListingRow(props: MarketListingRowProps) {
     return (
         <tr className={styles.row} key={props.listing.tokenId}>
             <td className={styles.cell}>
-                <img className={styles.img} alt={`cover`} src={props.listing.musicMedia.image} />
+                <img className={styles.img} alt={`cover`} src={`${props.listing.mediaIpfsUrl}/image.png`} />
             </td>
             <td className={styles.cell}>{props.listing.tokenName}</td>
             <td className={styles.cell}>{props.listing.price + " ETH"}</td>
             <td className={styles.cell}>{props.listing.shares}</td>
-            <td className={styles.cell}>{props.listing.div + " ETH"}</td>
+            <td className={styles.cell}>{props.listing.divPerShare + " ETH"}</td>
             <td className={styles.cell}>{props.listing.remainingTicketPool}</td>
-            <td className={styles.cell}>{props.listing.remainingTicketPool * props.listing.div + " ETH"}</td>
+            <td className={styles.cell}>{props.listing.remainingTicketPool * props.listing.divPerShare + " ETH"}</td>
 
             {props.loggedUser?.address !== "" && (
                 <><td className={`${styles.cell} ${styles.preview}`}>
@@ -51,7 +49,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
                         <Button className={mainstyles.button} onClick={() =>buyShares()}>Buy Shares</Button>
                     </td></>
             )}
-                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.tokenId)}><FaPlay onClick={() => props.onPlayClick(props.listing.tokenId)}></FaPlay></button></td>
+                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.mediaIpfsUrl)}><FaPlay onClick={() => props.onPlayClick(props.listing.mediaIpfsUrl)}></FaPlay></button></td>
         </tr>
 
     );

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './CreateNewTokenPage.module.css';
 import mainstyles from '../../App.module.css';
 import { Spinner } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { PageProps } from '../../App';
 
 
@@ -16,6 +16,7 @@ export default function CreateNewTokenPage(props:PageProps) {
     const [div, setDiv] = useState<number>(0.0);
     const [initTicketPool, setInitticketPool] = useState<number>(0.0);
     const [loading, setLoading] = useState(false);
+    const history = useHistory();
 
     const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -37,9 +38,16 @@ export default function CreateNewTokenPage(props:PageProps) {
             let musicInput:any = form.elements.namedItem("musicPreview")!;
             let imageInput:any = form.elements.namedItem("tokenImg")!;
             
-            const createdTokens = props.service.createTokens(props.loggedUser?.address, name, nbShare, initPrice, div, initTicketPool, musicInput.files[0], imageInput.files[0])
+            const createdTokens = await props.service.createTokens(props.loggedUser?.address, name, nbShare, initPrice, div, initTicketPool, musicInput.files[0], imageInput.files[0])
 
             console.log(createdTokens)
+
+
+            if (createdTokens?.tokenId > 0){
+                history.push("/creator");
+            }
+
+    
         }
 
         setLoading(false);

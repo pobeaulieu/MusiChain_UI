@@ -11,11 +11,10 @@ import { FaPlay } from 'react-icons/fa';
 interface TokenCreationRowProps {
     token: TokenCreation;
     service: Service;
-    onPlayClick:(id : number)=> void
+    onPlayClick:(url :string)=> void
 }
 
 export default function TokenCreationRow(props : TokenCreationRowProps){
-    const [audioMenu, isAudioMenu] = useState(false);
     const [nbTickets, setNbTickets] = useState<number>(0);
     
     const payDividends: any = () => {
@@ -28,7 +27,7 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
 
         <tr className={styles.row}>
             <td className={styles.cell}>
-            <img className={styles.img} alt={`cover`} src={props.token.musicMedia.image} />
+            <img className={styles.img} alt={`cover`} src={`${props.token.mediaIpfsUrl}/image.png`} />
             </td>
             <td className={styles.cell}>{props.token.name}</td>
             <td className={styles.cell}>{props.token.numberSharesCreated}</td>
@@ -45,7 +44,7 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
                 <td className={styles.cell}>{props.token.dividendPerShare * nbTickets + " ETH"}</td><td className={`${styles.cell} ${styles.preview}`}>
                         <Button className={mainstyles.button} onClick={() =>payDividends()}>Pay dividends</Button>
                     </td>
-                    <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.tokenId)}><FaPlay></FaPlay></button></td>
+                    <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.mediaIpfsUrl)}><FaPlay></FaPlay></button></td>
 
          
         </tr>

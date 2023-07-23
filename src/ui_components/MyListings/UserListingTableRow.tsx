@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {Listing, Service, User} from "../../service/interface";
 import styles from './UserListingRow.module.css';
-import mainstyles from '../../App.module.css';
 import { Button, CloseButtonProps } from "react-bootstrap";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaPlay } from "react-icons/fa";
@@ -10,7 +9,7 @@ import { FaPlay } from "react-icons/fa";
 interface UserListingRowProps {
     listing: Listing;
     loggedUser: User
-    onPlayClick:(id : number)=> void
+    onPlayClick:(url : string)=> void
     service: Service
 }
 
@@ -21,11 +20,10 @@ const removeListing: any = () => {
 }
 
 export default function UserListingRow(props : UserListingRowProps){
-    const [audioMenu, isAudioMenu] = useState(false);
     return (
         <tr className={styles.row}>
                    <td className={styles.cell}>
-            <img className={styles.img} src={props.listing.musicMedia.image} />
+            <img className={styles.img} src={`${props.listing.mediaIpfsUrl}/image.png`} />
             </td>
             <td className={styles.cell}>{props.listing.tokenName}</td>
             <td className={styles.cell}>{props.listing.shares}</td>
@@ -35,7 +33,7 @@ export default function UserListingRow(props : UserListingRowProps){
             <td className={`${styles.cell} ${styles.preview}`}>
                     <Button className={styles.trashBtn} variant="danger" onClick={() =>removeListing()}><BsFillTrashFill onClick={() =>removeListing()} /> </Button>
                 </td>
-                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.tokenId)}><FaPlay></FaPlay></button></td>
+                <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.listing.mediaIpfsUrl )}><FaPlay></FaPlay></button></td>
 
         </tr> 
     );

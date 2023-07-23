@@ -3,7 +3,8 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: max-content 1fr max-content;
 
-    padding-top:8rem;}
+    padding-top:8rem;
+    padding-bottom: 200px;}
 
 .wrapper{
     padding-top:1rem;

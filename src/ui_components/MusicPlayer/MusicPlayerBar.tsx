@@ -1,26 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getMusicMediaById, MusicMedia } from "../../service/musicMedia/MusicMediaCache";
 import "./MusicPlayerBar.css";
-import logo from "./logo.png";
-import { Link, useHistory } from "react-router-dom";
 import { FaPlay, FaPause } from "react-icons/fa";
 
-const MusicPlayerBar = (props: any) => {
-  const [musicMedia, setMusicMedia] = useState<MusicMedia>();
+interface MusicPlayerBarProps {
+  mediaUrl: string;
+}
+const MusicPlayerBar = (props: MusicPlayerBarProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
-    setMusicMedia(getMusicMediaById(props.songId));
+
     if (audioRef.current) {
-    audioRef.current.src = getMusicMediaById(props.songId)?.song;
+    audioRef.current.src = `${props.mediaUrl}/music.mp3`;
     audioRef.current.play();
     }
 
     setIsPlaying(false); // Pause the current song when it changes
-  }, [props.songId]);
+  }, [props]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -62,7 +61,7 @@ const MusicPlayerBar = (props: any) => {
 
   return (
     <div className="playerBar">
-      <img className="img" alt={`cover`} src={getMusicMediaById(props.songId)?.image} />
+      <img className="img" alt={`cover`} src={`${props.mediaUrl}/image.png`} />
       <div className="controller">
         <div className="playButton" onClick={togglePlay}>
           {!isPlaying ? <FaPause /> : <FaPlay />}
