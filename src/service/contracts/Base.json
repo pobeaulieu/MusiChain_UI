@@ -192,25 +192,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "balanceOfToken",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "address",
 				"name": "owner",
 				"type": "address"
@@ -235,12 +216,12 @@
 				"type": "uint256"
 			}
 		],
-		"name": "getOwnerAddresses",
+		"name": "getOwnerOfToken",
 		"outputs": [
 			{
-				"internalType": "address[]",
+				"internalType": "address",
 				"name": "",
-				"type": "address[]"
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -249,17 +230,17 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
 			}
 		],
-		"name": "getOwnerOfToken",
+		"name": "getTokensCreatedBy",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "uint256[]",
 				"name": "",
-				"type": "address"
+				"type": "uint256[]"
 			}
 		],
 		"stateMutability": "view",

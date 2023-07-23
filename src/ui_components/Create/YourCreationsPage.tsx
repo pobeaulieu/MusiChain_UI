@@ -6,6 +6,7 @@ import TokenCreationRow from "./TokenCreationRow";
 import { useEffect, useState } from "react";
 import { TokenCreation} from "../../service/interface";
 import { PageProps } from "../../App";
+import UserListingRow from "../MyListings/UserListingTableRow";
 
 
 
@@ -15,17 +16,19 @@ export default function YourCreationsPage(props: PageProps) {
     const [tokenList, setTokenList] = useState<TokenCreation[]>();
 
     useEffect(() => {
-        const tokens = props.service.getCreatedTokens(props.loggedUser?.address)
-        const rows = [];
+        async function fetchTokens() {
+            const createdTokens = await props.service.getCreatedTokens();
+            setTokenList(createdTokens);
 
-        for(let i = 0; i<tokens.length;i++){
-            rows.push(<TokenCreationRow  onPlayClick={props.onPlayClick} key={tokens[i].tokenId} token={tokens[i]}/>);
+            const rows = [];
+            for(let i = 0; i<createdTokens.length;i++){
+                rows.push(<TokenCreationRow onPlayClick={props.onPlayClick}  key={createdTokens[i].tokenId} token={createdTokens[i]} service={props.service}/>);
+            }
+            setTokensDisplay(rows);
         }
 
-        setTokenList(tokens)
-        setTokensDisplay(rows)
-
-    }, []); 
+        fetchTokens(); // don't forget to call the function
+    }, [props]);
 
 
 

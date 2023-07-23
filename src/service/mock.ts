@@ -7,10 +7,10 @@ import contractSaleAbi from './contracts/Sale.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x24e542954DEEAf07715B138d3C26C39b97Aeaa58";
+const contractBaseAddress = "0x4Db4aa3A7301e55731fDadB21950d15B4fF8D5fD";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0xeE2237565Ac037F0AdeB76DC4d4517810AA68E37" ;
+const contractSaleAddress = "0x43d614917c241a7385f648Df5ea5DD4f2B8f17d9" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -81,118 +81,46 @@ export class Mock implements Service {
         }
     }
 
-    getCreatedTokens(creatorAddress: string): TokenCreation[] {
+    async getCreatedTokens(): Promise<TokenCreation[]> {
         // Implement your mock logic here
-        return [
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesCreated: 10,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 65,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesCreated: 20,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 54,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesCreated: 10,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 65,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesCreated: 20,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 54,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesCreated: 10,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 65,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesCreated: 20,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 54,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesCreated: 10,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 65,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesCreated: 20,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 54,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesCreated: 10,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 65,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesCreated: 20,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 54,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 1,
-                musicMedia: getMusicMediaById(1),
-                name: 'Token Name',
-                numberSharesCreated: 10,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 65,
-                dividendPerShare:  0.005
-            },
-            {
-                tokenId: 2,
-                musicMedia: getMusicMediaById(2),
-                name: 'Token Name',
-                numberSharesCreated: 20,
-                initialTicketPool: 100,
-                remainingDividendAvailableTickets: 54,
-                dividendPerShare:  0.005
-            }
-        ];
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const currentAddress = accounts[0];
+
+            const tokenIds: number[] = await (contractBaseInstance.methods.getTokensCreatedBy as any)(currentAddress).call();
+
+            const tokenCreatedList: TokenCreation[] = await Promise.all(
+                tokenIds.map(async (tokenId: number) => {
+                    try {
+                        const name = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+                        const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                        const remainingDividendEligibleTickets = 0;
+                        const divPerShare = 0;
+                        const initalPool = 0;
+                        const numShares = 0;
+                        const musicMedia = getMusicMediaById(1);
+
+                        return {
+                            tokenId: tokenId,
+                            musicMedia: musicMedia,
+                            name: name,
+                            numberSharesCreated: numShares,
+                            initialTicketPool: initalPool,
+                            remainingDividendAvailableTickets: remainingDividendEligibleTickets,
+                            dividendPerShare: divPerShare,
+                        };
+                    } catch (error) {
+                        console.error(`An error occurred while processing token ID ${tokenId}:`, error);
+                        throw error;
+                    }
+                })
+            );
+
+            return tokenCreatedList;
+        } catch (error) {
+            console.error('An error occurred while fetching owned tokens:', error);
+            throw error;
+        }
     }
 
     payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[] {
@@ -204,7 +132,7 @@ export class Mock implements Service {
           const accounts = await web3.eth.getAccounts();
           const currentAddress = accounts[0];
 
-          const tokenIds: number[] = await (contractBaseInstance.methods.getOwnedTokens as any)(currentAddress).call({ from: currentAddress });
+          const tokenIds: number[] = await (contractBaseInstance.methods.getOwnedTokens as any)(currentAddress).call();
 
             const tokenOwnershipList: TokenOwnership[] = await Promise.all(
             tokenIds.map(async (tokenId: number) => {

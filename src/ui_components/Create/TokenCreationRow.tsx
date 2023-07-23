@@ -1,6 +1,6 @@
 "use client"
 import { useState } from 'react';
-import { TokenCreation } from '../../service/interface';
+import {Service, TokenCreation} from '../../service/interface';
 import styles from './TokenCreationRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button } from 'react-bootstrap';
@@ -10,6 +10,7 @@ import { FaPlay } from 'react-icons/fa';
 
 interface TokenCreationRowProps {
     token: TokenCreation;
+    service: Service;
     onPlayClick:(id : number)=> void
 }
 

@@ -56,7 +56,7 @@ export interface Service {
     createTokens(creatorAddress:string, name:string, numShares:number, price:number, div:number, initialTktPool: number, mp3:File, img:File): Promise<TokenCreation>;
 
     // getCreatedTokens retrieves all the tokens an artist previously created
-    getCreatedTokens(creatorAddress: string): TokenCreation[];
+    getCreatedTokens(): Promise<TokenCreation[]>;
 
     payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[];
      
