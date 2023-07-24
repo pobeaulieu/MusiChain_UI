@@ -6,10 +6,10 @@ import contractSaleAbi from './contracts/Sale.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x2223C966Ca64835289b5aD329fee76473F0c9196";
+const contractBaseAddress = "0xBBBD9d9549E986bf7a895a13497492b12c784F4e";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x8C7350b70a09Ee913b47ce1b7Fe011CE68F84b5c" ;
+const contractSaleAddress = "0x51477072Aa67187886F5A0e94af0B502F99B61A0" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -197,8 +197,32 @@ export class Mock implements Service {
         };
     }
 
-    removeListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing {
-        throw new Error("Method not implemented.");
+    async removeListing(tokenId: number): Promise<Listing> {
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const currentAddress = accounts[0];
+            const result = await (contractSaleInstance.methods.removeListing as any)(tokenId).send({ from: currentAddress });
+
+            console.log('Transaction was successful', result);
+        } catch (error) {
+            console.error('An error occurred', error);
+        }
+        const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+        const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
+        const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+        const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+
+        return {
+            tokenId: tokenId,
+            tokenName: tokenName,
+            creator:creator,
+            owner: owner,
+            mediaIpfsUrl: ipfs,
+            price: 0,
+            shares: 0,
+            divPerShare: 0.005,
+            remainingTicketPool: 50000
+        };
     }
 
 
@@ -264,10 +288,10 @@ export class Mock implements Service {
 
     async getMarketListings(): Promise<Listing[]> {
         try {
-            const result = await (contractSaleInstance.methods.getListings as any)().call();
-
+            const result = await (contractSaleInstance.methods.getAllListings as any)().call();
             const listings: Listing[] = [];
             for (let listing of result) {
+                console.log(listing)
                 const tokenId = Number(listing.tokenId);
 
                 const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();

@@ -63,7 +63,7 @@ export interface Service {
     addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing>
    
     // removeListing removes a listing for a token a user previously created
-    removeListing(ownerAddress: string, tokenId: number, price: number, amount: number): Listing   
+    removeListing(tokenId: number): Promise<Listing>
     
     // getUserListings retrieves all the listing created from the address provided
     getUserListings(): Promise<Listing[]>

@@ -31,7 +31,7 @@ export default function MyListingsPage(props: PageProps){
             setListingDisplay(rows);
         }
 
-        fetchListings(); // don't forget to call the function
+        fetchListings();
     }, [props]);
 
 

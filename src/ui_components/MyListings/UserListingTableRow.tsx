@@ -14,12 +14,12 @@ interface UserListingRowProps {
 }
 
 
-const removeListing: any = () => {
-  console.log(" TODO remove listing");
-  
-}
-
 export default function UserListingRow(props : UserListingRowProps){
+
+    const removeListing: any = () => {
+        const remove = props.service.removeListing(props.listing.tokenId)
+    }
+
     return (
         <tr className={styles.row}>
                    <td className={styles.cell}>
