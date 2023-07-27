@@ -6,10 +6,10 @@ import contractSaleAbi from './contracts/Sale.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0xBBBD9d9549E986bf7a895a13497492b12c784F4e";
+const contractBaseAddress = "0x9280a1feA6D6E2994f07598908bb1568bd145B40";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x51477072Aa67187886F5A0e94af0B502F99B61A0" ;
+const contractSaleAddress = "0x075C1a7EA4950bE8C33C37545c77aB802591661f" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -91,21 +91,20 @@ export class Mock implements Service {
             const tokenCreatedList: TokenCreation[] = await Promise.all(
                 tokenIds.map(async (tokenId: number) => {
                     try {
-                        console.log("HELLO")
                         const name = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
                         const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
-                        console.log(ipfs)
+                        const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
                         const remainingDividendEligibleTickets = 0;
                         const divPerShare = 0;
                         const initalPool = 0;
-                        const numShares = 0;
+
         
 
                         return {
                             tokenId: tokenId,
                             mediaIpfsUrl: ipfs,
                             name: name,
-                            numberSharesCreated: numShares,
+                            numberSharesCreated: Number(numShares),
                             initialTicketPool: initalPool,
                             remainingDividendAvailableTickets: remainingDividendEligibleTickets,
                             dividendPerShare: divPerShare,
@@ -133,22 +132,27 @@ export class Mock implements Service {
           const accounts = await web3.eth.getAccounts();
           const currentAddress = accounts[0];
 
-          const tokenIds: number[] = await (contractBaseInstance.methods.getOwnedTokens as any)(currentAddress).call();
+            const tokenIds: number[] = await (contractSaleInstance.methods.getOwnedTokens as any)(currentAddress).call();
+            const tokenIds2: number[] = await (contractBaseInstance.methods.getOwnedTokens as any)(currentAddress).call();
+            const uniqueBaseTokens = new Set(tokenIds);
+            const uniqueSaleTokens = tokenIds2.filter(token => !uniqueBaseTokens.has(token));
+            const allUniqueTokens = [...Array.from(uniqueBaseTokens), ...uniqueSaleTokens];
+
 
             const tokenOwnershipList: TokenOwnership[] = await Promise.all(
-            tokenIds.map(async (tokenId: number) => {
+                allUniqueTokens.map(async (tokenId: number) => {
               try {
                 const name = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
                 const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
                 const remainingDividendEligibleTickets = 0;
                 const divPerShare = 0;
-        
 
                 return {
                   tokenId: tokenId,
                   mediaIpfsUrl: ipfs,
                   name: name,
-                  numberSharesOwned: 0,
+                  numberSharesOwned: Number(numShares),
                   remainingDividendEligibleTickets: remainingDividendEligibleTickets,
                   divPerShare: divPerShare,
                 };
@@ -167,11 +171,11 @@ export class Mock implements Service {
       }
 
     async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {
-        // Implement your mock logic here
 
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
+            await (contractBaseInstance.methods.setApprovalForAll as any)(contractSaleAddress, true).send({ from: currentAddress });
             const result = await (contractSaleInstance.methods.listToken as any)(tokenId, price, amount).send({ from: currentAddress });
 
             console.log('Transaction was successful', result);
@@ -240,6 +244,7 @@ export class Mock implements Service {
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
                 const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
 
                 listings.push({
                     tokenId: tokenId,
@@ -247,7 +252,7 @@ export class Mock implements Service {
                     creator: creator,
                     owner: owner,
                     mediaIpfsUrl: ipfs,
-                    price: Number(listing.price),
+                    price: Number(priceInEther),
                     shares: Number(listing.amount),
                     divPerShare: 10,
                     remainingTicketPool: 50
@@ -267,7 +272,7 @@ export class Mock implements Service {
             const accounts = await web3.eth.getAccounts();
             const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
             const currentAddress = accounts[0];
-            const result = await (contractSaleInstance.methods.buyToken as any)(0).send({ from: currentAddress });
+            const result = await (contractSaleInstance.methods.buyToken as any)(tokenId).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")});
             const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
 
             console.log('Transaction was successful', result);
@@ -291,13 +296,13 @@ export class Mock implements Service {
             const result = await (contractSaleInstance.methods.getAllListings as any)().call();
             const listings: Listing[] = [];
             for (let listing of result) {
-                console.log(listing)
                 const tokenId = Number(listing.tokenId);
 
                 const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
                 const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
 
                 listings.push({
                     tokenId: tokenId,
@@ -305,7 +310,7 @@ export class Mock implements Service {
                     creator: creator,
                     owner: owner,
                     mediaIpfsUrl: ipfs,
-                    price: Number(listing.price),
+                    price: Number(priceInEther),
                     shares: Number(listing.amount),
                     divPerShare: 10,
                     remainingTicketPool: 50
