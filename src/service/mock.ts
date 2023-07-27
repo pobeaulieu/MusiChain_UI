@@ -3,13 +3,18 @@ import Web3 from "web3";
 import { Listing, Service, TokenCreation, TokenOwnership, User } from "./interface";
 import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
+import contractMetaDataAbi from './contracts/Metadata.json';
 import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
-const contractBaseAddress = "0x9280a1feA6D6E2994f07598908bb1568bd145B40";
+
+const contractMetaDataAddress = "0xaaAEBaD173B611269EaC44028dA60c4Eb75A6D42" ;
+const contractMetaDataInstance = new web3.eth.Contract(contractMetaDataAbi, contractMetaDataAddress);
+
+const contractBaseAddress = "0x7706b42A5B07565B3CA905Dba46Fa0a46A44E8F6";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x075C1a7EA4950bE8C33C37545c77aB802591661f" ;
+const contractSaleAddress = "0x86925Ca147a103a8BC72d5057C597C89a9529554" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -91,14 +96,12 @@ export class Mock implements Service {
             const tokenCreatedList: TokenCreation[] = await Promise.all(
                 tokenIds.map(async (tokenId: number) => {
                     try {
-                        const name = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
-                        const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                        const name = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
+                        const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
                         const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
                         const remainingDividendEligibleTickets = 0;
                         const divPerShare = 0;
                         const initalPool = 0;
-
-        
 
                         return {
                             tokenId: tokenId,
@@ -142,8 +145,8 @@ export class Mock implements Service {
             const tokenOwnershipList: TokenOwnership[] = await Promise.all(
                 allUniqueTokens.map(async (tokenId: number) => {
               try {
-                const name = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
-                const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const name = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
+                const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
                 const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
                 const remainingDividendEligibleTickets = 0;
                 const divPerShare = 0;
@@ -182,10 +185,10 @@ export class Mock implements Service {
         } catch (error) {
             console.error('An error occurred', error);
         }
-        const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+        const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
         const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
         const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
-        const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+        const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
 
 
         return {
@@ -211,10 +214,10 @@ export class Mock implements Service {
         } catch (error) {
             console.error('An error occurred', error);
         }
-        const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+        const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
         const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
         const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
-        const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+        const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
 
         return {
             tokenId: tokenId,
@@ -240,10 +243,10 @@ export class Mock implements Service {
             for (let listing of result) {
                 const tokenId = Number(listing.tokenId);
 
-                const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+                const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
-                const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
                 const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
 
                 listings.push({
@@ -267,20 +270,23 @@ export class Mock implements Service {
         }
     }
 
-    async buy(tokenId: number, buyerAddress: string, sellerAddress: string, amount: number, price: number): Promise<TokenOwnership> {
+    async buy(tokenId: number, amount: number, price: number): Promise<TokenOwnership> {
         try {
+            console.log(tokenId)
             const accounts = await web3.eth.getAccounts();
-            const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+            const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
             const currentAddress = accounts[0];
-            const result = await (contractSaleInstance.methods.buyToken as any)(tokenId).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")});
-            const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+            console.log(amount)
+            const result = await (contractSaleInstance.methods.buyToken as any)(tokenId, amount).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")});
+            const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
+            const shareAlreadyOwned = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
 
             console.log('Transaction was successful', result);
             return {
                 tokenId: tokenId,
                 mediaIpfsUrl: ipfs,
                 name: tokenName,
-                numberSharesOwned: 5,
+                numberSharesOwned: Number(shareAlreadyOwned)+amount,
                 remainingDividendEligibleTickets: 5,
                 divPerShare: 0.005
             };
@@ -298,10 +304,10 @@ export class Mock implements Service {
             for (let listing of result) {
                 const tokenId = Number(listing.tokenId);
 
-                const tokenName = await (contractBaseInstance.methods.tokenNames as any)(tokenId).call();
+                const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
-                const ipfs = await (contractBaseInstance.methods.ipfsPaths as any)(tokenId).call();
+                const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
                 const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
 
                 listings.push({

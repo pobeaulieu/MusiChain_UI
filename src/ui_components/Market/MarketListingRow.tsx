@@ -19,8 +19,8 @@ export default function MarketListingRow(props: MarketListingRowProps) {
 
     const buyShares: any = () => {
         if (nbShare <= props.listing.shares){
-            const transaction = props.service.buy(props.listing.tokenId, props.loggedUser?.address,props.listing.owner, props.listing.shares ,props.listing.price)
-            console.log("TODO... buy " + nbShare + " shares of token " + props.listing.tokenId + " at price " + props.listing.price)
+            const transaction = props.service.buy(props.listing.tokenId, nbShare ,props.listing.price*nbShare)
+            console.log("buy " + nbShare + " shares of token " + props.listing.tokenId + " at price " + props.listing.price*nbShare)
         }else{
             console.log("ERROR not enough shares available")
         }
