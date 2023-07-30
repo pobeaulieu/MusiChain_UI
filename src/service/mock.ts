@@ -8,13 +8,13 @@ import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
 
-const contractMetaDataAddress = "0x721Cdcd9422Ab11D95f4b5F3dD4212357Deb3906" ;
+const contractMetaDataAddress = "0x8d4a718b899d423580fe7630E19C6Beb55432961" ;
 const contractMetaDataInstance = new web3.eth.Contract(contractMetaDataAbi, contractMetaDataAddress);
 
-const contractBaseAddress = "0x97E613FBc5EE8084041084eEB3a6C49D85886A94";
+const contractBaseAddress = "0xE0bCB9cc237175c3D16E2827474B37d89F52749a";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 
-const contractSaleAddress = "0x54cf582Fe18038ccAd8affD4E1716436462E9912" ;
+const contractSaleAddress = "0x5aD2626BF89b8D96557fCc043c375c4e230E2871" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -177,12 +177,13 @@ export class Mock implements Service {
       }
 
     async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {
-
+        let priceInWeiString = web3.utils.toWei(price, "ether"); // Convert to Wei string
+        let priceInWeiNumber = parseInt(priceInWeiString);
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             await (contractBaseInstance.methods.setApprovalForAll as any)(contractSaleAddress, true).send({ from: currentAddress });
-            const result = await (contractSaleInstance.methods.listToken as any)(tokenId, price, amount).send({ from: currentAddress });
+            const result = await (contractSaleInstance.methods.listToken as any)(tokenId, priceInWeiString, amount).send({ from: currentAddress });
 
             console.log('Transaction was successful', result);
         } catch (error) {
@@ -202,7 +203,7 @@ export class Mock implements Service {
             creator:creator,
             owner: owner,
             mediaIpfsUrl: ipfs,
-            price: price,
+            price: priceInWeiNumber,
             shares: amount,
             divPerShare: divPerShare,
             remainingTicketPool: Number(remainingTicketPool)
