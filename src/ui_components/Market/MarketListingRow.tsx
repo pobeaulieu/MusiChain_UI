@@ -36,7 +36,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
             <td className={styles.cell}>{props.listing.shares}</td>
             <td className={styles.cell}>{props.listing.divPerShare + " ETH"}</td>
             <td className={styles.cell}>{props.listing.remainingTicketPool}</td>
-            <td className={styles.cell}>{props.listing.remainingTicketPool * props.listing.divPerShare + " ETH"}</td>
+            <td className={styles.cell}>{Number(props.listing.remainingTicketPool) * Number(props.listing.divPerShare) + " ETH"}</td>
 
             {props.loggedUser?.address !== "" && (
                 <><td className={`${styles.cell} ${styles.preview}`}>
