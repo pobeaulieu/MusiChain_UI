@@ -7,36 +7,25 @@ import { useHistory } from "react-router-dom";
 import { Listing } from "../../service/interface";
 
 export default function MyTokensPage(props: PageProps) {
-    const history = useHistory();
-    const [tokenDisplay, setTokenDisplay] = useState<Array<JSX.Element>>();
-    //const [tokenList, setTokenList] = useState<Listing[]>(); // Update the type
     const [tokenList, setTokenList] = useState<TokenOwnership[]>();
-    useEffect(() => {
-        async function fetchTokens() {
-            try {
-              const tokenlistings = await props.service.getOwnedTokens();
-              setTokenList(tokenlistings);
-          
-              const rows = [];
-              for (let i = 0; i < tokenlistings.length; i++) {
-                rows.push(
-                  <UserTokenRow
-                    onPlayClick={props.onPlayClick}
-                    key={tokenlistings[i].tokenId}
-                    token={tokenlistings[i]} // Pass the entire tokenlistings[i] object as the 'token' prop
-                    loggedUser={props.loggedUser}
-                    service={props.service}
-                  />
-                );
-              }
-              setTokenDisplay(rows);
-            } catch (error) {
-              console.error("An error occurred while fetching owned tokens:", error);
-            }
-          }
 
+    const handleChange = () => {
+      fetchTokens();
+    };
+
+    useEffect(() => {
         fetchTokens();
     }, [props]);
+
+    async function fetchTokens() {
+      try {
+        const tokenlistings = await props.service.getOwnedTokens();
+        setTokenList(tokenlistings);
+    
+      } catch (error) {
+        console.error("An error occurred while fetching owned tokens:", error);
+      }
+    }
     
   
     return (
@@ -59,7 +48,14 @@ export default function MyTokensPage(props: PageProps) {
                 <th>Price/share</th>
               </tr>
             </thead>
-            <tbody>{tokenDisplay}</tbody>
+            <tbody>{tokenList?.map(t =>  <UserTokenRow
+              onPlayClick={props.onPlayClick}
+              key={t.tokenId}
+              token={t} // Pass the entire tokenlistings[i] object as the 'token' prop
+              loggedUser={props.loggedUser}
+              service={props.service} 
+              onChange={handleChange}               
+               />)}</tbody>
           </table>
         </div>
       </>

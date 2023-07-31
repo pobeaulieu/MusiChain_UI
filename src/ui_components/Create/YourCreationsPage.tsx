@@ -12,24 +12,21 @@ import UserListingRow from "../MyListings/UserListingTableRow";
 
 export default function YourCreationsPage(props: PageProps) {
     const history = useHistory();
-    const [tokensDisplay, setTokensDisplay] = useState<Array<JSX.Element>>();
     const [tokenList, setTokenList] = useState<TokenCreation[]>();
+    async function fetchTokens() {
+        const createdTokens = await props.service.getCreatedTokens();
+        setTokenList(createdTokens);
+
+    }
 
     useEffect(() => {
-        async function fetchTokens() {
-            const createdTokens = await props.service.getCreatedTokens();
-            setTokenList(createdTokens);
-
-            const rows = [];
-            for(let i = 0; i<createdTokens.length;i++){
-                rows.push(<TokenCreationRow onPlayClick={props.onPlayClick}  key={createdTokens[i].tokenId} token={createdTokens[i]} service={props.service}/>);
-            }
-            setTokensDisplay(rows);
-        }
-
-        fetchTokens(); // don't forget to call the function
+        fetchTokens();
     }, [props]);
 
+
+    const handleChange = () => {
+        fetchTokens();
+      };
 
 
     return (
@@ -54,7 +51,7 @@ export default function YourCreationsPage(props: PageProps) {
                         </tr>
                     </thead>
                     <tbody>
-                        {tokensDisplay}
+                        {tokenList?.map(t => <TokenCreationRow onChange={handleChange} onPlayClick={props.onPlayClick}  key={t.tokenId} token={t} service={props.service}/>)}
                     </tbody>
                 </table>
             </div>

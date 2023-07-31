@@ -19,18 +19,19 @@ export default function MyListingsPage(props: PageProps){
     const [listingDisplay, setListingDisplay] = useState<Array<JSX.Element>>();
     const [listingList, setListingList] = useState<Listing[]>();
 
+  
+    const handleChange = () => {
+        // Trigger a re-fetch of the listings when a buy is successful
+        fetchListings();
+      };
+      
+    async function fetchListings() {
+        const listings = await props.service.getUserListings();
+        setListingList(listings);
+    }
+
+
     useEffect(() => {
-        async function fetchListings() {
-            const listings = await props.service.getUserListings();
-            setListingList(listings);
-
-            const rows = [];
-            for(let i = 0; i<listings.length;i++){
-                rows.push(<UserListingRow onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser} service={props.service}/>);
-            }
-            setListingDisplay(rows);
-        }
-
         fetchListings();
     }, [props]);
 
@@ -54,7 +55,7 @@ export default function MyListingsPage(props: PageProps){
             </tr>
             </thead>
             <tbody>
-                {listingDisplay}
+                {listingList?.map(l => <UserListingRow onChange ={handleChange} onPlayClick={props.onPlayClick}  key={l.tokenId} listing={l} loggedUser={props.loggedUser} service={props.service}/>)}
             </tbody>
         </table>
      </div>  

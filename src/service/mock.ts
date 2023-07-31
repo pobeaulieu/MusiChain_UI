@@ -8,13 +8,12 @@ import { uploadToIpfs } from "./ipfs";
 
 const web3 = new Web3((window as any).ethereum);
 
-const contractMetaDataAddress = "0x8d4a718b899d423580fe7630E19C6Beb55432961" ;
+const contractMetaDataAddress = "0xc036B733a7A08659263e27F17D04c50FB873d8bb" ;
+const contractBaseAddress = "0x4180aEC51E176769e12Ddc6a5F3dC77E6D71d292";
+const contractSaleAddress = "0x83347D4eE1bBe8AFEcA889eaD69c69d16Faf9fB6" ;
+
 const contractMetaDataInstance = new web3.eth.Contract(contractMetaDataAbi, contractMetaDataAddress);
-
-const contractBaseAddress = "0xE0bCB9cc237175c3D16E2827474B37d89F52749a";
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
-
-const contractSaleAddress = "0x5aD2626BF89b8D96557fCc043c375c4e230E2871" ;
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
@@ -323,6 +322,8 @@ export class Mock implements Service {
         try {
             const result = await (contractSaleInstance.methods.getAllListings as any)().call();
             const listings: Listing[] = [];
+            console.log("RESULT")
+            console.log(result)
             for (let listing of result) {
                 const tokenId = Number(listing.tokenId);
 

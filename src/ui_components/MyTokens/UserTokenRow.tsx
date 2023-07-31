@@ -11,6 +11,8 @@ interface UserTokenRowProps {
     token: TokenOwnership,
     loggedUser: User,    
     onPlayClick:(url : string)=> void
+    onChange: ()=> void
+
     
 }
 
@@ -23,7 +25,8 @@ export default function UserTokenRow(props : UserTokenRowProps){
     const addListing: any = () => {
         if (nbShare <= props.token.numberSharesOwned){
             const tokens = props.service.addListing(props.loggedUser?.address, props.token.tokenId, price, nbShare)
-            console.log("TODO... add listing " + nbShare + " shares of token " + props.token.tokenId + " at price " + price)
+            props.onChange()
+            
         }else{
             console.log("ERROR not enough shares owned")
         }

@@ -11,6 +11,7 @@ interface UserListingRowProps {
     loggedUser: User
     onPlayClick:(url : string)=> void
     service: Service
+    onChange: ()=> void
 }
 
 
@@ -18,6 +19,8 @@ export default function UserListingRow(props : UserListingRowProps){
 
     const removeListing: any = () => {
         const remove = props.service.removeListing(props.listing.tokenId)
+        props.onChange()
+        
     }
 
     return (

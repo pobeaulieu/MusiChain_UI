@@ -12,6 +12,7 @@ interface TokenCreationRowProps {
     token: TokenCreation;
     service: Service;
     onPlayClick:(url :string)=> void
+    onChange: ()=>void
 }
 
 export default function TokenCreationRow(props : TokenCreationRowProps){
@@ -20,6 +21,7 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
     const payDividends: any = () => {
      
         console.log("TODO... pay dividends")
+        props.onChange()
 
     }
 

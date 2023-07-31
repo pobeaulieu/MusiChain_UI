@@ -12,15 +12,18 @@ interface MarketListingRowProps {
     loggedUser: User
     onPlayClick:(url : string)=> void
     service : Service
+    onChange: ()=> void
+
 }
 
 export default function MarketListingRow(props: MarketListingRowProps) {
     const [nbShare, setNbShare] = useState<number>(0);
 
-    const buyShares: any = () => {
+    const buyShares: any = async () => {
         if (nbShare <= props.listing.shares){
-            const transaction = props.service.buy(props.listing.tokenId, nbShare ,props.listing.price*nbShare)
+            const transaction = await props.service.buy(props.listing.tokenId, nbShare ,props.listing.price*nbShare)
             console.log("buy " + nbShare + " shares of token " + props.listing.tokenId + " at price " + props.listing.price*nbShare)
+            props.onChange()
         }else{
             console.log("ERROR not enough shares available")
         }

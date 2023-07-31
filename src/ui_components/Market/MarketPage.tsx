@@ -7,23 +7,23 @@ import { Listing, TokenCreation } from "../../service/interface";
 import TokenCreationRow from "../Create/TokenCreationRow";
 
 export default function Market(props:PageProps) {
-    const [listingDisplay, setListingDisplay] = useState<Array<JSX.Element>>();
     const [listingList, setListingList] = useState<Listing[]>();
+    const [update, setUpdate] = useState(false)
+    async function fetchListings() {
+        const listings = await props.service.getMarketListings();
+        setListingList(listings);
 
+    }
     useEffect(() => {
-        async function fetchListings() {
-            const listings = await props.service.getMarketListings();
-            setListingList(listings);
-
-            const rows = [];
-            for(let i = 0; i<listings.length;i++){
-                rows.push(<MarketListingRow onPlayClick={props.onPlayClick}  key={listings[i].tokenId} listing={listings[i]} loggedUser={props.loggedUser} service={props.service}/>);
-            }
-            setListingDisplay(rows);
-        }
-
         fetchListings(); // don't forget to call the function
-    }, [props]);
+    }, [props, setUpdate]);
+
+
+    const handleBuySuccess = () => {
+        // Trigger a re-fetch of the listings when a buy is successful
+        fetchListings();
+      };
+
     return (
     <>
     <div className={styles.wrapper}>
@@ -49,7 +49,7 @@ export default function Market(props:PageProps) {
         </tr>
         </thead>
         <tbody>
-            {listingDisplay}
+            {listingList?.map(l => <MarketListingRow onPlayClick={props.onPlayClick} key={l.tokenId} listing={l} loggedUser={props.loggedUser} service={props.service} onChange={handleBuySuccess}/>)}
         </tbody>
     </table>
     </div>
