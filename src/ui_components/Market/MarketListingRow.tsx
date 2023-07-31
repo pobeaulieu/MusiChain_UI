@@ -39,14 +39,12 @@ export default function MarketListingRow(props: MarketListingRowProps) {
             <td className={styles.cell}>{props.listing.shares}</td>
             <td className={styles.cell}>{props.listing.divPerShare + " ETH"}</td>
             <td className={styles.cell}>{props.listing.remainingTicketPool}</td>
-            <td className={styles.cell}>{Number(props.listing.remainingTicketPool) * Number(props.listing.divPerShare) + " ETH"}</td>
-
             {props.loggedUser?.address !== "" && (
                 <><td className={`${styles.cell} ${styles.preview}`}>
                     <input className={`${styles.cell}`} name="nbShare" type="number" onChange={e => setNbShare(e.target.valueAsNumber)} required></input>
                 </td>
 
-                <td className={styles.cell}>{props.listing.price * nbShare + " ETH"}</td>
+                <td className={styles.cell}>{nbShare ? (props.listing.price * nbShare).toFixed(props.listing.price.toString().split('.')[1].length) + " ETH" : "0 ETH" }</td>
 
                 <td className={`${styles.cell} ${styles.preview}`}>
                         <Button className={mainstyles.button} onClick={() =>buyShares()}>Buy Shares</Button>
