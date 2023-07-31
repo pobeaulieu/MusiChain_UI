@@ -7,7 +7,7 @@ import Market from './ui_components/Market/MarketPage';
 import CreateNewToken from './ui_components/Create/CreateNewTokenPage';
 import YourCreationsPage from './ui_components/Create/YourCreationsPage';
 import {Service, User } from './service/interface';
-import { Mock } from './service/mock';
+import { MusiChainService } from './service/MusiChainService';
 import MusicPlayerBar from './ui_components/MusicPlayer/MusicPlayerBar';
 import MyListingsPage from './ui_components/MyListings/MyListingsPage';
 import Moralis from "moralis";
@@ -29,7 +29,7 @@ function App() {
     }, []);
 
 
-    const service = new Mock() // TODO remplacer le Mock ici par le vrai service lorsqu'il implementera toute l'interface
+    const service = new MusiChainService() // TODO remplacer le Mock ici par le vrai service lorsqu'il implementera toute l'interface
 
     const onWalletConnect = (user: User) => {
         setLoggedUser(user)

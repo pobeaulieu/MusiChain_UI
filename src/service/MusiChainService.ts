@@ -6,18 +6,21 @@ import contractSaleAbi from './contracts/Sale.json';
 import contractMetaDataAbi from './contracts/Metadata.json';
 import { uploadToIpfs } from "./ipfs";
 
+
+
+
 const web3 = new Web3((window as any).ethereum);
 
-const contractMetaDataAddress = "0xc036B733a7A08659263e27F17D04c50FB873d8bb" ;
-const contractBaseAddress = "0x4180aEC51E176769e12Ddc6a5F3dC77E6D71d292";
-const contractSaleAddress = "0x83347D4eE1bBe8AFEcA889eaD69c69d16Faf9fB6" ;
+const contractMetaDataAddress = process.env.REACT_APP_METADATA_ADDRESS ;
+const contractBaseAddress = process.env.REACT_APP_BASE_ADDRESS ;
+const contractSaleAddress =process.env.REACT_APP_SALE_ADDRESS ;
 
 const contractMetaDataInstance = new web3.eth.Contract(contractMetaDataAbi, contractMetaDataAddress);
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
-export class Mock implements Service {
+export class MusiChainService implements Service {
 
     constructor(){
     }
