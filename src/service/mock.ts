@@ -52,7 +52,8 @@ export class Mock implements Service {
 
     async createTokens(creatorAddress: string, name: string, numShares: number, price: number, div: number, initialTktPool: number, mp3: File, img: File): Promise<TokenCreation> {
         // Implement your mock logic here
-
+        let divInWeiString = web3.utils.toWei(div, "ether"); // Convert to Wei string
+        let divInWeiNumber = parseInt(divInWeiString);
         try {
 
             const ipfsPaths = await uploadToIpfs(mp3, img)
@@ -60,7 +61,7 @@ export class Mock implements Service {
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
             let ipfs = String(ipfsPaths.mp3Url.replace('/music.mp3', ''))
-            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, initialTktPool, div, data).send({ from: currentAddress });
+            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, initialTktPool, divInWeiString, data).send({ from: currentAddress });
             let mintLog = result.logs.find((log: { topics: string[]; }) => log.topics[0] === "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885");
             let tokenIdHex = mintLog.data.slice(-64);
             let tokenId = web3.utils.hexToNumberString('0x' + tokenIdHex);
@@ -72,6 +73,8 @@ export class Mock implements Service {
 
             const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
             const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+            const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
+            const divInInt = parseInt(divInEther)
 
             return {
                 tokenId: tokenIdNumber,
@@ -80,7 +83,7 @@ export class Mock implements Service {
                 numberSharesCreated: numShares,
                 initialTicketPool: initialTktPool,
                 remainingDividendAvailableTickets: remainingDividendEligibleTickets,
-                dividendPerShare:  divPerShare
+                dividendPerShare:  divInInt
                 };
         } catch (error) {
             console.error('An error occurred', error);
@@ -104,6 +107,7 @@ export class Mock implements Service {
                         const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
                         const remainingDividendEligibleTickets = 0;
                         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+                        const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
                         const initalPool = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
 
                         return {
@@ -113,7 +117,7 @@ export class Mock implements Service {
                             numberSharesCreated: Number(numShares),
                             initialTicketPool: Number(initalPool),
                             remainingDividendAvailableTickets: Number(initalPool),
-                            dividendPerShare: divPerShare,
+                            dividendPerShare: Number(divInEther),
                         };
                     } catch (error) {
                         console.error(`An error occurred while processing token ID ${tokenId}:`, error);
@@ -153,6 +157,7 @@ export class Mock implements Service {
                 const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
                 const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
                 const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+                const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
 
                 return {
                   tokenId: tokenId,
@@ -160,7 +165,7 @@ export class Mock implements Service {
                   name: name,
                   numberSharesOwned: Number(numShares),
                   remainingDividendEligibleTickets: Number(remainingDividendEligibleTickets),
-                  divPerShare: divPerShare,
+                  divPerShare: Number(divInEther),
                 };
               } catch (error) {
                 console.error(`An error occurred while processing token ID ${tokenId}:`, error);
@@ -195,6 +200,7 @@ export class Mock implements Service {
         const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
         const remainingTicketPool = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+        const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
 
 
         return {
@@ -205,7 +211,7 @@ export class Mock implements Service {
             mediaIpfsUrl: ipfs,
             price: priceInWeiNumber,
             shares: amount,
-            divPerShare: divPerShare,
+            divPerShare: Number(divInEther),
             remainingTicketPool: Number(remainingTicketPool)
         };
     }
@@ -226,6 +232,8 @@ export class Mock implements Service {
         const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
         const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+        const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
+        const divInInt = parseInt(divInEther);
 
         return {
             tokenId: tokenId,
@@ -235,7 +243,7 @@ export class Mock implements Service {
             mediaIpfsUrl: ipfs,
             price: 0,
             shares: 0,
-            divPerShare: divPerShare,
+            divPerShare: Number(divInEther),
             remainingTicketPool: remainingDividendEligibleTickets
         };
     }
@@ -258,6 +266,7 @@ export class Mock implements Service {
                 const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
                 const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
                 const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+                const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
 
                 listings.push({
                     tokenId: tokenId,
@@ -267,7 +276,7 @@ export class Mock implements Service {
                     mediaIpfsUrl: ipfs,
                     price: Number(priceInEther),
                     shares: Number(listing.amount),
-                    divPerShare: divPerShare,
+                    divPerShare: Number(divInEther),
                     remainingTicketPool: remainingDividendEligibleTickets
                 });
             }
@@ -292,6 +301,7 @@ export class Mock implements Service {
             const shareAlreadyOwned = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
             const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
             const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+            const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
 
             console.log('Transaction was successful', result);
             return {
@@ -300,7 +310,7 @@ export class Mock implements Service {
                 name: tokenName,
                 numberSharesOwned: Number(shareAlreadyOwned)+amount,
                 remainingDividendEligibleTickets: remainingDividendEligibleTickets,
-                divPerShare: divPerShare
+                divPerShare: Number(divInEther)
             };
         } catch (error) {
             console.error('An error occurred', error);
@@ -323,6 +333,7 @@ export class Mock implements Service {
                 const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
                 const remainingTicketPool = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
                 const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+                const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
 
                 listings.push({
                     tokenId: tokenId,
@@ -332,7 +343,7 @@ export class Mock implements Service {
                     mediaIpfsUrl: ipfs,
                     price: Number(priceInEther),
                     shares: Number(listing.amount),
-                    divPerShare: divPerShare,
+                    divPerShare: Number(divInEther),
                     remainingTicketPool: Number(remainingTicketPool)
                 });
             }
