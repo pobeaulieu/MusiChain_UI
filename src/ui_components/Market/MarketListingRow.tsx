@@ -45,8 +45,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
                     <input className={`${styles.cell}`} name="nbShare" type="number" onChange={e => setNbShare(e.target.valueAsNumber)} required></input>
                 </td>
 
-                <td className={styles.cell}>{nbShare ? (props.listing.price * nbShare).toFixed(props.listing.price.toString().split(".")[1].length) + " ETH" : "0 ETH"}</td>
-
+                <td className={styles.cell}>{Number(props.listing.price * nbShare) + " ETH"}</td>
                 <td className={`${styles.cell} ${styles.preview}`}>
                         <Button className={mainstyles.button} onClick={() =>buyShares()}>Buy Shares</Button>
                     </td></>

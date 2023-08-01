@@ -225,7 +225,7 @@ export class MusiChainService implements Service {
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
-            const result = await (contractSaleInstance.methods.removeListing as any)(tokenId).send({ from: currentAddress });
+            const result = await (contractSaleInstance.methods.removeListing as any)(listingId).send({ from: currentAddress });
 
             console.log('Transaction was successful', result);
         } catch (error) {
@@ -300,12 +300,10 @@ export class MusiChainService implements Service {
         const listing = await (contractSaleInstance.methods.listings as any)(listingId).call();
         const tokenId = listing.tokenId
         try {
-            console.log(tokenId)
             const accounts = await web3.eth.getAccounts();
             const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
             const currentAddress = accounts[0];
-            console.log(amount)
-            const result = await (contractSaleInstance.methods.buyToken as any)(tokenId, amount).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")});
+            const result = await (contractSaleInstance.methods.buyToken as any)(listingId, amount).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")});
             const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
             const shareAlreadyOwned = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
             const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();

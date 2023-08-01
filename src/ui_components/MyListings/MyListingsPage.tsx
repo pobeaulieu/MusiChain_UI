@@ -55,7 +55,7 @@ export default function MyListingsPage(props: PageProps){
             </tr>
             </thead>
             <tbody>
-                {listingList?.map(l => <UserListingRow onChange ={handleChange} onPlayClick={props.onPlayClick}  key={l.tokenId} listing={l} loggedUser={props.loggedUser} service={props.service}/>)}
+                {listingList?.map(l => <UserListingRow onChange ={handleChange} onPlayClick={props.onPlayClick}  key={l.listingId} listing={l} loggedUser={props.loggedUser} service={props.service}/>)}
             </tbody>
         </table>
      </div>  
