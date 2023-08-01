@@ -21,7 +21,7 @@ export default function MarketListingRow(props: MarketListingRowProps) {
 
     const buyShares: any = async () => {
         if (nbShare <= props.listing.shares){
-            const transaction = await props.service.buy(props.listing.tokenId, nbShare ,props.listing.price*nbShare)
+            const transaction = await props.service.buy(props.listing.listingId, nbShare ,props.listing.price*nbShare)
             console.log("buy " + nbShare + " shares of token " + props.listing.tokenId + " at price " + props.listing.price*nbShare)
             props.onChange()
         }else{

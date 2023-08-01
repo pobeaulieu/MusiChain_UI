@@ -18,7 +18,7 @@ interface UserListingRowProps {
 export default function UserListingRow(props : UserListingRowProps){
 
     const removeListing: any = async () => {
-        const remove = await props.service.removeListing(props.listing.tokenId)
+        const remove = await props.service.removeListing(props.listing.listingId)
         props.onChange()
         
     }

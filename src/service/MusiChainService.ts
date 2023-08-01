@@ -203,9 +203,10 @@ export class MusiChainService implements Service {
         const remainingTicketPool = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
         const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
-
+        const listingId = await (contractSaleInstance.methods.currentListingId as any)().call();
 
         return {
+            listingId: listingId,
             tokenId: tokenId,
             tokenName: tokenName,
             creator:creator,
@@ -218,7 +219,9 @@ export class MusiChainService implements Service {
         };
     }
 
-    async removeListing(tokenId: number): Promise<Listing> {
+    async removeListing(listingId: number): Promise<Listing> {
+        const listing = await (contractSaleInstance.methods.listings as any)(listingId).call();
+        const tokenId = listing.tokenId
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
@@ -238,6 +241,7 @@ export class MusiChainService implements Service {
         const divInInt = parseInt(divInEther);
 
         return {
+            listingId: listingId,
             tokenId: tokenId,
             tokenName: tokenName,
             creator:creator,
@@ -260,7 +264,7 @@ export class MusiChainService implements Service {
             const listings: Listing[] = [];
             for (let listing of result) {
                 const tokenId = Number(listing.tokenId);
-
+                const listingId = Number(listing.listingId);
                 const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
@@ -271,6 +275,7 @@ export class MusiChainService implements Service {
                 const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
 
                 listings.push({
+                    listingId: listingId,
                     tokenId: tokenId,
                     tokenName: tokenName,
                     creator: creator,
@@ -291,7 +296,9 @@ export class MusiChainService implements Service {
         }
     }
 
-    async buy(tokenId: number, amount: number, price: number): Promise<TokenOwnership> {
+    async buy(listingId: number, amount: number, price: number): Promise<TokenOwnership> {
+        const listing = await (contractSaleInstance.methods.listings as any)(listingId).call();
+        const tokenId = listing.tokenId
         try {
             console.log(tokenId)
             const accounts = await web3.eth.getAccounts();
@@ -329,7 +336,7 @@ export class MusiChainService implements Service {
             console.log(result)
             for (let listing of result) {
                 const tokenId = Number(listing.tokenId);
-
+                const listingId = Number(listing.listingId);
                 const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
                 const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
                 const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
@@ -340,6 +347,7 @@ export class MusiChainService implements Service {
                 const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
 
                 listings.push({
+                    listingId: listingId,
                     tokenId: tokenId,
                     tokenName: tokenName,
                     creator: creator,

@@ -9,6 +9,7 @@ export class User{
 
 
 export interface Listing{
+    listingId: number
     tokenId: number
     tokenName: string
     creator: string
