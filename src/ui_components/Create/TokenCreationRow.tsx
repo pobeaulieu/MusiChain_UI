@@ -43,7 +43,7 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
                <td className={`${styles.cell} ${styles.preview}`}>
                     <input className={`${styles.cell}`} name="nbTickets" type="number" onChange={e => setNbTickets(e.target.valueAsNumber)} required></input>
                 </td>
-                <td className={styles.cell}>{Number(props.token.dividendPerShare) * nbTickets + " ETH"}</td><td className={`${styles.cell} ${styles.preview}`}>
+                <td className={styles.cell}>{nbTickets ? (Number(props.token.dividendPerShare) * nbTickets).toFixed(props.token.dividendPerShare.toString().split(".")[1].length) + " ETH" : "0 ETH"}</td><td className={`${styles.cell} ${styles.preview}`}>
                         <Button className={mainstyles.button} onClick={() =>payDividends()}>Pay dividends</Button>
                     </td>
                     <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.mediaIpfsUrl)}><FaPlay></FaPlay></button></td>
