@@ -41,7 +41,6 @@ export default function UserTokenRow(props : UserTokenRowProps){
             <td className={styles.cell}>{props.token.numberSharesOwned}</td>
             <td className={styles.cell}>{props.token.divPerShare + " ETH"}</td>
             <td className={styles.cell}>{props.token.remainingDividendEligibleTickets}</td>
-            <td className={styles.cell}>{Number(props.token.numberSharesOwned) * Number(props.token.remainingDividendEligibleTickets) * Number(props.token.divPerShare) + " ETH"}</td>
             <>
                 <td className={`${styles.cell}`}>
                     <input className={`${styles.cell} ${styles.inputShares}`} name="nbShare" type="number" onChange={e => setNbShare(e.target.valueAsNumber)} required></input>

@@ -48,7 +48,7 @@ export default function Market(props:PageProps) {
         </tr>
         </thead>
         <tbody>
-            {listingList?.map(l => <MarketListingRow onPlayClick={props.onPlayClick} key={l.tokenId} listing={l} loggedUser={props.loggedUser} service={props.service} onChange={handleBuySuccess}/>)}
+            {listingList?.map(l => <MarketListingRow onPlayClick={props.onPlayClick} key={l.listingId} listing={l} loggedUser={props.loggedUser} service={props.service} onChange={handleBuySuccess}/>)}
         </tbody>
     </table>
     </div>
