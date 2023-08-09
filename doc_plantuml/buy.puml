@@ -1,0 +1,26 @@
+@startuml
+participant "s:MusiChainService" as s  << (I,#ADD1B2) >>
+participant "t:TokenOwnership" as t
+
+participant "w:Web3" as w
+
+
+
+ -> s : getMarketListings()
+activate s
+s->w: [listing]= (contractSaleInstance.methods.getAllListings as any)().call();
+<-s: [listing]
+deactivate s
+-> s: buy(listingId: number, amount: number, price: number)
+activate s
+s->w: address = getAccount()
+note right s
+Send transaction to buy tokens
+The user signs the transaction with Metamask
+end note
+s->w: (contractSaleInstance.methods.buyToken as any)(listingId, amount).send({from: address, value: web3.utils.toWei(price.toString(), "ether")});
+create t
+s-->t: create
+<--s: t:TokenOwnership
+deactivate s
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+participant "s:MusiChainService" as s  << (I,#ADD1B2) >>
+participant "l:Listing" as l
+
+participant "w:Web3" as w
+
+
+
+ -> s : getOwnedTokens()
+activate s
+s->w: currentAddress = getAccount()
+s->w: [TokenOwnership]= (contractBaseInstance.methods.getOwnedTokens as any)(currentAddress).call();
+<-s: [TokenOwnership]
+deactivate s
+-> s: addListing(tokenId: number, price: number, amount: number)
+activate s
+s->w: currentAddress = getAccount()
+note right s
+The user must approve in advance the transfer of tokens once another user buys the tokens
+end note
+s->w: (contractBaseInstance.methods.setApprovalForAll as any)(contractSaleAddress, true).send({ from: currentAddress });
+note right s
+Send transaction to add listing
+The user signs the transaction with Metamask
+end note
+s->w: result = (contractSaleInstance.methods.listToken as any)(tokenId, priceInWeiString, amount).send({ from: currentAddress });
+s-->l: create
+<--s: l:Listing
+deactivate s
+@enduml
