@@ -54,7 +54,7 @@ export interface Service {
     // getCreatedTokens retrieves all the tokens an artist previously created
     getCreatedTokens(): Promise<TokenCreation[]>;
 
-    payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[];
+    payDividends(tokenId: number, amount: number): Promise<TokenCreation>;
      
      // ------------------   My Tokens Page ------------------------
     // getOwnedTokens retrieves all the tokens a user owns

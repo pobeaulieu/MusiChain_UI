@@ -63,7 +63,13 @@ export class MusiChainService implements Service {
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
             let ipfs = String(ipfsPaths.mp3Url.replace('/music.mp3', ''))
-            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, initialTktPool, divInWeiString, data).send({ from: currentAddress });
+            let start: number, end;
+            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, initialTktPool, divInWeiString, data).send({ from: currentAddress }).on('transactionHash', function(){
+                start = Date.now();
+            }).on('receipt', function(){
+                end = Date.now();
+                console.log(`Transaction latency: ${end - start} ms`);
+            });
             let mintLog = result.logs.find((log: { topics: string[]; }) => log.topics[0] === "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885");
             let tokenIdHex = mintLog.data.slice(-64);
             let tokenId = web3.utils.hexToNumberString('0x' + tokenIdHex);
@@ -99,7 +105,7 @@ export class MusiChainService implements Service {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
 
-            const tokenIds: number[] = await (contractBaseInstance.methods.getTokensCreatedBy as any)(currentAddress).call();
+            const tokenIds: number[] = await (contractMetaDataInstance.methods.getTokensCreatedBy as any)(currentAddress).call();
 
             const tokenCreatedList: TokenCreation[] = await Promise.all(
                 tokenIds.map(async (tokenId: number) => {
@@ -135,8 +141,40 @@ export class MusiChainService implements Service {
         }
     }
 
-    payDividends(creatorAddress: string, tokenId: number, numberOfTickets: number): TokenCreation[] {
-        throw new Error("Method not implemented.");
+    async payDividends(tokenId: number, amount: number): Promise<TokenCreation> {
+        try {
+            const amountWei = Number(web3.utils.toWei(amount.toString(), "ether"));
+            const owners = await (contractMetaDataInstance.methods.getTokenOwners as any)(tokenId).call();
+            const numberOfOwners = owners.length
+            console.log(numberOfOwners)
+            console.log("AMOUNT : ", amount);
+            console.log("AMOUNTWei : ", amountWei);
+            const accounts = await web3.eth.getAccounts();
+            const currentAddress = accounts[0];
+            const result = await (contractBaseInstance.methods.sendEtherToOwners as any)(tokenId, amountWei).send({ from: currentAddress, value: numberOfOwners*amountWei})
+            console.log('Paiement was successful', result);
+            const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
+            const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
+            const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
+            const divInInt = parseInt(divInEther)
+            const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
+            const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
+            const name = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
+
+
+            return {
+                tokenId: tokenId,
+                mediaIpfsUrl: ipfs,
+                name: name,
+                numberSharesCreated: numShares,
+                initialTicketPool: remainingDividendEligibleTickets,
+                remainingDividendAvailableTickets: remainingDividendEligibleTickets,
+                dividendPerShare:  divInInt
+            };
+        } catch (error) {
+            console.error('An error occurred', error);
+            throw error;
+        }
     }
 
     async  getOwnedTokens(): Promise<TokenOwnership[]> {
@@ -145,7 +183,7 @@ export class MusiChainService implements Service {
           const currentAddress = accounts[0];
 
             const tokenIds: number[] = await (contractSaleInstance.methods.getOwnedTokens as any)(currentAddress).call();
-            const tokenIds2: number[] = await (contractBaseInstance.methods.getOwnedTokens as any)(currentAddress).call();
+            const tokenIds2: number[] = await (contractMetaDataInstance.methods.getOwnedTokens as any)(currentAddress).call();
             const uniqueBaseTokens = new Set(tokenIds);
             const uniqueSaleTokens = tokenIds2.filter(token => !uniqueBaseTokens.has(token));
             const allUniqueTokens = [...Array.from(uniqueBaseTokens), ...uniqueSaleTokens];
@@ -189,16 +227,28 @@ export class MusiChainService implements Service {
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
-            await (contractBaseInstance.methods.setApprovalForAll as any)(contractSaleAddress, true).send({ from: currentAddress });
-            const result = await (contractSaleInstance.methods.listToken as any)(tokenId, priceInWeiString, amount).send({ from: currentAddress });
+            let start1: number, end1;
+            await (contractBaseInstance.methods.setApprovalForAll as any)(contractSaleAddress, true).send({ from: currentAddress }).on('transactionHash', function(){
+                start1 = Date.now();
+            }).on('receipt', function(){
+                end1 = Date.now();
+                console.log(`Transaction latency: ${end1 - start1} ms`);
+            });
+            let start: number, end;
+            const result = await (contractSaleInstance.methods.listToken as any)(tokenId, priceInWeiString, amount).send({ from: currentAddress }).on('transactionHash', function(){
+                start = Date.now();
+            }).on('receipt', function(){
+                end = Date.now();
+                console.log(`Transaction latency: ${end - start} ms`);
+            });
 
             console.log('Transaction was successful', result);
         } catch (error) {
             console.error('An error occurred', error);
         }
         const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
-        const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
-        const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+        const creator = await (contractMetaDataInstance.methods.originalCreators as any)(tokenId).call();
+        const owner = await (contractMetaDataInstance.methods.getOwnerOfToken as any)(tokenId).call();
         const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
         const remainingTicketPool = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
@@ -232,8 +282,8 @@ export class MusiChainService implements Service {
             console.error('An error occurred', error);
         }
         const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
-        const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
-        const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+        const creator = await (contractMetaDataInstance.methods.originalCreators as any)(tokenId).call();
+        const owner = await (contractMetaDataInstance.methods.getOwnerOfToken as any)(tokenId).call();
         const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
         const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
@@ -266,8 +316,8 @@ export class MusiChainService implements Service {
                 const tokenId = Number(listing.tokenId);
                 const listingId = Number(listing.listingId);
                 const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
-                const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
-                const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+                const creator = await (contractMetaDataInstance.methods.originalCreators as any)(tokenId).call();
+                const owner = await (contractMetaDataInstance.methods.getOwnerOfToken as any)(tokenId).call();
                 const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
                 const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
                 const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
@@ -303,7 +353,13 @@ export class MusiChainService implements Service {
             const accounts = await web3.eth.getAccounts();
             const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
             const currentAddress = accounts[0];
-            const result = await (contractSaleInstance.methods.buyToken as any)(listingId, amount).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")});
+            let start: number, end;
+            const result = await (contractSaleInstance.methods.buyToken as any)(listingId, amount).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")}).on('transactionHash', function(){
+                start = Date.now();
+            }).on('receipt', function(){
+                    end = Date.now();
+                    console.log(`Transaction latency: ${end - start} ms`);
+                });
             const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
             const shareAlreadyOwned = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
             const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
@@ -336,8 +392,8 @@ export class MusiChainService implements Service {
                 const tokenId = Number(listing.tokenId);
                 const listingId = Number(listing.listingId);
                 const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
-                const creator = await (contractBaseInstance.methods.originalCreators as any)(tokenId).call();
-                const owner = await (contractBaseInstance.methods.getOwnerOfToken as any)(tokenId).call();
+                const creator = await (contractMetaDataInstance.methods.originalCreators as any)(tokenId).call();
+                const owner = await (contractMetaDataInstance.methods.getOwnerOfToken as any)(tokenId).call();
                 const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
                 const priceInEther = web3.utils.fromWei(listing.price.toString(), 'ether');
                 const remainingTicketPool = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();

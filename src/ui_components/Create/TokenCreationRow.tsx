@@ -18,8 +18,9 @@ interface TokenCreationRowProps {
 export default function TokenCreationRow(props : TokenCreationRowProps){
     const [nbTickets, setNbTickets] = useState<number>(0);
     
-    const payDividends: any = () => {
-     
+    const payDividends: any = async(tokenId: number, amount: number) => {
+        const transaction = await props.service.payDividends( tokenId,amount)
+
         console.log("TODO... pay dividends")
         props.onChange()
 
@@ -44,7 +45,7 @@ export default function TokenCreationRow(props : TokenCreationRowProps){
                     <input className={`${styles.cell}`} name="nbTickets" type="number" onChange={e => setNbTickets(e.target.valueAsNumber)} required></input>
                 </td>
                 <td className={styles.cell}>{nbTickets ? (Number(props.token.dividendPerShare) * nbTickets).toFixed(props.token.dividendPerShare.toString().split(".")[1].length) + " ETH" : "0 ETH"}</td><td className={`${styles.cell} ${styles.preview}`}>
-                        <Button className={mainstyles.button} onClick={() =>payDividends()}>Pay dividends</Button>
+                        <Button className={mainstyles.button} onClick={() =>payDividends(props.token.tokenId, Number(props.token.dividendPerShare) * nbTickets )}>Pay dividends</Button>
                     </td>
                     <td className={`${styles.cell} ${styles.preview}`}><button className={styles.previewBtn} onClick={() => props.onPlayClick(props.token.mediaIpfsUrl)}><FaPlay></FaPlay></button></td>
 
