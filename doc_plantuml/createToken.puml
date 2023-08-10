@@ -1,0 +1,59 @@
+@startuml
+participant "s:MusiChainService" as s  << (I,#ADD1B2) >>
+participant "t:TokenCreation" as t
+participant "i:MusiChainIPFS" as i
+participant "m:MoralisAPI" as m
+participant "w:Web3" as w
+
+
+
+
+
+
+ -> s : createTokens\n(creatorAddress: string, name: string, numShares: number,\n price: number, div: number, initialTktPool: number, mp3: File, img: File)
+activate s
+
+
+s->i: uploadToIpfs(mp3, img)
+activate i
+i-> m: Moralis.EvmApi.ipfs.uploadFolder({abi: uploadArray,})
+i--> s: ipfsUrl:string
+deactivate i
+note left m
+  const mp3Content = await readFileAsBase64(mp3File);
+  const imgContent = await readFileAsBase64(imgFile);
+
+  const uploadArray = [
+    {
+      path: "music.mp3",
+      content: mp3Content,
+    },
+    {
+      path: "image.png",
+      content: imgContent,
+    },
+  ];
+
+end note
+
+s->w: address = getAccount()
+note right s
+Send transaction to Mint tokens
+The user signs the transaction with Metamask
+
+Once the mint is successful, tokens are created at the Creator's address
+end note
+s->w: result = (contractBaseInstance.methods.mint as any)(name, numShares, ipfsUrl, initialTktPool, divInWeiString, data).send({ from: address });
+note right s
+Automatically create a Market Listing from the Creator's Address
+end note
+
+s->s: listing = this.addListing(address, tokenIdNumber, price, numShares)
+note right s
+See sequence UC08 
+end note
+create t
+s-->t: create
+<--s: t:TokenCreation
+deactivate s
+@enduml
