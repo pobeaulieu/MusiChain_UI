@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './MarketListingRow.module.css';
 import mainstyles from '../../App.module.css';
-import {Listing, Service, User} from '../../service/interface';
+import {Listing, MusiChainService, User} from '../../service/interface';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { tokenToString } from 'typescript';
@@ -11,7 +11,7 @@ interface MarketListingRowProps {
     listing: Listing;
     loggedUser: User
     onPlayClick:(url : string)=> void
-    service : Service
+    service : MusiChainService
     onChange: ()=> void
 
 }

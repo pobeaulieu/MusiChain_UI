@@ -6,8 +6,8 @@ import MyTokensPage from './ui_components/MyTokens/MyTokensPage';
 import Market from './ui_components/Market/MarketPage';
 import CreateNewToken from './ui_components/Create/CreateNewTokenPage';
 import YourCreationsPage from './ui_components/Create/YourCreationsPage';
-import {Service, User } from './service/interface';
-import { MusiChainService } from './service/MusiChainService';
+import {MusiChainService, User } from './service/interface';
+import { MusiChain } from './service/MusiChain';
 import MusicPlayerBar from './ui_components/MusicPlayer/MusicPlayerBar';
 import MyListingsPage from './ui_components/MyListings/MyListingsPage';
 import Moralis from "moralis";
@@ -29,7 +29,7 @@ function App() {
     }, []);
 
 
-    const service = new MusiChainService() // TODO remplacer le Mock ici par le vrai service lorsqu'il implementera toute l'interface
+    const service = new MusiChain() // TODO remplacer le Mock ici par le vrai service lorsqu'il implementera toute l'interface
 
     const onWalletConnect = (user: User) => {
         setLoggedUser(user)
@@ -68,14 +68,14 @@ export default App;
 
 
 export interface PageProps{
-    service: Service,
+    service: MusiChain,
     loggedUser: User
     onPlayClick:(url : string)=> void
 
 }
 
 export interface NavProps{
-    service: Service,
+    service: MusiChain,
     loggedUser: User,
     onWalletConnect: (user: User)=>void
 

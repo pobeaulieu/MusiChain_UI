@@ -1,13 +1,13 @@
 "use client"
 import { useState } from 'react';
-import {Service, TokenOwnership, User} from '../../service/interface';
+import {MusiChainService, TokenOwnership, User} from '../../service/interface';
 import styles from './UserTokenRow.module.css';
 import mainstyles from '../../App.module.css';
 import { Button } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
 
 interface UserTokenRowProps {
-    service: Service,
+    service: MusiChainService,
     token: TokenOwnership,
     loggedUser: User,    
     onPlayClick:(url : string)=> void

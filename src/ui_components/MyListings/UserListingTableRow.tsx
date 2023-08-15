@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Listing, Service, User} from "../../service/interface";
+import {Listing, MusiChainService, User} from "../../service/interface";
 import styles from './UserListingRow.module.css';
 import { Button, CloseButtonProps } from "react-bootstrap";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -10,7 +10,7 @@ interface UserListingRowProps {
     listing: Listing;
     loggedUser: User
     onPlayClick:(url : string)=> void
-    service: Service
+    service: MusiChainService
     onChange: ()=> void
 }
 

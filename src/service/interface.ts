@@ -40,7 +40,7 @@ export interface TokenCreation{
     dividendPerShare: number,
 }
 
-export interface Service {
+export interface MusiChainService {
     // getConnectedAccount retrieves all connected account from metamask 
     // and return the user with the first account address in the extension
     getConnectedAccount():Promise<User>

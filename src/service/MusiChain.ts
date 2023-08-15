@@ -1,30 +1,39 @@
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
-import { Listing, Service, TokenCreation, TokenOwnership, User } from "./interface";
+import { Listing, MusiChainService, TokenCreation, TokenOwnership, User } from "./interface";
 import contractBaseAbi from './contracts/Base.json';
 import contractSaleAbi from './contracts/Sale.json';
 import contractMetaDataAbi from './contracts/Metadata.json';
 import { uploadToIpfs } from "./ipfs";
 
-
-
-
 const web3 = new Web3((window as any).ethereum);
 
+/**
+ * We retrieve the address of the contrat deployed on Ganache in the .env file
+ * */
 const contractMetaDataAddress = process.env.REACT_APP_METADATA_ADDRESS ;
 const contractBaseAddress = process.env.REACT_APP_BASE_ADDRESS ;
 const contractSaleAddress =process.env.REACT_APP_SALE_ADDRESS ;
 
+/**
+ * Creation of the Instance for each contract allowing us to call the methods of the smart contracts
+ * */
 const contractMetaDataInstance = new web3.eth.Contract(contractMetaDataAbi, contractMetaDataAddress);
 const contractBaseInstance = new web3.eth.Contract(contractBaseAbi, contractBaseAddress);
 const contractSaleInstance = new web3.eth.Contract(contractSaleAbi, contractSaleAddress);
 
 
-export class MusiChainService implements Service {
+/**
+ * This class deals with all the methods related to the contracts
+ */
+export class MusiChain implements MusiChain {
 
     constructor(){
     }
 
+    /**
+     * Getter of the connected account through Ganache
+     */
     async getConnectedAccount(): Promise<User> {
         let user = new User("")
         try {
@@ -52,30 +61,36 @@ export class MusiChainService implements Service {
           return user
         };
 
+    /**
+     * Methods to create tokens in which we add a Listing too
+     * @param creatorAddress
+     * @param name
+     * @param numShares
+     * @param price
+     * @param div
+     * @param initialTktPool
+     * @param mp3
+     * @param img
+     */
     async createTokens(creatorAddress: string, name: string, numShares: number, price: number, div: number, initialTktPool: number, mp3: File, img: File): Promise<TokenCreation> {
-        // Implement your mock logic here
-        let divInWeiString = web3.utils.toWei(div, "ether"); // Convert to Wei string
-        let divInWeiNumber = parseInt(divInWeiString);
+        let divInWeiString = web3.utils.toWei(div, "ether");
         try {
-
+            // At the creation we upload the media to IPFS
             const ipfsPaths = await uploadToIpfs(mp3, img)
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
             const data = web3.utils.asciiToHex('some data');
             let ipfs = String(ipfsPaths.mp3Url.replace('/music.mp3', ''))
-            let start: number, end;
-            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, initialTktPool, divInWeiString, data).send({ from: currentAddress }).on('transactionHash', function(){
-                start = Date.now();
-            }).on('receipt', function(){
-                end = Date.now();
-                console.log(`Transaction latency: ${end - start} ms`);
-            });
+            const result = await (contractBaseInstance.methods.mint as any)(name, numShares, ipfs, initialTktPool, divInWeiString, data).send({ from: currentAddress })
+            // Those next lines retrieve the ID of the token we just created
             let mintLog = result.logs.find((log: { topics: string[]; }) => log.topics[0] === "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885");
             let tokenIdHex = mintLog.data.slice(-64);
             let tokenId = web3.utils.hexToNumberString('0x' + tokenIdHex);
             let tokenIdNumber  = Number(tokenId)
+
             console.log('Creation was successful', result);
 
+            // We add a listing with the token we just created
             const result2 = await this.addListing(currentAddress, tokenIdNumber, price, numShares)
             console.log('Listing was successful', result2);
 
@@ -99,8 +114,10 @@ export class MusiChainService implements Service {
         }
     }
 
+    /**
+     * Getter of all the created tokens for a user
+     */
     async getCreatedTokens(): Promise<TokenCreation[]> {
-        // Implement your mock logic here
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
@@ -113,7 +130,6 @@ export class MusiChainService implements Service {
                         const name = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
                         const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
                         const numShares = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
-                        const remainingDividendEligibleTickets = 0;
                         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
                         const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
                         const initalPool = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
@@ -141,17 +157,19 @@ export class MusiChainService implements Service {
         }
     }
 
+    /**
+     * This method send the amount specified to each owner of the token
+     * @param tokenId
+     * @param amount
+     */
     async payDividends(tokenId: number, amount: number): Promise<TokenCreation> {
         try {
             const amountWei = Number(web3.utils.toWei(amount.toString(), "ether"));
             const owners = await (contractMetaDataInstance.methods.getTokenOwners as any)(tokenId).call();
             const numberOfOwners = owners.length
-            console.log(numberOfOwners)
-            console.log("AMOUNT : ", amount);
-            console.log("AMOUNTWei : ", amountWei);
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
-            const result = await (contractBaseInstance.methods.sendEtherToOwners as any)(tokenId, amountWei).send({ from: currentAddress, value: numberOfOwners*amountWei})
+            const result = await (contractBaseInstance.methods.payDividends as any)(tokenId, amountWei).send({ from: currentAddress, value: numberOfOwners*amountWei})
             console.log('Paiement was successful', result);
             const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
             const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
@@ -177,6 +195,9 @@ export class MusiChainService implements Service {
         }
     }
 
+    /**
+     * Getter of all the tokens owned by a user
+     */
     async  getOwnedTokens(): Promise<TokenOwnership[]> {
         try {
           const accounts = await web3.eth.getAccounts();
@@ -221,27 +242,22 @@ export class MusiChainService implements Service {
         }
       }
 
+    /**
+     * Creation of a listing
+     * @param ownerAddress
+     * @param tokenId
+     * @param price
+     * @param amount
+     */
     async addListing(ownerAddress: string, tokenId: number, price: number, amount: number): Promise<Listing> {
         let priceInWeiString = web3.utils.toWei(price, "ether"); // Convert to Wei string
         let priceInWeiNumber = parseInt(priceInWeiString);
         try {
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
-            let start1: number, end1;
-            await (contractBaseInstance.methods.setApprovalForAll as any)(contractSaleAddress, true).send({ from: currentAddress }).on('transactionHash', function(){
-                start1 = Date.now();
-            }).on('receipt', function(){
-                end1 = Date.now();
-                console.log(`Transaction latency: ${end1 - start1} ms`);
-            });
-            let start: number, end;
-            const result = await (contractSaleInstance.methods.listToken as any)(tokenId, priceInWeiString, amount).send({ from: currentAddress }).on('transactionHash', function(){
-                start = Date.now();
-            }).on('receipt', function(){
-                end = Date.now();
-                console.log(`Transaction latency: ${end - start} ms`);
-            });
-
+            // The setApprovalForAll allows other users to buy the token
+            await (contractBaseInstance.methods.setApprovalForAll as any)(contractSaleAddress, true).send({ from: currentAddress })
+            const result = await (contractSaleInstance.methods.listToken as any)(tokenId, priceInWeiString, amount).send({ from: currentAddress })
             console.log('Transaction was successful', result);
         } catch (error) {
             console.error('An error occurred', error);
@@ -269,6 +285,10 @@ export class MusiChainService implements Service {
         };
     }
 
+    /**
+     * Remove a listing
+     * @param listingId
+     */
     async removeListing(listingId: number): Promise<Listing> {
         const listing = await (contractSaleInstance.methods.listings as any)(listingId).call();
         const tokenId = listing.tokenId
@@ -288,7 +308,6 @@ export class MusiChainService implements Service {
         const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
         const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
         const divInEther = web3.utils.fromWei(divPerShare.toString(), 'ether');
-        const divInInt = parseInt(divInEther);
 
         return {
             listingId: listingId,
@@ -304,7 +323,9 @@ export class MusiChainService implements Service {
         };
     }
 
-
+    /**
+     * Getter of all listings created by a user
+     */
     async getUserListings(): Promise<Listing[]> {
         try {
             const accounts = await web3.eth.getAccounts();
@@ -346,6 +367,12 @@ export class MusiChainService implements Service {
         }
     }
 
+    /**
+     * Method to buy a token listed by another user
+     * @param listingId
+     * @param amount
+     * @param price
+     */
     async buy(listingId: number, amount: number, price: number): Promise<TokenOwnership> {
         const listing = await (contractSaleInstance.methods.listings as any)(listingId).call();
         const tokenId = listing.tokenId
@@ -353,13 +380,7 @@ export class MusiChainService implements Service {
             const accounts = await web3.eth.getAccounts();
             const tokenName = await (contractMetaDataInstance.methods.tokenNames as any)(tokenId).call();
             const currentAddress = accounts[0];
-            let start: number, end;
-            const result = await (contractSaleInstance.methods.buyToken as any)(listingId, amount).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")}).on('transactionHash', function(){
-                start = Date.now();
-            }).on('receipt', function(){
-                    end = Date.now();
-                    console.log(`Transaction latency: ${end - start} ms`);
-                });
+            const result = await (contractSaleInstance.methods.buyToken as any)(listingId, amount).send({from: currentAddress, value: web3.utils.toWei(price.toString(), "ether")})
             const ipfs = await (contractMetaDataInstance.methods.ipfsPaths as any)(tokenId).call();
             const shareAlreadyOwned = await (contractBaseInstance.methods.getTokenBalance as any)(currentAddress,tokenId).call();
             const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
@@ -381,13 +402,13 @@ export class MusiChainService implements Service {
         }
     }
 
-
+    /**
+     * Getter of all the listings created
+     */
     async getMarketListings(): Promise<Listing[]> {
         try {
             const result = await (contractSaleInstance.methods.getAllListings as any)().call();
             const listings: Listing[] = [];
-            console.log("RESULT")
-            console.log(result)
             for (let listing of result) {
                 const tokenId = Number(listing.tokenId);
                 const listingId = Number(listing.listingId);
