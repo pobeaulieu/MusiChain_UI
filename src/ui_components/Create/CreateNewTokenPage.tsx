@@ -37,7 +37,6 @@ export default function CreateNewTokenPage(props:PageProps) {
         if(form){
             let musicInput:any = form.elements.namedItem("musicPreview")!;
             let imageInput:any = form.elements.namedItem("tokenImg")!;
-            
             const createdTokens = await props.service.createTokens(props.loggedUser?.address, name, nbShare, initPrice, div, initTicketPool, musicInput.files[0], imageInput.files[0])
 
             console.log(createdTokens)

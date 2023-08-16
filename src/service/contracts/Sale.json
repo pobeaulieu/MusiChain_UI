@@ -5,6 +5,11 @@
 				"internalType": "contract IERC1155",
 				"name": "_baseContract",
 				"type": "address"
+			},
+			{
+				"internalType": "contract Metadata",
+				"name": "_metadataContract",
+				"type": "address"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -246,6 +251,19 @@
 				"internalType": "bool",
 				"name": "isForSale",
 				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "metadataContract",
+		"outputs": [
+			{
+				"internalType": "contract Metadata",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",

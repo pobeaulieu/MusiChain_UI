@@ -164,12 +164,13 @@ export class MusiChain implements MusiChain {
      */
     async payDividends(tokenId: number, amount: number): Promise<TokenCreation> {
         try {
-            const amountWei = Number(web3.utils.toWei(amount.toString(), "ether"));
+            const amountWei = web3.utils.toWei(amount.toString(), "ether");
+            const amountWeiNum = Number(amountWei)
             const owners = await (contractMetaDataInstance.methods.getTokenOwners as any)(tokenId).call();
-            const numberOfOwners = owners.length
+            const numberOfOwners = owners.length - 1
             const accounts = await web3.eth.getAccounts();
             const currentAddress = accounts[0];
-            const result = await (contractBaseInstance.methods.payDividends as any)(tokenId, amountWei).send({ from: currentAddress, value: numberOfOwners*amountWei})
+            const result = await (contractBaseInstance.methods.payDividends as any)(tokenId, amountWei).send({ from: currentAddress, value: numberOfOwners*amountWeiNum})
             console.log('Paiement was successful', result);
             const remainingDividendEligibleTickets = await (contractMetaDataInstance.methods.ticketPools as any)(tokenId).call();
             const divPerShare = await (contractMetaDataInstance.methods.divs as any)(tokenId).call();
@@ -205,6 +206,7 @@ export class MusiChain implements MusiChain {
 
             const tokenIds: number[] = await (contractSaleInstance.methods.getOwnedTokens as any)(currentAddress).call();
             const tokenIds2: number[] = await (contractMetaDataInstance.methods.getOwnedTokens as any)(currentAddress).call();
+
             const uniqueBaseTokens = new Set(tokenIds);
             const uniqueSaleTokens = tokenIds2.filter(token => !uniqueBaseTokens.has(token));
             const allUniqueTokens = [...Array.from(uniqueBaseTokens), ...uniqueSaleTokens];
