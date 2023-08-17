@@ -1,36 +1,27 @@
 # Demo
 https://www.youtube.com/watch?v=jV2Ez_j8w_0&ab_channel=Pier-OlivierBeaulieu 
 
-# React Webapp
+## Getting Started
 - `npm install`
-
-#### Start app 
 - Windows-> `npm run start`
 - Unix-> `npm run startu`
 
-# Connect Metamask with Ganache
-1. Note your seed phrase of your Metamask Wallet somewhere. 
-2. Create a new Ganache Workspace and provide your wallet seed phrase
+## Environment Setup: Ganache and Metamask Connection
 
-![img_4.png](./img/img_4.png)
+### Metamask Account Creation
+1. Create a Metamask account.
+2. Obtain the seed phrase associated with the Metamask wallet.
 
-3. Start Ganache Network
-4. Add a new network in Metamask extension
+### Ganache Workspace Setup
+1. Create a new Ganache workspace.
+2. Provide the Metamask wallet's seed phrase during Ganache setup.
 
-![img_5.png](./img/img_5.png)
+### Adding Test Network to Metamask
+1. Open Metamask.
+2. Add a custom network with the following details:
+    - Network Name: Test Network
+    - New RPC URL: http://localhost:7545
+    - Chain ID: 1337
+    - Currency Symbol: ETH
 
-5. Add network manually
-
-![img_6.png](./img/img_6.png)
-
-![img_7.png](./img/img_7.png)
-
-6. This should connect the first account to your wallet. 
-You can then import other accounts by coping the private key without 0x
-
-![img_8.png](./img/img_8.png)
-
-![img_9.png](./img/img_9.png)
-
-![img_10.png](./img/img_10.png)
-
+Now, the test accounts from Ganache should be accessible through Metamask.
